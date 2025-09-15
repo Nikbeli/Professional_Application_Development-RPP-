@@ -20,11 +20,17 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
         private readonly IOrderStorage _orderStorage;
 
+        private readonly IShopLogic _shopLogic;
+
+        private readonly IFurnitureStorage _furnitureStorage;
+
         // Конструктор
-        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage)
+        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, IShopLogic shopLogic, IFurnitureStorage furnitureStorage)
         {
             _logger = logger;
             _orderStorage = orderStorage;
+            _shopLogic = shopLogic;
+            _furnitureStorage = furnitureStorage;
         }
 
         // Вывод отфильтрованного списка компонентов
@@ -122,7 +128,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 throw new InvalidOperationException("Дата создания должна быть более ранней, нежели дата завершения");
             }
 
-            _logger.LogInformation("Order. OrderId:{Id}, Sum:{Sum}. FurnitureId:{Id}", model.Id, model.Sum, model.FurnitureId);
+            _logger.LogInformation("Order. OrderId:{Id}, Sum:{Sum}. FurnitureId:{Id}. Sum:{Sum}", model.Id, model.Sum, model.FurnitureId, model.Sum);
         }
 
         // Обновление статуса заказа
@@ -146,9 +152,21 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             model.Status = newOrderStatus;
 
             // Проверка на выдачу
-            if (model.Status == OrderStatus.Выдан)
+            if (model.Status == OrderStatus.Готов)
             {
                 model.DateImplement = DateTime.Now;
+
+                var furniture = _furnitureStorage.GetElement(new() { Id = viewModel.FurnitureId });
+
+                if (furniture == null)
+                {
+                    throw new ArgumentNullException(nameof(furniture));
+                }
+
+                if (!_shopLogic.AddFurnitures(furniture, viewModel.Count))
+                {
+                    throw new Exception($"Невозможно выдать изделия, магазины переполнены. Operation failed. Shop is full.");
+                }
             }
             else
             {

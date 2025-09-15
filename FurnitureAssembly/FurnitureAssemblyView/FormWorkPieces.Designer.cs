@@ -73,7 +73,7 @@
             // 
             buttonRefresh.Location = new Point(561, 197);
             buttonRefresh.Margin = new Padding(3, 2, 3, 2);
-            buttonRefresh.Name = "buttonRefresh";
+            buttonRefresh.Name = "buttonRef";
             buttonRefresh.Size = new Size(100, 34);
             buttonRefresh.TabIndex = 3;
             buttonRefresh.Text = "Обновить";

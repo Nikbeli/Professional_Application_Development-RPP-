@@ -118,7 +118,7 @@ namespace FurnitureAssemblyView
             }
         }
 
-        private void ButtonRef_Click(object sender, EventArgs e)
+        private void ButtonRefresh_Click(object sender, EventArgs e)
         {
             LoadData();
         }

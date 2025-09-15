@@ -21,6 +21,8 @@ namespace FurnitureAssemblyListImplement.Models
 
         public int Id { get; private set; }
 
+        public int MaxCountFurnitures { get; set; }
+
         public Dictionary<int, (IFurnitureModel, int)> Furnitures { get; private set; } =
             new Dictionary<int, (IFurnitureModel, int)>();
 

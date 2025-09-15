@@ -2,7 +2,6 @@
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.SearchModels;
 using FurnitureAssemblyDataModels.Models;
-using FurnitureAssemblyListImplement.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -54,7 +53,9 @@ namespace FurnitureAssemblyView
                         textBoxName.Text = view.ShopName;
                         textBoxAddress.Text = view.Address.ToString();
                         dateTimePickerDate.Value = view.DateOpen;
+                        numericUpDownCount.Value = view.MaxCountFurnitures;
                         _shopFurnitures = view.Furnitures ?? new Dictionary<int, (IFurnitureModel, int)>();
+                        
                         LoadData();
                     }
                 }
@@ -99,9 +100,9 @@ namespace FurnitureAssemblyView
                 MessageBox.Show("Заполните адрес", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            _logger.LogInformation("Сохранение магазина");
             
+            _logger.LogInformation("Сохранение магазина");
+           
             try
             {
                 var model = new ShopBindingModel
@@ -110,7 +111,8 @@ namespace FurnitureAssemblyView
                     ShopName = textBoxName.Text,
                     Address = textBoxAddress.Text,
                     DateOpen = dateTimePickerDate.Value.Date,
-                    Furnitures = _shopFurnitures
+                    Furnitures = _shopFurnitures,
+                    MaxCountFurnitures = (int)numericUpDownCount.Value
                 };
 
                 var operationResult = _id.HasValue ? _logic.Update(model) : _logic.Create(model);

@@ -93,7 +93,7 @@ namespace FurnitureAssemblyView
             {
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
                 _logger.LogInformation("Заказ №{id}. Меняется статус на 'В работе'", id);
-                
+
                 try
                 {
                     var operationResult = _orderLogic.TakeOrderInWork(new OrderBindingModel
@@ -197,6 +197,16 @@ namespace FurnitureAssemblyView
             var service = Program.ServiceProvider?.GetService(typeof(FormAddFurniture));
 
             if (service is FormAddFurniture form)
+            {
+                form.ShowDialog();
+                LoadData();
+            }
+        }
+
+        private void ButtonSellFurniture_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormSellFurniture));
+            if (service is FormSellFurniture form)
             {
                 form.ShowDialog();
                 LoadData();

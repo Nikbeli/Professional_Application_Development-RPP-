@@ -90,6 +90,11 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 return false;
             }
 
+            if (shop.MaxCountFurnitures - shop.Furnitures.Select(x => x.Value.Item2).Sum() < count)
+            {
+                throw new ArgumentNullException("Слишком много изделий для одного магазина", nameof(count));
+            }
+
             if (!shop.Furnitures.ContainsKey(furniture.Id))
             {
                 shop.Furnitures[furniture.Id] = (furniture, count);
@@ -104,6 +109,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 ShopName = shop.ShopName,
                 Address = shop.Address,
                 DateOpen = shop.DateOpen,
+                MaxCountFurnitures = shop.MaxCountFurnitures,
                 Furnitures = shop.Furnitures
             });
 
@@ -192,6 +198,63 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             {
                 throw new InvalidOperationException("Магазин с таким названием уже есть");
             }
+        }
+
+
+        public bool AddFurnitures(IFurnitureModel model, int count)
+        {
+            if (count <= 0)
+            {
+                throw new ArgumentNullException("Количество добавляемых изделий должно быть больше 0", nameof(count));
+            }
+
+            _logger.LogInformation("AddFurnitures. Furniture: {Furniture}. Count: {Count}", model?.FurnitureName, count);
+
+            var capacity = _shopStorage.GetFullList().Select(x => x.MaxCountFurnitures - x.Furnitures.Select(x => x.Value.Item2).Sum()).Sum() - count;
+
+            if (capacity < 0)
+            {
+                _logger.LogWarning("AddFurnitures operation failed. Sell {count} Furnitures ", -capacity);
+                return false;
+            }
+
+            foreach (var shop in _shopStorage.GetFullList())
+            {
+                if (shop.MaxCountFurnitures - shop.Furnitures.Select(x => x.Value.Item2).Sum() < count)
+                {
+                    if (!AddFurniture(new() { Id = shop.Id }, model, shop.MaxCountFurnitures - shop.Furnitures.Select(x => x.Value.Item2).Sum()))
+                    {
+                        _logger.LogWarning("AddFurnitures operation failed.");
+
+                        return false;
+                    }
+
+                    count -= shop.MaxCountFurnitures - shop.Furnitures.Select(x => x.Value.Item2).Sum();
+                }
+                else
+                {
+                    if (!AddFurniture(new() { Id = shop.Id }, model, count))
+                    {
+                        _logger.LogWarning("AddFurnitures operation failed.");
+
+                        return false;
+                    }
+
+                    count -= count;
+                }
+
+                if (count == 0)
+                {
+                    return true;
+                }
+            }
+
+            return true;
+        }
+
+        public bool SellFurnitures(IFurnitureModel model, int count)
+        {
+            return _shopStorage.SellFurnitures(model, count);
         }
     }
 }

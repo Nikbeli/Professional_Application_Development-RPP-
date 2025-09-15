@@ -34,14 +34,15 @@
             buttonOrderReady = new Button();
             buttonIssuedOrder = new Button();
             buttonRefresh = new Button();
-            menuStrip1 = new MenuStrip();
+            menuStrip = new MenuStrip();
             toolStripMenuItem = new ToolStripMenuItem();
             workPieceToolStripMenuItem = new ToolStripMenuItem();
             furnitureToolStripMenuItem = new ToolStripMenuItem();
             shopToolStripMenuItem = new ToolStripMenuItem();
             addFurnitureToolStripMenuItem = new ToolStripMenuItem();
+            buttonSellFurniture = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
-            menuStrip1.SuspendLayout();
+            menuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // dataGridView
@@ -57,10 +58,10 @@
             // 
             // buttonCreateOrder
             // 
-            buttonCreateOrder.Location = new Point(887, 41);
+            buttonCreateOrder.Location = new Point(887, 38);
             buttonCreateOrder.Margin = new Padding(3, 2, 3, 2);
             buttonCreateOrder.Name = "buttonCreateOrder";
-            buttonCreateOrder.Size = new Size(216, 41);
+            buttonCreateOrder.Size = new Size(216, 36);
             buttonCreateOrder.TabIndex = 1;
             buttonCreateOrder.Text = "Создать заказ";
             buttonCreateOrder.UseVisualStyleBackColor = true;
@@ -68,10 +69,10 @@
             // 
             // buttonTakeOrderInWork
             // 
-            buttonTakeOrderInWork.Location = new Point(887, 102);
+            buttonTakeOrderInWork.Location = new Point(887, 96);
             buttonTakeOrderInWork.Margin = new Padding(3, 2, 3, 2);
             buttonTakeOrderInWork.Name = "buttonTakeOrderInWork";
-            buttonTakeOrderInWork.Size = new Size(216, 39);
+            buttonTakeOrderInWork.Size = new Size(216, 34);
             buttonTakeOrderInWork.TabIndex = 2;
             buttonTakeOrderInWork.Text = "Отдать на выполнение";
             buttonTakeOrderInWork.UseVisualStyleBackColor = true;
@@ -79,10 +80,10 @@
             // 
             // buttonOrderReady
             // 
-            buttonOrderReady.Location = new Point(887, 161);
+            buttonOrderReady.Location = new Point(887, 148);
             buttonOrderReady.Margin = new Padding(3, 2, 3, 2);
             buttonOrderReady.Name = "buttonOrderReady";
-            buttonOrderReady.Size = new Size(216, 37);
+            buttonOrderReady.Size = new Size(216, 33);
             buttonOrderReady.TabIndex = 3;
             buttonOrderReady.Text = "Заказ готов";
             buttonOrderReady.UseVisualStyleBackColor = true;
@@ -90,10 +91,10 @@
             // 
             // buttonIssuedOrder
             // 
-            buttonIssuedOrder.Location = new Point(887, 218);
+            buttonIssuedOrder.Location = new Point(887, 201);
             buttonIssuedOrder.Margin = new Padding(3, 2, 3, 2);
             buttonIssuedOrder.Name = "buttonIssuedOrder";
-            buttonIssuedOrder.Size = new Size(216, 37);
+            buttonIssuedOrder.Size = new Size(216, 32);
             buttonIssuedOrder.TabIndex = 4;
             buttonIssuedOrder.Text = "Заказ выдан";
             buttonIssuedOrder.UseVisualStyleBackColor = true;
@@ -101,25 +102,25 @@
             // 
             // buttonRefresh
             // 
-            buttonRefresh.Location = new Point(887, 277);
+            buttonRefresh.Location = new Point(887, 250);
             buttonRefresh.Margin = new Padding(3, 2, 3, 2);
             buttonRefresh.Name = "buttonRefresh";
-            buttonRefresh.Size = new Size(216, 34);
+            buttonRefresh.Size = new Size(216, 31);
             buttonRefresh.TabIndex = 5;
             buttonRefresh.Text = "Обновить";
             buttonRefresh.UseVisualStyleBackColor = true;
             buttonRefresh.Click += ButtonRefresh_Click;
             // 
-            // menuStrip1
+            // menuStrip
             // 
-            menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(5, 2, 0, 2);
-            menuStrip1.Size = new Size(1135, 24);
-            menuStrip1.TabIndex = 6;
-            menuStrip1.Text = "menuStrip1";
+            menuStrip.ImageScalingSize = new Size(20, 20);
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem });
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Padding = new Padding(5, 2, 0, 2);
+            menuStrip.Size = new Size(1135, 24);
+            menuStrip.TabIndex = 6;
+            menuStrip.Text = "menuStrip";
             // 
             // toolStripMenuItem
             // 
@@ -156,26 +157,38 @@
             addFurnitureToolStripMenuItem.Text = "Пополнение магазина";
             addFurnitureToolStripMenuItem.Click += AddFurnitureToolStripMenuItem_Click;
             // 
+            // buttonSellFurniture
+            // 
+            buttonSellFurniture.Location = new Point(887, 297);
+            buttonSellFurniture.Margin = new Padding(3, 2, 3, 2);
+            buttonSellFurniture.Name = "buttonSellFurniture";
+            buttonSellFurniture.Size = new Size(216, 30);
+            buttonSellFurniture.TabIndex = 8;
+            buttonSellFurniture.Text = "Продажа изделий";
+            buttonSellFurniture.UseVisualStyleBackColor = true;
+            buttonSellFurniture.Click += ButtonSellFurniture_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1135, 338);
+            Controls.Add(buttonSellFurniture);
             Controls.Add(buttonRefresh);
             Controls.Add(buttonIssuedOrder);
             Controls.Add(buttonOrderReady);
             Controls.Add(buttonTakeOrderInWork);
             Controls.Add(buttonCreateOrder);
             Controls.Add(dataGridView);
-            Controls.Add(menuStrip1);
-            MainMenuStrip = menuStrip1;
+            Controls.Add(menuStrip);
+            MainMenuStrip = menuStrip;
             Margin = new Padding(3, 2, 3, 2);
             Name = "FormMain";
             Text = "Сборка мебели";
             Load += FormMain_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -188,11 +201,12 @@
         private Button buttonOrderReady;
         private Button buttonIssuedOrder;
         private Button buttonRefresh;
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStrip;
         private ToolStripMenuItem toolStripMenuItem;
         private ToolStripMenuItem workPieceToolStripMenuItem;
         private ToolStripMenuItem furnitureToolStripMenuItem;
         private ToolStripMenuItem shopToolStripMenuItem;
         private ToolStripMenuItem addFurnitureToolStripMenuItem;
+        private Button buttonSellFurniture;
     }
 }
