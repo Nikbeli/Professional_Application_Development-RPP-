@@ -43,6 +43,7 @@ namespace FurnitureAssemblyView
             services.AddTransient<IFurnitureStorage, FurnitureStorage>();
             services.AddTransient<IShopStorage, ShopStorage>();
             services.AddTransient<IClientStorage, ClientStorage>();
+            services.AddTransient<IImplementerStorage, ImplementerStorage>();
 
             services.AddTransient<IWorkPieceLogic, WorkPieceLogic>();
             services.AddTransient<IOrderLogic, OrderLogic>();
@@ -50,10 +51,13 @@ namespace FurnitureAssemblyView
             services.AddTransient<IShopLogic, ShopLogic>();
             services.AddTransient<IReportLogic, ReportLogic>();
             services.AddTransient<IClientLogic, ClientLogic>();
+            services.AddTransient<IImplementerLogic, ImplementerLogic>();
 
             services.AddTransient<AbstractSaveToExcel, SaveToExcel>();
             services.AddTransient<AbstractSaveToWord, SaveToWord>();
             services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
+
+            services.AddTransient<IWorkProcess, WorkModeling>();
 
             services.AddTransient<FormMain>();
             services.AddTransient<FormWorkPiece>();
@@ -72,6 +76,8 @@ namespace FurnitureAssemblyView
             services.AddTransient<FormReportOrders>();
             services.AddTransient<FormReportGroupedOrders>();
             services.AddTransient<FormClients>();
+            services.AddTransient<FormImplementers>();
+            services.AddTransient<FormImplementer>();
         }
     }
 }

@@ -14,6 +14,8 @@ namespace FurnitureAssemblyContracts.BindingModels
 
         public int ClientId { get; set; }
 
+        public int? ImplementerId { get; set; }
+
         public int FurnitureId { get; set; }
 
         public int Count { get; set; }

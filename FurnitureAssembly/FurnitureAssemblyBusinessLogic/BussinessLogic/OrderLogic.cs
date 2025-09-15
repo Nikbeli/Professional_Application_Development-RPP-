@@ -24,6 +24,8 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
         private readonly IFurnitureStorage _furnitureStorage;
 
+        static readonly object locker = new object();
+
         // Конструктор
         public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, IShopLogic shopLogic, IFurnitureStorage furnitureStorage)
         {
@@ -52,6 +54,29 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             return list;
         }
 
+        public OrderViewModel? ReadElement(OrderSearchModel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            _logger.LogInformation("ReadElement. Id:{Id}", model?.Id);
+
+            var element = _orderStorage.GetElement(model!);
+
+            if (element == null)
+            {
+                _logger.LogWarning("ReadElement element not found");
+
+                return null;
+            }
+
+            _logger.LogInformation("ReadElement find. Id:{Id}", element.Id);
+
+            return element;
+        }
+
         // Создание чека
         public bool CreateOrder(OrderBindingModel model)
         {
@@ -67,7 +92,6 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
             if (_orderStorage.Insert(model) == null)
             {
-                model.Status = OrderStatus.Неизвестен;
                 _logger.LogWarning("Insert operation failed");
                 return false;
             }
@@ -77,7 +101,10 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
         public bool TakeOrderInWork(OrderBindingModel model)
         {
-            return StatusUpdate(model, OrderStatus.Выполняется);
+            lock (locker)
+            {
+                return StatusUpdate(model, OrderStatus.Выполняется);
+            }
         }
 
         public bool FinishOrder(OrderBindingModel model)
@@ -134,7 +161,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 throw new InvalidOperationException("Дата создания должна быть более ранней, нежели дата завершения");
             }
 
-            _logger.LogInformation("Order. OrderId:{Id}, Sum:{Sum}. FurnitureId:{Id}. Sum:{Sum}", model.Id, model.Sum, model.FurnitureId, model.Sum);
+            _logger.LogInformation("Order. OrderId:{Id}, Sum:{Sum}. ClientId:{ClientId}. FurnitureId:{Id}", model.Id, model.Sum, model.ClientId, model.FurnitureId);
         }
 
         // Обновление статуса заказа
@@ -149,7 +176,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             }
 
             // Проверка на возможность обновления статуса на следующий
-            if (viewModel.Status + 1 != newOrderStatus)
+            if (viewModel.Status + 1 != newOrderStatus && viewModel.Status != OrderStatus.Ожидание)
             {
                 _logger.LogWarning("Status update operation failed. New status " + newOrderStatus.ToString() + "incorrect");
                 return false;
@@ -157,8 +184,14 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
             model.Status = newOrderStatus;
 
+            // Помещаем id работника, не забываем про него...
+            if (viewModel.ImplementerId.HasValue)
+            {
+                model.ImplementerId = viewModel.ImplementerId;
+            }
+
             // Проверка на выдачу
-            if (model.Status == OrderStatus.Готов)
+            if (model.Status == OrderStatus.Готов || viewModel.Status == OrderStatus.Ожидание)
             {
                 model.DateImplement = DateTime.Now;
 
@@ -171,7 +204,12 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
                 if (!_shopLogic.AddFurnitures(furniture, viewModel.Count))
                 {
-                    throw new Exception($"Невозможно выдать изделия, магазины переполнены. Operation failed. Shop is full.");
+                    model.Status = OrderStatus.Ожидание;
+                    _logger.LogWarning($"Невозможно выдать изделия, магазины переполнены. AddFurnitures operation failed. Shop is full.");
+                }
+                else
+                {
+                    model.DateImplement = DateTime.Now;
                 }
             }
             else
@@ -184,7 +222,6 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             // Финальная проверка на возможность обновления
             if (_orderStorage.Update(model) == null)
             {
-                model.Status--;
                 _logger.LogWarning("Update operation failed");
                 return false;
             }

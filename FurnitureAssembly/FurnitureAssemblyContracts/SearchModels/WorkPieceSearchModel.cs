@@ -16,4 +16,3 @@ namespace FurnitureAssemblyContracts.SearchModels
         public string? WorkPieceName { get; set; }
     }
 }
-

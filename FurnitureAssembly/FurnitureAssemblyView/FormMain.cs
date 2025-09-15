@@ -22,13 +22,16 @@ namespace FurnitureAssemblyView
 
         private readonly IReportLogic _reportLogic;
 
-        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic)
+        private readonly IWorkProcess _workProcess;
+
+        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic, IWorkProcess workProcess)
         {
             InitializeComponent();
 
             _logger = logger;
             _orderLogic = orderLogic;
             _reportLogic = reportLogic;
+            _workProcess = workProcess;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -48,9 +51,11 @@ namespace FurnitureAssemblyView
                 {
                     dataGridView.DataSource = list;
                     dataGridView.Columns["FurnitureId"].Visible = false;
-					dataGridView.Columns["ClientId"].Visible = false;
+                    dataGridView.Columns["ClientId"].Visible = false;
+                    dataGridView.Columns["ImplementerId"].Visible = false;
                     dataGridView.Columns["FurnitureName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     dataGridView.Columns["ClientFIO"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Columns["ImplementerFIO"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
 
                 _logger.LogInformation("Загрузка заказов");
@@ -90,64 +95,6 @@ namespace FurnitureAssemblyView
             {
                 form.ShowDialog();
                 LoadData();
-            }
-        }
-
-        private void ButtonTakeOrderInWork_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                _logger.LogInformation("Заказ №{id}. Меняется статус на 'В работе'", id);
-
-                try
-                {
-                    var operationResult = _orderLogic.TakeOrderInWork(new OrderBindingModel
-                    {
-                        Id = id
-                    });
-
-                    if (!operationResult)
-                    {
-                        throw new Exception("Ошибка при сохранении. Дополнительная информация в логах.");
-                    }
-
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Ошибка передачи заказа в работу");
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void ButtonOrderReady_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                _logger.LogInformation("Заказ №{id}. Меняется статус на 'Готов'", id);
-
-                try
-                {
-                    var operationResult = _orderLogic.FinishOrder(new OrderBindingModel
-                    {
-                        Id = id
-                    });
-
-                    if (!operationResult)
-                    {
-                        throw new Exception("Заказ не отправлен в сборку. Дополнительная информация в логах.");
-                    }
-
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Ошибка отметки о готовности заказа");
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
         }
 
@@ -293,6 +240,23 @@ namespace FurnitureAssemblyView
             {
                 form.ShowDialog();
             }
+        }
+
+        private void ImplementerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormImplementers));
+
+            if (service is FormImplementers form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void StartWorkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _workProcess.DoWork((Program.ServiceProvider?.GetService(typeof(IImplementerLogic)) as IImplementerLogic)!, _orderLogic);
+
+            MessageBox.Show("Процесс обработки запущен", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

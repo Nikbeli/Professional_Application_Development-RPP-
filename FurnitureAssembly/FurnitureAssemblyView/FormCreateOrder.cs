@@ -29,9 +29,9 @@ namespace FurnitureAssemblyView
 			InitializeComponent();
 
 			_logger = logger;
-			_logicFurniture = logicFurniture;
-			_logicOrder = logicOrder;
-			_logicClient = logicClient;
+            _logicFurniture = logicFurniture;
+            _logicOrder = logicOrder;
+            _logicClient = logicClient;
 		}
 
 		private void FormCreateOrder_Load(object sender, EventArgs e)
@@ -46,9 +46,9 @@ namespace FurnitureAssemblyView
 				if (list != null)
 				{
 					comboBoxFurniture.DisplayMember = "FurnitureName";
-					comboBoxFurniture.ValueMember = "Id";
-					comboBoxFurniture.DataSource = list;
-					comboBoxFurniture.SelectedItem = null;
+                    comboBoxFurniture.ValueMember = "Id";
+                    comboBoxFurniture.DataSource = list;
+                    comboBoxFurniture.SelectedItem = null;
 				}
 
 				if (listClients != null)

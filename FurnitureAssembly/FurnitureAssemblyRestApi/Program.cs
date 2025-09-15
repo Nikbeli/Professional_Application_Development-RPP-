@@ -17,11 +17,13 @@ builder.Services.AddTransient<IClientStorage, ClientStorage>();
 builder.Services.AddTransient<IOrderStorage, OrderStorage>();
 builder.Services.AddTransient<IFurnitureStorage, FurnitureStorage>();
 builder.Services.AddTransient<IShopStorage, ShopStorage>();
+builder.Services.AddTransient<IImplementerStorage, ImplementerStorage>();
 
 builder.Services.AddTransient<IOrderLogic, OrderLogic>();
 builder.Services.AddTransient<IClientLogic, ClientLogic>();
 builder.Services.AddTransient<IFurnitureLogic, FurnitureLogic>();
 builder.Services.AddTransient<IShopLogic, ShopLogic>();
+builder.Services.AddTransient<IImplementerLogic, ImplementerLogic>();
 
 
 builder.Services.AddControllers();

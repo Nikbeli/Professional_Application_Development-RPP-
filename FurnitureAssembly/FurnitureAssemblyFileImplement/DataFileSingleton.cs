@@ -22,6 +22,8 @@ namespace FurnitureAssemblyFileImplement
 
         private readonly string ClientFileName = "Client.xml";
 
+        private readonly string ImplementerFileName = "Implementer.xml";
+
         public List<WorkPiece> WorkPieces { get; private set; }
 
         public List<Order> Orders { get; private set; }
@@ -31,6 +33,8 @@ namespace FurnitureAssemblyFileImplement
         public List<Shop> Shops { get; private set; }
 
         public List<Client> Clients { get; private set; }
+
+        public List<Implementer> Implementers { get; private set; }
 
         public static DataFileSingleton GetInstance()
         {
@@ -52,12 +56,15 @@ namespace FurnitureAssemblyFileImplement
 
         public void SaveClients() => SaveData(Clients, ClientFileName, "Clients", x => x.GetXElement);
 
+        public void SaveImplementers() => SaveData(Orders, ImplementerFileName, "Implementers", x => x.GetXElement);
+
         private DataFileSingleton()
         {
             WorkPieces = LoadData(WorkPieceFileName, "WorkPiece", x => WorkPiece.Create(x)!)!;
             Furnitures = LoadData(FurnitureFileName, "Furniture", x => Furniture.Create(x)!)!;
             Orders = LoadData(OrderFileName, "Order", x => Order.Create(x)!)!;
             Shops = LoadData(ShopFileName, "Shop", x => Shop.Create(x)!)!;
+            Implementers = LoadData(ImplementerFileName, "Impleneter", x => Implementer.Create(x)!)!;
 
             Clients = LoadData(ClientFileName, "Client", x => Client.Create(x)!)!;
         }

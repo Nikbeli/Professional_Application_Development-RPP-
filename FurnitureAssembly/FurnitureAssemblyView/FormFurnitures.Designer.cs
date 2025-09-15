@@ -66,10 +66,10 @@
             buttonDelete.UseVisualStyleBackColor = true;
             buttonDelete.Click += ButtonDelete_Click;
             // 
-            // buttonRef
+            // buttonRefresh
             // 
             buttonRef.Location = new Point(640, 245);
-            buttonRef.Name = "buttonRef";
+            buttonRef.Name = "buttonRefresh";
             buttonRef.Size = new Size(116, 50);
             buttonRef.TabIndex = 3;
             buttonRef.Text = "Обновить";

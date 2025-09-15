@@ -47,6 +47,7 @@ namespace FurnitureAssemblyFileImplement.Models
             {
                 return null;
             }
+
             return new Shop()
             {
                 Id = model.Id,
@@ -64,6 +65,7 @@ namespace FurnitureAssemblyFileImplement.Models
             {
                 return null;
             }
+
             return new Shop()
             {
                 Id = Convert.ToInt32(element.Attribute("Id")!.Value),
@@ -81,6 +83,7 @@ namespace FurnitureAssemblyFileImplement.Models
             {
                 return;
             }
+
             ShopName = model.ShopName;
             Address = model.Address;
             DateOpen = model.DateOpen;

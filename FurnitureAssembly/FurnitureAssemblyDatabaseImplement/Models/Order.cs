@@ -21,6 +21,8 @@ namespace FurnitureAssemblyDatabaseImplement.Models
         [Required]
         public int ClientId { get; private set; }
 
+        public int? ImplementerId { get; private set; }
+
         [Required]
         public int Count { get; private set; }
 
@@ -41,6 +43,9 @@ namespace FurnitureAssemblyDatabaseImplement.Models
         // Для передачи имени клиента
         public virtual Client Client { get; set; }
 
+        // Для передачи имени исполнителя
+        public virtual Implementer? Implementer { get; set; }
+
         public static Order? Create(OrderBindingModel model)
         {
             if (model == null)
@@ -53,6 +58,7 @@ namespace FurnitureAssemblyDatabaseImplement.Models
                 Id = model.Id,
                 FurnitureId = model.FurnitureId,
                 ClientId = model.ClientId,
+                ImplementerId = model.ImplementerId,
                 Count = model.Count,
                 Sum = model.Sum,
                 Status = model.Status,
@@ -68,6 +74,7 @@ namespace FurnitureAssemblyDatabaseImplement.Models
                 return;
             }
 
+            ImplementerId = model.ImplementerId;
             Status = model.Status;
             DateImplement = model.DateImplement;
         }
@@ -77,13 +84,15 @@ namespace FurnitureAssemblyDatabaseImplement.Models
             Id = Id,
             FurnitureId = FurnitureId,
             ClientId = ClientId,
+            ImplementerId = ImplementerId,
             Count = Count,
             Sum = Sum,
             Status = Status,
             DateCreate = DateCreate,
             DateImplement = DateImplement,
             FurnitureName = Furniture.FurnitureName,
-            ClientFIO = Client.ClientFIO
+            ClientFIO = Client.ClientFIO,
+            ImplementerFIO = Implementer?.ImplementerFIO ?? string.Empty
         };
     }
 }

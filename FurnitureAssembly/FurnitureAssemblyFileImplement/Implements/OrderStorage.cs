@@ -11,112 +11,129 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyFileImplement.Implements
 {
-	// Реализация интерфейса хранилища заказов
-	public class OrderStorage : IOrderStorage
-	{
-		private readonly DataFileSingleton source;
+    // Реализация интерфейса хранилища заказов
+    public class OrderStorage : IOrderStorage
+    {
+        private readonly DataFileSingleton source;
 
-		public OrderStorage()
-		{
-			source = DataFileSingleton.GetInstance();
-		}
+        public OrderStorage()
+        {
+            source = DataFileSingleton.GetInstance();
+        }
 
 		public List<OrderViewModel> GetFullList()
 		{
 			return source.Orders.Select(x => GetViewModel(x)).ToList();
 		}
 
-		public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
-		{
-			if (!model.Id.HasValue && !model.DateFrom.HasValue && !model.DateTo.HasValue
-				&& !model.ClientId.HasValue)
-			{
-				return new();
-			}
-
-			return source.Orders.Where(x => x.Id == model.Id || model.DateFrom <= x.DateCreate
-				&& x.DateCreate <= model.DateTo || x.ClientId == model.ClientId)
-					.Select(x => GetViewModel(x)).ToList();
-		}
-
 		public OrderViewModel? GetElement(OrderSearchModel model)
-		{
-			if (!model.Id.HasValue)
-			{
-				return null;
-			}
+        {
+            if (!model.Id.HasValue)
+            {
+                return null;
+            }
 
-			return source.Orders.FirstOrDefault(x =>
-				(model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
-		}
+            if (model.ImplementerId.HasValue && model.Status.HasValue)
+            {
+                return source.Orders.FirstOrDefault(x => x.ImplementerId == model.ImplementerId 
+                    && x.Status == model.Status)?.GetViewModel;
+            }
 
-		// Для загрузки названий изделия в заказе
-		private OrderViewModel GetViewModel(Order order)
-		{
-			var viewModel = order.GetViewModel;
+            if (model.ImplementerId.HasValue)
+            {
+                return source.Orders.FirstOrDefault(x => x.ImplementerId == model.ImplementerId)
+                    ?.GetViewModel;
+            }
 
-			var furniture = source.Furnitures.FirstOrDefault(x => x.Id == order.FurnitureId);
+            return source.Orders.FirstOrDefault(x => (model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
+        }
 
-			var client = source.Clients.FirstOrDefault(x => x.Id == order.ClientId);
+        public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
+        {
+            if (!model.Id.HasValue && !model.DateFrom.HasValue && !model.DateTo.HasValue && !model.ClientId.HasValue && model.Status == null)
+            {
+                return new();
+            }
 
-			if (furniture != null)
-			{
-				viewModel.FurnitureName = furniture.FurnitureName;
-			}
+            return source.Orders.Where(x => x.Id == model.Id || model.DateFrom <= x.DateCreate 
+                && x.DateCreate <= model.DateTo || x.ClientId == model.ClientId || model.Status.Equals(x.Status))
+                .Select(x => GetViewModel(x)).ToList();
+        }
 
-			if (client != null)
-			{
-				viewModel.ClientFIO = client.ClientFIO;
-			}
+        // Для загрузки названий изделия и исполнителя в заказе
+        private OrderViewModel GetViewModel(Order order)
+        {
+            var viewModel = order.GetViewModel;
 
-			return viewModel;
-		}
+            var furniture = source.Furnitures.FirstOrDefault(x => x.Id == order.FurnitureId);
 
-		public OrderViewModel? Insert(OrderBindingModel model)
-		{
-			model.Id = source.Orders.Count > 0 ? source.Orders.Max(x => x.Id) + 1 : 1;
+            var client = source.Clients.FirstOrDefault(x => x.Id == order.ClientId);
 
-			var newOrder = Order.Create(model);
+            var implementer = source.Implementers.FirstOrDefault(x => x.Id == order.ImplementerId);
 
-			if (newOrder == null)
-			{
-				return null;
-			}
+            if (furniture != null)
+            {
+                viewModel.FurnitureName = furniture.FurnitureName;
+            }
 
-			source.Orders.Add(newOrder);
-			source.SaveOrders();
+            if (client != null)
+            {
+                viewModel.ClientFIO = client.ClientFIO;
+            }
 
-			return GetViewModel(newOrder);
-		}
+            if (implementer != null)
+            {
+                viewModel.ImplementerFIO = implementer.ImplementerFIO;
+            }
 
-		public OrderViewModel? Update(OrderBindingModel model)
-		{
-			var order = source.Orders.FirstOrDefault(x => x.Id == model.Id);
+            return viewModel;
+        }
 
-			if (order == null)
-			{
-				return null;
-			}
+        public OrderViewModel? Insert(OrderBindingModel model)
+        {
+            model.Id = source.Orders.Count > 0 ? source.Orders.Max(x => x.Id) + 1 : 1;
 
-			order.Update(model);
-			source.SaveOrders();
+            var newOrder = Order.Create(model);
 
-			return GetViewModel(order);
-		}
+            if (newOrder == null)
+            {
+                return null;
+            }
 
-		public OrderViewModel? Delete(OrderBindingModel model)
-		{
-			var order = source.Orders.FirstOrDefault(x => x.Id == model.Id);
+            source.Orders.Add(newOrder);
+            source.SaveOrders();
 
-			if (order != null)
-			{
-				source.Orders.Remove(order);
-				source.SaveOrders();
+            return GetViewModel(newOrder);
+        }
 
-				return GetViewModel(order);
-			}
+        public OrderViewModel? Update(OrderBindingModel model)
+        {
+            var order = source.Orders.FirstOrDefault(x => x.Id == model.Id);
 
-			return null;
-		}
-	}
+            if (order == null)
+            {
+                return null;
+            }
+
+            order.Update(model);
+            source.SaveOrders();
+
+            return GetViewModel(order);
+        }
+
+        public OrderViewModel? Delete(OrderBindingModel model)
+        {
+            var order = source.Orders.FirstOrDefault(x => x.Id == model.Id);
+
+            if (order != null)
+            {
+                source.Orders.Remove(order);
+                source.SaveOrders();
+
+                return GetViewModel(order);
+            }
+
+            return null;
+        }
+    }
 }
