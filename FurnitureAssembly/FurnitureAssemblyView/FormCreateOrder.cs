@@ -1,7 +1,6 @@
 ﻿using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.SearchModels;
-using FurnitureAssemblyDataModels.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -23,13 +22,16 @@ namespace FurnitureAssemblyView
 
 		private readonly IOrderLogic _logicOrder;
 
-		public FormCreateOrder(ILogger<FormCreateOrder> logger, IFurnitureLogic logicFurniture, IOrderLogic logicOrder)
+		private readonly IClientLogic _logicClient;
+
+		public FormCreateOrder(ILogger<FormCreateOrder> logger, IFurnitureLogic logicFurniture, IOrderLogic logicOrder, IClientLogic logicClient)
 		{
 			InitializeComponent();
 
 			_logger = logger;
 			_logicFurniture = logicFurniture;
 			_logicOrder = logicOrder;
+			_logicClient = logicClient;
 		}
 
 		private void FormCreateOrder_Load(object sender, EventArgs e)
@@ -39,6 +41,7 @@ namespace FurnitureAssemblyView
 			try
 			{
 				var list = _logicFurniture.ReadList(null);
+				var listClients = _logicClient.ReadList(null);
 
 				if (list != null)
 				{
@@ -48,10 +51,17 @@ namespace FurnitureAssemblyView
 					comboBoxFurniture.SelectedItem = null;
 				}
 
+				if (listClients != null)
+				{
+					comboBoxClient.DisplayMember = "ClientFIO";
+					comboBoxClient.ValueMember = "Id";
+					comboBoxClient.DataSource = listClients;
+					comboBoxClient.SelectedItem = null;
+				}
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Ошибка загрузки изделий для заказа");
+				_logger.LogError(ex, "Ошибка загрузки изделий для заказа или списка клиентов");
 				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
@@ -107,6 +117,12 @@ namespace FurnitureAssemblyView
 				return;
 			}
 
+			if (comboBoxClient.SelectedValue == null)
+			{
+				MessageBox.Show("Выберите заказчика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
 			_logger.LogInformation("Создание заказа");
 
 			try
@@ -114,6 +130,7 @@ namespace FurnitureAssemblyView
 				var operationResult = _logicOrder.CreateOrder(new OrderBindingModel
 				{
 					FurnitureId = Convert.ToInt32(comboBoxFurniture.SelectedValue),
+					ClientId = Convert.ToInt32(comboBoxClient.SelectedValue),
 					Count = Convert.ToInt32(textBoxCount.Text),
 					Sum = Convert.ToDouble(textBoxSum.Text)
 				});

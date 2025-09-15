@@ -18,11 +18,15 @@ namespace FurnitureAssemblyFileImplement
 
 		private readonly string FurnitureFileName = "Furniture.xml";
 
+		private readonly string ClientFileName = "Client.xml";
+
 		public List<WorkPiece> WorkPieces { get; private set; }
 
 		public List<Order> Orders { get; private set; }
 
 		public List<Furniture> Furnitures { get; private set; }
+
+		public List<Client> Clients { get; private set; }
 
 		public static DataFileSingleton GetInstance()
 		{
@@ -40,12 +44,15 @@ namespace FurnitureAssemblyFileImplement
 
 		public void SaveOrders() => SaveData(Orders, OrderFileName, "Orders", x => x.GetXElement);
 
+		public void SaveClients() => SaveData(Clients, ClientFileName, "Clients", x => x.GetXElement);
+
 
 		private DataFileSingleton()
 		{
 			WorkPieces = LoadData(WorkPieceFileName, "WorkPiece", x => WorkPiece.Create(x)!)!;
 			Furnitures = LoadData(FurnitureFileName, "Furniture", x => Furniture.Create(x)!)!;
 			Orders = LoadData(OrderFileName, "Order", x => Order.Create(x)!)!;
+			Clients = LoadData(ClientFileName, "Client", x => Client.Create(x)!)!;
 		}
 
 		private static List<T>? LoadData<T>(string filename, string xmlNodeName, Func<XElement, T> selectFunction)
