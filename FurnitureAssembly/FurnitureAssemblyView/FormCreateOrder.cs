@@ -1,7 +1,6 @@
 ﻿using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.SearchModels;
-using FurnitureAssemblyDataModels.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,130 +14,148 @@ using System.Windows.Forms;
 
 namespace FurnitureAssemblyView
 {
-    public partial class FormCreateOrder : Form
-    {
-        private readonly ILogger _logger;
+	public partial class FormCreateOrder : Form
+	{
+		private readonly ILogger _logger;
 
-        private readonly IFurnitureLogic _logicFurniture;
+		private readonly IFurnitureLogic _logicFurniture;
 
-        private readonly IOrderLogic _logicOrder;
+		private readonly IOrderLogic _logicOrder;
 
-        public FormCreateOrder(ILogger<FormCreateOrder> logger, IFurnitureLogic logicFurniture, IOrderLogic logicOrder)
-        {
-            InitializeComponent();
+		private readonly IClientLogic _logicClient;
 
-            _logger = logger;
-            _logicFurniture = logicFurniture;
-            _logicOrder = logicOrder;
-        }
+		public FormCreateOrder(ILogger<FormCreateOrder> logger, IFurnitureLogic logicFurniture, IOrderLogic logicOrder, IClientLogic logicClient)
+		{
+			InitializeComponent();
 
-        private void FormCreateOrder_Load(object sender, EventArgs e)
-        {
-            _logger.LogInformation("Загрузка изделий для заказа");
+			_logger = logger;
+			_logicFurniture = logicFurniture;
+			_logicOrder = logicOrder;
+			_logicClient = logicClient;
+		}
 
-            try
-            {
-                var list = _logicFurniture.ReadList(null);
+		private void FormCreateOrder_Load(object sender, EventArgs e)
+		{
+			_logger.LogInformation("Загрузка изделий для заказа");
 
-                if (list != null)
-                {
-                    comboBoxFurniture.DisplayMember = "FurnitureName";
-                    comboBoxFurniture.ValueMember = "Id";
-                    comboBoxFurniture.DataSource = list;
-                    comboBoxFurniture.SelectedItem = null;
-                }
+			try
+			{
+				var list = _logicFurniture.ReadList(null);
+				var listClients = _logicClient.ReadList(null);
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ошибка загрузки изделий для заказа");
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+				if (list != null)
+				{
+					comboBoxFurniture.DisplayMember = "FurnitureName";
+					comboBoxFurniture.ValueMember = "Id";
+					comboBoxFurniture.DataSource = list;
+					comboBoxFurniture.SelectedItem = null;
+				}
 
-        private void CalcSum()
-        {
-            if (comboBoxFurniture.SelectedValue != null && !string.IsNullOrEmpty(textBoxCount.Text))
-            {
-                try
-                {
-                    int id = Convert.ToInt32(comboBoxFurniture.SelectedValue);
-                    
-                    var furniture = _logicFurniture.ReadElement(new FurnitureSearchModel
-                    {
-                        Id = id
-                    });
+				if (listClients != null)
+				{
+					comboBoxClient.DisplayMember = "ClientFIO";
+					comboBoxClient.ValueMember = "Id";
+					comboBoxClient.DataSource = listClients;
+					comboBoxClient.SelectedItem = null;
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Ошибка загрузки изделий для заказа или списка клиентов");
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
-                    int count = Convert.ToInt32(textBoxCount.Text);
+		private void CalcSum()
+		{
+			if (comboBoxFurniture.SelectedValue != null && !string.IsNullOrEmpty(textBoxCount.Text))
+			{
+				try
+				{
+					int id = Convert.ToInt32(comboBoxFurniture.SelectedValue);
 
-                    textBoxSum.Text = Math.Round(count * (furniture?.Price ?? 0), 2).ToString();
-                   
-                    _logger.LogInformation("Расчет суммы заказа");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Ошибка расчета суммы заказа");
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
+					var furniture = _logicFurniture.ReadElement(new FurnitureSearchModel
+					{
+						Id = id
+					});
 
-        private void TextBoxCount_TextChanged(object sender, EventArgs e)
-        {
-            CalcSum();
-        }
+					int count = Convert.ToInt32(textBoxCount.Text);
 
-        private void ComboBoxFurniture_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CalcSum();
-        }
+					textBoxSum.Text = Math.Round(count * (furniture?.Price ?? 0), 2).ToString();
 
-        private void ButtonSave_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(textBoxCount.Text))
-            {
-                MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+					_logger.LogInformation("Расчет суммы заказа");
+				}
+				catch (Exception ex)
+				{
+					_logger.LogError(ex, "Ошибка расчета суммы заказа");
+					MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+		}
 
-            if (comboBoxFurniture.SelectedValue == null)
-            {
-                MessageBox.Show("Выберите изделие", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+		private void TextBoxCount_TextChanged(object sender, EventArgs e)
+		{
+			CalcSum();
+		}
 
-            _logger.LogInformation("Создание заказа");
+		private void ComboBoxFurniture_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			CalcSum();
+		}
 
-            try
-            {
-                var operationResult = _logicOrder.CreateOrder(new OrderBindingModel
-                {
-                    FurnitureId = Convert.ToInt32(comboBoxFurniture.SelectedValue),
-                    Count = Convert.ToInt32(textBoxCount.Text),
-                    Sum = Convert.ToDouble(textBoxSum.Text)
-                });
+		private void ButtonSave_Click(object sender, EventArgs e)
+		{
+			if (string.IsNullOrEmpty(textBoxCount.Text))
+			{
+				MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
-                if (!operationResult)
-                {
-                    throw new Exception("Ошибка при создании заказа. Дополнительная информация в логах.");
-                }
+			if (comboBoxFurniture.SelectedValue == null)
+			{
+				MessageBox.Show("Выберите изделие", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
+			if (comboBoxClient.SelectedValue == null)
+			{
+				MessageBox.Show("Выберите заказчика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 
-                Close();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ошибка создания заказа");
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+			_logger.LogInformation("Создание заказа");
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.Cancel;
-            Close();
-        }
-    }
+			try
+			{
+				var operationResult = _logicOrder.CreateOrder(new OrderBindingModel
+				{
+					FurnitureId = Convert.ToInt32(comboBoxFurniture.SelectedValue),
+					ClientId = Convert.ToInt32(comboBoxClient.SelectedValue),
+					Count = Convert.ToInt32(textBoxCount.Text),
+					Sum = Convert.ToDouble(textBoxSum.Text)
+				});
+
+				if (!operationResult)
+				{
+					throw new Exception("Ошибка при создании заказа. Дополнительная информация в логах.");
+				}
+
+				MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				DialogResult = DialogResult.OK;
+
+				Close();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Ошибка создания заказа");
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void ButtonCancel_Click(object sender, EventArgs e)
+		{
+			DialogResult = DialogResult.Cancel;
+			Close();
+		}
+	}
 }

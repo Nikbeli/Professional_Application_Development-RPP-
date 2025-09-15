@@ -1,0 +1,79 @@
+﻿﻿@{
+	ViewData["Title"] = "Update";
+}
+<div class="text-center">
+	<h2 class="display-4 mb-5">Изменить магазин</h2>
+</div>
+<form method="post">
+	<div class="row  mb-3">
+		<div class="col-4">Магазин:</div>
+		<div class="col-8">
+			<select id="shop" name="shop" class="form-control" asp-items="@(new SelectList(@ViewBag.Shops,"Id", "ShopName"))"></select>
+		</div>
+	</div>
+	<div class="row  mb-3">
+		<div class="col-4">Название:</div>
+		<div class="col-8"><input type="text" id="shopname" name="shopname" /></div>
+	</div>
+	<div class="row  mb-3">
+		<div class="col-4">Адрес:</div>
+		<div class="col-8"><input type="text" id="address" name="address" /></div>
+	</div>
+	<div class="row  mb-3">
+		<div class="col-4"> Дата открытия:</div>
+		<div class="col-8">
+			<input type="datetime-local" id="dateOpening" name="dateOpening" />
+		</div>
+	</div>
+	<div class="row  mb-3">
+		<div class="col-4">Максимальная вместимость магазина:</div>
+		<div class="col-8"><input type="number" id="maxCountFurnitures" name="maxCountFurnitures" /></div>
+	</div>
+	<div class="row  mb-3">
+		<div class="col-4">Мебель в магазине:</div>
+		<div class="col-8">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Мебель</th>
+						<th>Количество</th>
+					</tr>
+				</thead>
+				<tbody id="furnitureTable">
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="text-center ">
+		<input type="submit" value="Обновить" class="btn btn-success ps-5 pe-5" />
+	</div>
+</form>
+
+<script>
+	 $('#shop').on('change', function () {
+		 getData();
+	 });
+
+	 function getData() {
+		 var shopId = $('#shop').val();
+		 var shopData = @Html.Raw(Json.Serialize(ViewBag.Shops));
+		 var selectedShop = shopData.find(function (shop) {
+			 return shop.id == shopId;
+		 });
+
+		 if (selectedShop) {
+			$("#shopname").val(selectedShop.shopName);
+			$("#dateOpening").val(new Date(selectedShop.dateOpen).toISOString().substring(0, 16));
+			$("#address").val(selectedShop.address);
+			$("#maxCountFurnitures").val(selectedShop.maxCountFurnitures);
+			 fillTable(selectedShop.furnitureCount);
+		 }
+	 }
+
+	 function fillTable(shopFurnitures) {
+		$("#furnitureTable").empty();
+
+		for (var furniture in shopFurnitures)
+			$("#furnitureTable").append('<tr><td>' + shopFurnitures[furniture].item1 + '</td><td>' + shopFurnitures[furniture].item2 + '</td></tr>');
+	 }
+</script>

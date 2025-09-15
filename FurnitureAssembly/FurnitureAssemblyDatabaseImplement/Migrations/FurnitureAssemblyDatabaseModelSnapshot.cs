@@ -22,6 +22,31 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClientFIO")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
+                });
+
             modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Furniture", b =>
                 {
                     b.Property<int>("Id")
@@ -76,6 +101,9 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -95,6 +123,8 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("FurnitureId");
 
@@ -195,11 +225,19 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
 
             modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Order", b =>
                 {
+                    b.HasOne("FurnitureAssemblyDatabaseImplement.Models.Client", "Client")
+                        .WithMany("Orders")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FurnitureAssemblyDatabaseImplement.Models.Furniture", "Furniture")
                         .WithMany("Orders")
                         .HasForeignKey("FurnitureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Client");
 
                     b.Navigation("Furniture");
                 });
@@ -221,6 +259,11 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
                     b.Navigation("Furniture");
 
                     b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Client", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Furniture", b =>

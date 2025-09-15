@@ -47,6 +47,8 @@
             shopsReportToolStripMenuItem = new ToolStripMenuItem();
             reportManufactureToolStripMenuItem = new ToolStripMenuItem();
             workPieceManufacturesToolStripMenuItem = new ToolStripMenuItem();
+            workWithClientsToolStripMenuItem = new ToolStripMenuItem();
+            clientsToolStripMenuItem = new ToolStripMenuItem();
             buttonSellFurniture = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             menuStrip.SuspendLayout();
@@ -121,7 +123,7 @@
             // menuStrip
             // 
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem, reportToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem, reportToolStripMenuItem, workWithClientsToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Padding = new Padding(5, 2, 0, 2);
@@ -213,6 +215,20 @@
             workPieceManufacturesToolStripMenuItem.Text = "Заготовки по изделиям";
             workPieceManufacturesToolStripMenuItem.Click += WorkPieceFurnituresToolStripMenuItem_Click;
             // 
+            // workWithClientsToolStripMenuItem
+            // 
+            workWithClientsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clientsToolStripMenuItem });
+            workWithClientsToolStripMenuItem.Name = "workWithClientsToolStripMenuItem";
+            workWithClientsToolStripMenuItem.Size = new Size(129, 20);
+            workWithClientsToolStripMenuItem.Text = "Работа с клиентами";
+            // 
+            // clientsToolStripMenuItem
+            // 
+            clientsToolStripMenuItem.Name = "clientsToolStripMenuItem";
+            clientsToolStripMenuItem.Size = new Size(180, 22);
+            clientsToolStripMenuItem.Text = "Клиенты";
+            clientsToolStripMenuItem.Click += ClientsToolStripMenuItem_Click;
+            // 
             // buttonSellFurniture
             // 
             buttonSellFurniture.Location = new Point(887, 297);
@@ -271,5 +287,7 @@
         private ToolStripMenuItem shopsReportToolStripMenuItem;
         private ToolStripMenuItem reportManufactureToolStripMenuItem;
         private ToolStripMenuItem workPieceManufacturesToolStripMenuItem;
+        private ToolStripMenuItem workWithClientsToolStripMenuItem;
+        private ToolStripMenuItem clientsToolStripMenuItem;
     }
 }

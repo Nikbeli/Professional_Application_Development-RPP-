@@ -149,108 +149,74 @@ namespace FurnitureAssemblyBusinessLogic.OfficePackage.Implements
             _wordDocument.Dispose();
         }
 
-        protected override void CreateTable(WordTable table)
+        protected override void CreateTable(WordParagraph paragraph)
         {
-            if (_docBody == null || table == null)
+            if (_docBody == null || paragraph == null)
             {
                 return;
             }
 
-            Table tab = new Table();
+            Table table = new Table();
 
-            TableProperties props = new TableProperties(
-               new TableBorders(
-                   new TopBorder
-                   {
-                       Val = new EnumValue<BorderValues>(BorderValues.Single),
-                       Size = 12
-                   },
+            var tableProp = new TableProperties();
 
-                   new BottomBorder
-                   {
-                       Val = new EnumValue<BorderValues>(BorderValues.Single),
-                       Size = 12
-                   },
+            tableProp.AppendChild(new TableLayout { Type = TableLayoutValues.Fixed });
+            tableProp.AppendChild(new TableBorders(
+                    new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 }
+                ));
+            tableProp.AppendChild(new TableWidth { Type = TableWidthUnitValues.Auto });
 
-                   new LeftBorder
-                   {
-                       Val = new EnumValue<BorderValues>(BorderValues.Single),
-                       Size = 12
-                   },
+            table.AppendChild(tableProp);
 
-                   new RightBorder
-                   {
-                       Val = new EnumValue<BorderValues>(BorderValues.Single),
-                       Size = 12
-                   },
-
-                   new InsideHorizontalBorder
-                   {
-                       Val = new EnumValue<BorderValues>(BorderValues.Single),
-                       Size = 12
-                   },
-
-                   new InsideVerticalBorder
-                   {
-                       Val = new EnumValue<BorderValues>(BorderValues.Single),
-                       Size = 12
-                   })
-            );
-
-            tab.AppendChild<TableProperties>(props);
             TableGrid tableGrid = new TableGrid();
 
-            for (int i = 0; i < table.Headers.Count; i++)
+            for (int j = 0; j < paragraph.RowTexts[0].Count; ++j)
             {
-                tableGrid.AppendChild(new GridColumn());
+                tableGrid.AppendChild(new GridColumn() { Width = "3000" });
             }
 
-            tab.AppendChild(tableGrid);
-            TableRow tableRow = new TableRow();
+            table.AppendChild(tableGrid);
 
-            foreach (var text in table.Headers)
+            for (int i = 0; i < paragraph.RowTexts.Count; ++i)
             {
-                tableRow.AppendChild(CreateTableCell(text));
-            }
+                TableRow docRow = new TableRow();
 
-            tab.AppendChild(tableRow);
-
-            int height = table.Texts.Count / table.Headers.Count;
-            int width = table.Headers.Count;
-            
-            for (int i = 0; i < height; i++)
-            {
-                tableRow = new TableRow();
-
-                for (int j = 0; j < width; j++)
+                for (int j = 0; j < paragraph.RowTexts[i].Count; ++j)
                 {
-                    var element = table.Texts[i * table.Headers.Count + j];
-                    tableRow.AppendChild(CreateTableCell(element));
+                    var docParagraph = new Paragraph();
+
+                    docParagraph.AppendChild(CreateParagraphProperties(paragraph.RowTexts[i][j].Item2));
+
+                    var docRun = new Run();
+
+                    var properties = new RunProperties();
+
+                    properties.AppendChild(new FontSize { Val = paragraph.RowTexts[i][j].Item2.Size });
+
+                    if (paragraph.RowTexts[i][j].Item2.Bold)
+                    {
+                        properties.AppendChild(new Bold());
+                    }
+
+                    docRun.AppendChild(properties);
+
+                    docRun.AppendChild(new Text { Text = paragraph.RowTexts[i][j].Item1, Space = SpaceProcessingModeValues.Preserve });
+
+                    docParagraph.AppendChild(docRun);
+                    TableCell docCell = new TableCell();
+                    docCell.AppendChild(docParagraph);
+                    docRow.AppendChild(docCell);
                 }
 
-                tab.AppendChild(tableRow);
+                table.AppendChild(docRow);
             }
 
-            _docBody.AppendChild(tab);
-
-        }
-
-        private TableCell CreateTableCell(string element)
-        {
-            var tableParagraph = new Paragraph();
-
-            var run = new Run();
-
-            run.AppendChild(new Text 
-            { 
-                Text = element 
-            });
-
-            tableParagraph.AppendChild(run);
-            var tableCell = new TableCell();
-            tableCell.AppendChild(tableParagraph);
-
-            return tableCell;
+            _docBody.AppendChild(table);
         }
     }
 }

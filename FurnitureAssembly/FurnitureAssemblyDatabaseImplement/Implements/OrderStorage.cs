@@ -23,35 +23,29 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
             using var context = new FurnitureAssemblyDatabase();
 
-            return context.Orders.Include(x => x.Furniture)
-                .FirstOrDefault(x => model.Id.HasValue && x.Id == model.Id)?.GetViewModel;
+            return context.Orders.Include(x => x.Furniture).Include(x => x.Client).
+                FirstOrDefault(x => model.Id.HasValue && x.Id == model.Id)?.GetViewModel;
         }
 
         public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
         {
-            if (!model.Id.HasValue && !model.DateFrom.HasValue && !model.DateTo.HasValue)
+            using var context = new FurnitureAssemblyDatabase();
+
+            if (!model.Id.HasValue && !model.DateFrom.HasValue && !model.DateTo.HasValue && !model.ClientId.HasValue)
             {
                 return new();
             }
 
-            using var context = new FurnitureAssemblyDatabase();
-
-            if (!model.Id.HasValue && model.DateFrom.HasValue && model.DateTo.HasValue)
-            {
-                return context.Orders.Include(x => x.Furniture)
-                    .Where(x => x.DateCreate >= model.DateFrom && x.DateCreate <= model.DateTo)
-                    .Select(x => x.GetViewModel).ToList();
-            }
-
-            return context.Orders.Include(x => x.Furniture).Where(x => x.Id == model.Id)
-                .Select(x => x.GetViewModel).ToList();
+            return context.Orders.Where(x => x.Id == model.Id || model.DateFrom <= x.DateCreate 
+                && x.DateCreate <= model.DateTo || x.ClientId == model.ClientId).Include(x => x.Furniture)
+                    .Include(x => x.Client).Select(x => x.GetViewModel).ToList();
         }
 
         public List<OrderViewModel> GetFullList()
         {
             using var context = new FurnitureAssemblyDatabase();
 
-            return context.Orders.Include(x => x.Furniture)
+            return context.Orders.Include(x => x.Furniture).Include(x => x.Client)
                 .Select(x => x.GetViewModel).ToList();
         }
 
@@ -68,7 +62,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             context.Orders.Add(newOrder);
             context.SaveChanges();
 
-            return context.Orders.Include(x => x.Furniture)
+            return context.Orders.Include(x => x.Furniture).Include(x => x.Client)
                 .FirstOrDefault(x => x.Id == newOrder.Id)?.GetViewModel;
         }
 
@@ -85,20 +79,21 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             order.Update(model);
             context.SaveChanges();
 
-            return context.Orders.Include(x => x.Furniture)
+            return context.Orders.Include(x => x.Furniture).Include(x => x.Client)
                 .FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
         }
 
         public OrderViewModel? Delete(OrderBindingModel model)
         {
             using var context = new FurnitureAssemblyDatabase();
-            var element = context.Orders.Include(x => x.Furniture).FirstOrDefault(rec => rec.Id == model.Id);
+            var element = context.Orders.Include(x => x.Furniture).Include(x => x.Client)
+                .FirstOrDefault(rec => rec.Id == model.Id);
 
             if (element != null)
             {
                 // для отображения корректной ViewModel-и
                 var deletedElement = context.Orders.Include(x => x.Furniture)
-                    .FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
+                    .Include(x => x.Client).FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
 
                 context.Orders.Remove(element);
                 context.SaveChanges();

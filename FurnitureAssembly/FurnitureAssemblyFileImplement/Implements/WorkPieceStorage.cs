@@ -33,7 +33,8 @@ namespace FurnitureAssemblyFileImplement.Implements
                 return new();
             }
 
-            return source.WorkPieces.Where(x => x.WorkPieceName.Contains(model.WorkPieceName)).Select(x => x.GetViewModel).ToList();
+            return source.WorkPieces.Where(x => x.WorkPieceName.Contains(model.WorkPieceName))
+                .Select(x => x.GetViewModel).ToList();
         }
 
         public WorkPieceViewModel? GetElement(WorkPieceSearchModel model)
@@ -43,7 +44,7 @@ namespace FurnitureAssemblyFileImplement.Implements
                 return null;
             }
 
-            return source.WorkPieces.FirstOrDefault(x => (!string.IsNullOrEmpty(model.WorkPieceName) && x.WorkPieceName == model.WorkPieceName)
+            return source.WorkPieces.FirstOrDefault(x => (!string.IsNullOrEmpty(model.WorkPieceName) && x.WorkPieceName == model.WorkPieceName) 
                 || (model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
         }
 

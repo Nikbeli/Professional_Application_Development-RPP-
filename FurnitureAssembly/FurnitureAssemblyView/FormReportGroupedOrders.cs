@@ -34,7 +34,7 @@ namespace FurnitureAssemblyView
 				Dock = DockStyle.Fill
 			};
 
-			reportViewer.LocalReport.LoadReportDefinition(new FileStream("E:\\TP\\Hard\\Lab4\\FurnitureAssembly\\FurnitureAssemblyView\\ReportGroupedOrders.rdlc", FileMode.Open));
+			reportViewer.LocalReport.LoadReportDefinition(new FileStream("C:\\Users\\NikBe\\source\\repos\\TP\\Hard\\Lab4\\FurnitureAssembly\\FurnitureAssemblyView\\ReportGroupedOrders.rdlc", FileMode.Open));
 			Controls.Clear();
 			Controls.Add(reportViewer);
 			Controls.Add(panel);

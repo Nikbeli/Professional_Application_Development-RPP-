@@ -1,7 +1,5 @@
 ﻿using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.ViewModels;
-using FurnitureAssemblyDatabaseImplement;
-using FurnitureAssemblyDatabaseImplement.Models;
 using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
@@ -31,7 +29,7 @@ namespace FurnitureAssemblyDatabaseImplement.Models
 
         private Dictionary<int, (IFurnitureModel, int)>? _shopFurnitures = null;
 
-        [Required]
+        [NotMapped]
         public Dictionary<int, (IFurnitureModel, int)> ShopFurnitures
         {
             get
@@ -41,8 +39,8 @@ namespace FurnitureAssemblyDatabaseImplement.Models
                     _shopFurnitures = Furnitures.ToDictionary(recSI => recSI.FurnitureId, recSI => (recSI.Furniture as IFurnitureModel, recSI.Count));
                 }
                 return _shopFurnitures;
-            }
-        }
+			}
+		}
 
         [ForeignKey("ShopId")]
         public virtual List<ShopFurniture> Furnitures { get; set; } = new();
@@ -84,7 +82,8 @@ namespace FurnitureAssemblyDatabaseImplement.Models
 
         public void UpdateFurnitures(FurnitureAssemblyDatabase context, ShopBindingModel model)
         {
-            var shopFurnitures = context.ShopFurnitures.Where(rec => rec.ShopId == model.Id).ToList();
+            var shopFurnitures = context.ShopFurnitures
+                .Where(rec => rec.ShopId == model.Id).ToList();
 
             if (shopFurnitures != null && shopFurnitures.Count > 0)
             {   
