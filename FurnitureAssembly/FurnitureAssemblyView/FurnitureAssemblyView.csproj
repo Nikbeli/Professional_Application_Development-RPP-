@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.8" />
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.17" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +25,12 @@
     <ProjectReference Include="..\FurnitureAssemblyDatabaseImplement\FurnitureAssemblyDatabaseImplement.csproj" />
     <ProjectReference Include="..\FurnitureAssemblyFileImplement\FurnitureAssemblyFileImplement.csproj" />
     <ProjectReference Include="..\FurnitureAssemblyListImplement\FurnitureAssemblyListImplement.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="FormReportOrders.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

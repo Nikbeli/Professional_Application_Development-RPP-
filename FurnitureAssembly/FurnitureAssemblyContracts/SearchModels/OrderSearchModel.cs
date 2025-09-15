@@ -11,5 +11,10 @@ namespace FurnitureAssemblyContracts.SearchModels
     {
         // Для поиска по идентификатору
         public int? Id { get; set; }
+
+        // Два поля для возможности производить выборку
+        public DateTime? DateFrom { get; set; }
+
+        public DateTime? DateTo { get; set; }
     }
 }

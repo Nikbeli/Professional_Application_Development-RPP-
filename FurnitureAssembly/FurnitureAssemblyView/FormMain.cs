@@ -20,12 +20,15 @@ namespace FurnitureAssemblyView
 
         private readonly IOrderLogic _orderLogic;
 
-        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic)
+        private readonly IReportLogic _reportLogic;
+
+        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic)
         {
             InitializeComponent();
 
             _logger = logger;
             _orderLogic = orderLogic;
+            _reportLogic = reportLogic;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -45,6 +48,7 @@ namespace FurnitureAssemblyView
                 {
                     dataGridView.DataSource = list;
                     dataGridView.Columns["FurnitureId"].Visible = false;
+                    dataGridView.Columns["FurnitureName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
 
                 _logger.LogInformation("Загрузка заказов");
@@ -210,6 +214,72 @@ namespace FurnitureAssemblyView
             {
                 form.ShowDialog();
                 LoadData();
+            }
+        }
+
+        private void GroupedOrdersReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportGroupedOrders));
+
+            if (service is FormReportGroupedOrders form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void OrdersReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportOrders));
+
+            if (service is FormReportOrders form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void WorkloadStoresReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportShopFurnitures));
+
+            if (service is FormReportShopFurnitures form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void ShopsReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _reportLogic.SaveShopsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void ReportFurnitureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _reportLogic.SaveFurnituresToWordFile(new ReportBindingModel
+                {
+                    FileName = dialog.FileName
+                });
+
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void WorkPieceFurnituresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportFurnitureWorkPieces));
+
+            if (service is FormReportFurnitureWorkPieces form)
+            {
+                form.ShowDialog();
             }
         }
     }
