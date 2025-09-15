@@ -26,17 +26,6 @@ namespace FurnitureAssemblyFileImplement.Implements
 			return source.Orders.Select(x => GetViewModel(x)).ToList();
 		}
 
-		public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
-		{
-			if (!model.Id.HasValue && !model.DateFrom.HasValue && !model.DateTo.HasValue && !model.ClientId.HasValue)
-			{
-				return new();
-			}
-
-			return source.Orders.Where(x => x.Id == model.Id || model.DateFrom <= x.DateCreate
-				&& x.DateCreate <= model.DateTo || x.ClientId == model.ClientId).Select(x => GetViewModel(x)).ToList();
-		}
-
 		public OrderViewModel? GetElement(OrderSearchModel model)
 		{
 			if (!model.Id.HasValue)
@@ -44,11 +33,27 @@ namespace FurnitureAssemblyFileImplement.Implements
 				return null;
 			}
 
-			return source.Orders.FirstOrDefault(x =>
-				(model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
+			if (model.ImplementerId.HasValue && model.Status != null)
+				return source.Orders.FirstOrDefault(x => x.ImplementerId == model.ImplementerId && model.Status
+				.Equals(x.Status))?.GetViewModel;
+
+			return source.Orders
+				.FirstOrDefault(x => (model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
 		}
 
-		// Для загрузки названий изделия в заказе
+		public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
+		{
+			if (!model.Id.HasValue && !model.DateFrom.HasValue && !model.DateTo.HasValue && !model.ClientId.HasValue && model.Status == null)
+			{
+				return new();
+			}
+
+			return source.Orders.Where(x => x.Id == model.Id || model.DateFrom <= x.DateCreate
+				&& x.DateCreate <= model.DateTo || x.ClientId == model.ClientId || model.Status.Equals(x.Status))
+					.Select(x => GetViewModel(x)).ToList();
+		}
+
+		// Для загрузки названий изделия и исполнителя в заказе
 		private OrderViewModel GetViewModel(Order order)
 		{
 			var viewModel = order.GetViewModel;
@@ -57,11 +62,18 @@ namespace FurnitureAssemblyFileImplement.Implements
 
 			var client = source.Clients.FirstOrDefault(x => x.Id == order.ClientId);
 
+			var implementer = source.Implementers.FirstOrDefault(x => x.Id == order.ImplementerId);
+
 			viewModel.FurnitureName = furniture?.FurnitureName ?? "Не указано";
 
 			if (client != null)
 			{
 				viewModel.ClientFIO = client.ClientFIO;
+			}
+
+			if (implementer != null)
+			{
+				viewModel.ImplementerFIO = implementer.ImplementerFIO;
 			}
 
 			return viewModel;
