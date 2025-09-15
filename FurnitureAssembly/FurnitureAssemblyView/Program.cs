@@ -4,6 +4,7 @@ using FurnitureAssemblyBusinessLogic.OfficePackage;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.StoragesContracts;
 using FurnitureAssemblyDatabaseImplement.Implements;
+using FurnitureAssemblyContracts.DI;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,10 +16,6 @@ namespace FurnitureAssemblyView
 {
 	internal static class Program
 	{
-		private static ServiceProvider? _serviceProvider;
-
-		public static ServiceProvider? ServiceProvider => _serviceProvider;
-
 		/// The main entry point for the application.
 		[STAThread]
 		static void Main()
@@ -27,12 +24,11 @@ namespace FurnitureAssemblyView
 			// see https://aka.ms/applicationconfiguration.
 			ApplicationConfiguration.Initialize();
 			var services = new ServiceCollection();
-			ConfigureServices(services);
-			_serviceProvider = services.BuildServiceProvider();
+			InitDependency();
 
 			try
 			{
-				var mailSender = _serviceProvider.GetService<AbstractMailWorker>();
+				var mailSender = DependencyManager.Instance.Resolve<AbstractMailWorker>();
 				mailSender?.MailConfig(new MailConfigBindingModel
 				{
 					MailLogin = System.Configuration.ConfigurationManager.AppSettings["MailLogin"] ?? string.Empty,
@@ -48,59 +44,55 @@ namespace FurnitureAssemblyView
 			}
 			catch (Exception ex)
 			{
-				var logger = _serviceProvider.GetService<ILogger>();
+				var logger = DependencyManager.Instance.Resolve<ILogger>();
 
 				logger?.LogError(ex, "Ошибка работы с почтой");
 			}
 
-			Application.Run(_serviceProvider.GetRequiredService<FormMain>());
+			Application.Run(DependencyManager.Instance.Resolve<FormMain>());
 		}
 
-		private static void ConfigureServices(ServiceCollection services)
+		private static void InitDependency()
 		{
-			services.AddLogging(option =>
+			DependencyManager.InitDependency();
+
+			DependencyManager.Instance.AddLogging(option =>
 			{
 				option.SetMinimumLevel(LogLevel.Information);
 				option.AddNLog("nlog.config");
 			});
 
-			services.AddTransient<IWorkPieceStorage, WorkPieceStorage>();
-			services.AddTransient<IOrderStorage, OrderStorage>();
-			services.AddTransient<IFurnitureStorage, FurnitureStorage>();
-			services.AddTransient<IClientStorage, ClientStorage>();
-			services.AddTransient<IImplementerStorage, ImplementerStorage>();
-			services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
+			DependencyManager.Instance.RegisterType<IWorkPieceLogic, WorkPieceLogic>();
+			DependencyManager.Instance.RegisterType<IOrderLogic, OrderLogic>();
+			DependencyManager.Instance.RegisterType<IFurnitureLogic, FurnitureLogic>();
+			DependencyManager.Instance.RegisterType<IReportLogic, ReportLogic>();
+			DependencyManager.Instance.RegisterType<IClientLogic, ClientLogic>();
+			DependencyManager.Instance.RegisterType<IImplementerLogic, ImplementerLogic>();
+			DependencyManager.Instance.RegisterType<IMessageInfoLogic, MessageInfoLogic>();
+			DependencyManager.Instance.RegisterType<IBackUpLogic, BackUpLogic>();
 
-			services.AddTransient<IWorkPieceLogic, WorkPieceLogic>();
-			services.AddTransient<IOrderLogic, OrderLogic>();
-			services.AddTransient<IFurnitureLogic, FurnitureLogic>();
-			services.AddTransient<IReportLogic, ReportLogic>();
-			services.AddTransient<IClientLogic, ClientLogic>();
-			services.AddTransient<IImplementerLogic, ImplementerLogic>();
-			services.AddTransient<IMessageInfoLogic, MessageInfoLogic>();
+			DependencyManager.Instance.RegisterType<AbstractSaveToExcel, SaveToExcel>();
+			DependencyManager.Instance.RegisterType<AbstractSaveToWord, SaveToWord>();
+			DependencyManager.Instance.RegisterType<AbstractSaveToPdf, SaveToPdf>();
 
-			services.AddTransient<IWorkProcess, WorkModeling>();
-			services.AddSingleton<AbstractMailWorker, MailKitWorker>();
+			DependencyManager.Instance.RegisterType<IWorkProcess, WorkModeling>();
+			DependencyManager.Instance.RegisterType<AbstractMailWorker, MailKitWorker>(true);
 
-			services.AddTransient<AbstractSaveToExcel, SaveToExcel>();
-			services.AddTransient<AbstractSaveToWord, SaveToWord>();
-			services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
-
-			services.AddTransient<FormMain>();
-			services.AddTransient<FormWorkPiece>();
-			services.AddTransient<FormWorkPieces>();
-			services.AddTransient<FormCreateOrder>();
-			services.AddTransient<FormFurniture>();
-			services.AddTransient<FormFurnitures>();
-			services.AddTransient<FormFurnitureWorkPiece>();
-			services.AddTransient<FormReportFurnitureWorkPieces>();
-			services.AddTransient<FormReportOrders>();
-			services.AddTransient<FormClients>();
-			services.AddTransient<FormImplementers>();
-			services.AddTransient<FormImplementer>();
-			services.AddTransient<FormMails>();
+			DependencyManager.Instance.RegisterType<FormMain>();
+			DependencyManager.Instance.RegisterType<FormWorkPiece>();
+			DependencyManager.Instance.RegisterType<FormWorkPieces>();
+			DependencyManager.Instance.RegisterType<FormCreateOrder>();
+			DependencyManager.Instance.RegisterType<FormFurniture>();
+			DependencyManager.Instance.RegisterType<FormFurnitureWorkPiece>();
+			DependencyManager.Instance.RegisterType<FormFurnitures>();
+			DependencyManager.Instance.RegisterType<FormReportFurnitureWorkPieces>();
+			DependencyManager.Instance.RegisterType<FormReportOrders>();
+			DependencyManager.Instance.RegisterType<FormClients>();
+			DependencyManager.Instance.RegisterType<FormImplementer>();
+			DependencyManager.Instance.RegisterType<FormImplementers>();
+			DependencyManager.Instance.RegisterType<FormMails>();
 		}
 
-		private static void MailCheck(object obj) => ServiceProvider?.GetService<AbstractMailWorker>()?.MailCheck();
+		private static void MailCheck(object obj) => DependencyManager.Instance.Resolve<AbstractMailWorker>()?.MailCheck();
 	}
 }

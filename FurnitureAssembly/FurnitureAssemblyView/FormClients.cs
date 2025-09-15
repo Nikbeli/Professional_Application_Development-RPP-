@@ -39,14 +39,7 @@ namespace FurnitureAssemblyView
 
 			try
 			{
-				var list = _clientLogic.ReadList(null);
-
-				if (list != null)
-				{
-					dataGridView.DataSource = list;
-					dataGridView.Columns["ClientFIO"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-				}
-
+				dataGridView.FillandConfigGrid(_clientLogic.ReadList(null));
 				_logger.LogInformation("Успешная загрузка клиентов");
 			}
 			catch (Exception ex)

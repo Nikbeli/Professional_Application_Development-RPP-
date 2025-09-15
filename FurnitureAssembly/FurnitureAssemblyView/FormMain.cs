@@ -1,5 +1,6 @@
 ﻿using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
+using FurnitureAssemblyContracts.DI;
 using FurnitureAssemblyDataModels.Enums;
 using Microsoft.Extensions.Logging;
 using System;
@@ -24,7 +25,9 @@ namespace FurnitureAssemblyView
 
 		private readonly IWorkProcess _workProcess;
 
-		public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic, IWorkProcess workProcess)
+		private readonly IBackUpLogic _backUpLogic;
+
+		public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic, IWorkProcess workProcess, IBackUpLogic backUpLogic)
 		{
 			InitializeComponent();
 
@@ -32,6 +35,7 @@ namespace FurnitureAssemblyView
 			_orderLogic = orderLogic;
 			_reportLogic = reportLogic;
 			_workProcess = workProcess;
+			_backUpLogic = backUpLogic;
 		}
 
 		private void FormMain_Load(object sender, EventArgs e)
@@ -45,20 +49,9 @@ namespace FurnitureAssemblyView
 
 			try
 			{
-				var list = _orderLogic.ReadList(null);
+				dataGridView.FillandConfigGrid(_orderLogic.ReadList(null));
 
-				if (list != null)
-				{
-					dataGridView.DataSource = list;
-					dataGridView.Columns["FurnitureId"].Visible = false;
-					dataGridView.Columns["ClientId"].Visible = false;
-					dataGridView.Columns["ImplementerId"].Visible = false;
-					dataGridView.Columns["FurnitureName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-					dataGridView.Columns["ClientFIO"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-					dataGridView.Columns["ImplementerFIO"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-				}
-
-				_logger.LogInformation("Загрузка заказов");
+				_logger.LogInformation("Успешная загрузка заказов");
 			}
 			catch (Exception ex)
 			{
@@ -69,33 +62,24 @@ namespace FurnitureAssemblyView
 
 		private void WorkPieceToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormWorkPieces));
+			var form = DependencyManager.Instance.Resolve<FormWorkPieces>();
 
-			if (service is FormWorkPieces form)
-			{
-				form.ShowDialog();
-			}
+			form.ShowDialog();
 		}
 
 		private void FurnitureToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormFurnitures));
+			var form = DependencyManager.Instance.Resolve<FormFurnitures>();
 
-			if (service is FormFurnitures form)
-			{
-				form.ShowDialog();
-			}
+			form.ShowDialog();
 		}
 
 		private void ButtonCreateOrder_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormCreateOrder));
+			var form = DependencyManager.Instance.Resolve<FormCreateOrder>();
 
-			if (service is FormCreateOrder form)
-			{
-				form.ShowDialog();
-				LoadData();
-			}
+			form.ShowDialog();
+			LoadData();
 		}
 
 		private void ButtonIssuedOrder_Click(object sender, EventArgs e)
@@ -146,63 +130,73 @@ namespace FurnitureAssemblyView
 
 		private void WorkPieceFurnituresToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormReportFurnitureWorkPieces));
+			var form = DependencyManager.Instance.Resolve<FormReportFurnitureWorkPieces>();
 
-			if (service is FormReportFurnitureWorkPieces form)
-			{
-				form.ShowDialog();
-			}
+			form.ShowDialog();
 		}
 
 		private void OrdersToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormReportOrders));
+			var form = DependencyManager.Instance.Resolve<FormReportOrders>();
 
-			if (service is FormReportOrders form)
-			{
-				form.ShowDialog();
-			}
+			form.ShowDialog();
 		}
 
-		private void ButtonRef_Click(object sender, EventArgs e)
+		private void ButtonRefresh_Click(object sender, EventArgs e)
 		{
 			LoadData();
 		}
 
 		private void ClientsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormClients));
+			var form = DependencyManager.Instance.Resolve<FormClients>();
 
-			if (service is FormClients form)
-			{
-				form.ShowDialog();
-			}
+			form.ShowDialog();
 		}
 
 		private void StartingWorkToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			_workProcess.DoWork((Program.ServiceProvider?.GetService(typeof(IImplementerLogic)) as IImplementerLogic)!, _orderLogic);
+			_workProcess.DoWork(DependencyManager.Instance.Resolve<IImplementerLogic>()!, _orderLogic);
 
 			MessageBox.Show("Процесс обработки запущен", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void ImplementerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormImplementers));
+			var form = DependencyManager.Instance.Resolve<FormImplementers>();
 
-			if (service is FormImplementers form)
-			{
-				form.ShowDialog();
-			}
+			form.ShowDialog();
 		}
 
 		private void MailsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormMails));
+			var form = DependencyManager.Instance.Resolve<FormMails>();
 
-			if (service is FormMails form)
+			form.ShowDialog();
+		}
+
+		private void CreateBackUpToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			try
 			{
-				form.ShowDialog();
+				if (_backUpLogic != null)
+				{
+					var fbd = new FolderBrowserDialog();
+
+					if (fbd.ShowDialog() == DialogResult.OK)
+					{
+						_backUpLogic.CreateBackUp(new BackUpSaveBindingModel
+						{
+							FolderName = fbd.SelectedPath
+						});
+
+						MessageBox.Show("Бекап создан", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 	}

@@ -22,18 +22,18 @@ namespace FurnitureAssemblyFileImplement.Implements
 
 		public ImplementerViewModel? GetElement(ImplementerSearchModel model)
 		{
-			if (model.Id.HasValue) 
+			if (model.Id.HasValue)
 				return source.Implementers
 					.FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
-			
-			if (model.ImplementerFIO != null && model.Password != null) 
+
+			if (model.ImplementerFIO != null && model.Password != null)
 				return source.Implementers.FirstOrDefault(x => x.ImplementerFIO
 				.Equals(model.ImplementerFIO) && x.Password.Equals(model.Password))?.GetViewModel;
-			
-			if (model.ImplementerFIO != null) 
+
+			if (model.ImplementerFIO != null)
 				return source.Implementers
 					.FirstOrDefault(x => x.ImplementerFIO.Equals(model.ImplementerFIO))?.GetViewModel;
-			
+
 			return null;
 		}
 

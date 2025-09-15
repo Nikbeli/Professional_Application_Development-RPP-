@@ -1,4 +1,5 @@
-﻿using FurnitureAssemblyDataModels.Enums;
+﻿using FurnitureAssemblyContracts.Attributes;
+using FurnitureAssemblyDataModels.Enums;
 using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
@@ -12,37 +13,40 @@ namespace FurnitureAssemblyContracts.ViewModels
 	// Класс для отображения пользователю информации о заказах
 	public class OrderViewModel : IOrderModel
 	{
-		[DisplayName("Номер")]
+		[Column(visible: false)]
 		public int Id { get; set; }
 
+		[Column(visible: false)]
 		public int ClientId { get; set; }
 
-		[DisplayName("ФИО клиента")]
+		[Column(title: "ФИО клиента", width: 150)]
 		public string ClientFIO { get; set; } = string.Empty;
 
+		[Column(visible: false)]
 		public int? ImplementerId { get; set; }
 
-		[DisplayName("ФИО исполнителя")]
+		[Column(title: "ФИО исполнителя", width: 150)]
 		public string ImplementerFIO { get; set; } = string.Empty;
 
+		[Column(visible: false)]
 		public int FurnitureId { get; set; }
 
-		[DisplayName("Изделие")]
+		[Column(title: "Изделие", width: 150)]
 		public string FurnitureName { get; set; } = string.Empty;
 
-		[DisplayName("Количество")]
+		[Column(title: "Количество", width: 150)]
 		public int Count { get; set; }
 
-		[DisplayName("Сумма")]
+		[Column(title: "Сумма", width: 150)]
 		public double Sum { get; set; }
 
-		[DisplayName("Статус")]
+		[Column(title: "Статус", width: 150)]
 		public OrderStatus Status { get; set; } = OrderStatus.Неизвестен;
 
-		[DisplayName("Дата создания")]
+		[Column(title: "Дата создания", width: 150)]
 		public DateTime DateCreate { get; set; } = DateTime.Now;
 
-		[DisplayName("Дата выполнения")]
+		[Column(title: "Дата выполнения", width: 150)]
 		public DateTime? DateImplement { get; set; }
 	}
 }

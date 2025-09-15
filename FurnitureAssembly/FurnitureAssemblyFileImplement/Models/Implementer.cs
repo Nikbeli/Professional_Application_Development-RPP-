@@ -4,22 +4,29 @@ using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace FurnitureAssemblyFileImplement.Models
 {
+	[DataContract]
 	public class Implementer : IImplementerModel
 	{
+		[DataMember]
 		public int Id { get; private set; }
 
+		[DataMember]
 		public string ImplementerFIO { get; private set; } = string.Empty;
 
+		[DataMember]
 		public string Password { get; private set; } = string.Empty;
 
+		[DataMember]
 		public int WorkExperience { get; private set; }
 
+		[DataMember]
 		public int Qualification { get; private set; }
 
 		public static Implementer? Create(ImplementerBindingModel model)

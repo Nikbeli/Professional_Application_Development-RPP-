@@ -10,64 +10,66 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyListImplement.Models
 {
-    public class MessageInfo : IMessageInfoModel
-    {
-        public string MessageId { get; private set; } = string.Empty;
+	public class MessageInfo : IMessageInfoModel
+	{
+		public int Id { get; private set; }
 
-        public int? ClientId { get; private set; }
+		public string MessageId { get; private set; } = string.Empty;
 
-        public string SenderName { get; private set; } = string.Empty;
+		public int? ClientId { get; private set; }
 
-        public DateTime DateDelivery { get; private set; } = DateTime.Now;
+		public string SenderName { get; private set; } = string.Empty;
 
-        public string Subject { get; private set; } = string.Empty;
+		public DateTime DateDelivery { get; private set; } = DateTime.Now;
 
-        public string Body { get; private set; } = string.Empty;
+		public string Subject { get; private set; } = string.Empty;
 
-        // Метод для создания объекта от класса-компонента на основе класса-BindingModel
-        public static MessageInfo? Create(MessageInfoBindingModel? model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
+		public string Body { get; private set; } = string.Empty;
 
-            return new MessageInfo()
-            {
-                MessageId = model.MessageId,
-                ClientId = model.ClientId,
-                SenderName = model.SenderName,
-                DateDelivery = model.DateDelivery,
-                Subject = model.Subject,
-                Body = model.Body
-            };
-        }
+		// Метод для создания объекта от класса-компонента на основе класса-BindingModel
+		public static MessageInfo? Create(MessageInfoBindingModel? model)
+		{
+			if (model == null)
+			{
+				return null;
+			}
 
-        // Метод изменения существующего объекта
-        public void Update(MessageInfoBindingModel? model)
-        {
-            if (model == null)
-            {
-                return;
-            }
+			return new MessageInfo()
+			{
+				MessageId = model.MessageId,
+				ClientId = model.ClientId,
+				SenderName = model.SenderName,
+				DateDelivery = model.DateDelivery,
+				Subject = model.Subject,
+				Body = model.Body
+			};
+		}
 
-            MessageId = model.MessageId;
-            ClientId = model.ClientId;
-            SenderName = model.SenderName;
-            DateDelivery = model.DateDelivery;
-            Subject = model.Subject;
-            Body = model.Body;
-        }
+		// Метод изменения существующего объекта
+		public void Update(MessageInfoBindingModel? model)
+		{
+			if (model == null)
+			{
+				return;
+			}
 
-        // Метод для создания объекта класса ViewModel на основе данных объекта класса-компонента
-        public MessageInfoViewModel GetViewModel => new()
-        {
-            MessageId = MessageId,
-            ClientId = ClientId,
-            SenderName = SenderName,
-            DateDelivery = DateDelivery,
-            Subject = Subject,
-            Body = Body
-        };
-    }
+			MessageId = model.MessageId;
+			ClientId = model.ClientId;
+			SenderName = model.SenderName;
+			DateDelivery = model.DateDelivery;
+			Subject = model.Subject;
+			Body = model.Body;
+		}
+
+		// Метод для создания объекта класса ViewModel на основе данных объекта класса-компонента
+		public MessageInfoViewModel GetViewModel => new()
+		{
+			MessageId = MessageId,
+			ClientId = ClientId,
+			SenderName = SenderName,
+			DateDelivery = DateDelivery,
+			Subject = Subject,
+			Body = Body
+		};
+	}
 }

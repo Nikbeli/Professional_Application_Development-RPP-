@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyDataModels.Models
 {
-    // Интерфейс, отвечающий за исполнителя
-    public interface IImplementerModel : IId
+	// Интерфейс, отвечающий за исполнителя
+	public interface IImplementerModel : IId
 	{
 		string ImplementerFIO { get; }
 

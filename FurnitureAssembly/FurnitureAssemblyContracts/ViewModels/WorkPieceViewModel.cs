@@ -1,4 +1,5 @@
-﻿using FurnitureAssemblyDataModels.Models;
+﻿using FurnitureAssemblyContracts.Attributes;
+using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,12 +12,13 @@ namespace FurnitureAssemblyContracts.ViewModels
 	// Класс для отображения пользователю данных о заготовке (заготовках)
 	public class WorkPieceViewModel : IWorkPieceModel
 	{
+		[Column(visible: false)]
 		public int Id { get; set; }
 
-		[DisplayName("Название заготовки")]
+		[Column(title: "Название заготовки", width: 150)]
 		public string WorkPieceName { get; set; } = string.Empty;
 
-		[DisplayName("Цена")]
+		[Column(title: "Цена", width: 150)]
 		public double Cost { get; set; }
 	}
 }
