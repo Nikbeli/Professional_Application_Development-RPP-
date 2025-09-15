@@ -20,6 +20,11 @@ namespace FurnitureAssemblyContracts.ViewModels
         [DisplayName("ФИО клиента")]
         public string ClientFIO { get; set; } = string.Empty;
 
+        public int? ImplementerId { get; set; }
+
+        [DisplayName("ФИО исполнителя")]
+        public string ImplementerFIO { get; set; } = string.Empty;
+
         public int FurnitureId { get; set; }
 
         [DisplayName("Изделие")]

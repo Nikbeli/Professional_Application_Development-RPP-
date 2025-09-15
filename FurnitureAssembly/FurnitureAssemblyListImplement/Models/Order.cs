@@ -21,6 +21,8 @@ namespace FurnitureAssemblyListImplement.Models
 
         public int FurnitureId { get; private set; }
 
+        public int? ImplementerId { get; private set; }
+
         public int Count { get; private set; }
 
         public double Sum { get; private set; }
@@ -43,6 +45,7 @@ namespace FurnitureAssemblyListImplement.Models
                 Id = model.Id,
                 FurnitureId = model.FurnitureId,
                 ClientId = model.ClientId,
+                ImplementerId = model.ImplementerId,
                 Count = model.Count,
                 Sum = model.Sum,
                 Status = model.Status,
@@ -69,6 +72,7 @@ namespace FurnitureAssemblyListImplement.Models
             Id = Id,
             FurnitureId = FurnitureId,
             ClientId = ClientId,
+            ImplementerId = ImplementerId,
             Count = Count,
             Sum = Sum,
             Status = Status,

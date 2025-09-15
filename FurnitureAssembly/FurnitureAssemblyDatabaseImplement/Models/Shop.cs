@@ -29,18 +29,31 @@ namespace FurnitureAssemblyDatabaseImplement.Models
 
         private Dictionary<int, (IFurnitureModel, int)>? _shopFurnitures = null;
 
-        [NotMapped]
+        [Required]
         public Dictionary<int, (IFurnitureModel, int)> ShopFurnitures
         {
             get
             {
                 if (_shopFurnitures == null)
                 {
-                    _shopFurnitures = Furnitures.ToDictionary(recSI => recSI.FurnitureId, recSI => (recSI.Furniture as IFurnitureModel, recSI.Count));
+                    _shopFurnitures = new();
+
+                    Furnitures.ForEach(x =>
+                    {
+                        if (_shopFurnitures.ContainsKey(x.FurnitureId))
+                        {
+                            _shopFurnitures[x.FurnitureId] = (x.Furniture as IFurnitureModel, _shopFurnitures[x.FurnitureId].Item2 + x.Count);
+                        }
+                        else
+                        {
+                            _shopFurnitures[x.FurnitureId] = (x.Furniture as IFurnitureModel, x.Count);
+                        }
+                    });
                 }
+
                 return _shopFurnitures;
-			}
-		}
+            }
+        }
 
         [ForeignKey("ShopId")]
         public virtual List<ShopFurniture> Furnitures { get; set; } = new();

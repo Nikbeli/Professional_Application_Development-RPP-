@@ -41,12 +41,19 @@ namespace FurnitureAssemblyListImplement.Implements
         {
             var result = new List<OrderViewModel>();
 
-            if (!model.Id.HasValue)
+            if (!model.Id.HasValue && model.DateFrom.HasValue && model.DateTo.HasValue)
             {
+                foreach (var order in _source.Orders)
+                {
+                    if (order.DateCreate >= model.DateFrom && order.DateCreate <= model.DateTo)
+                    {
+                        result.Add(GetViewModel(order));
+                    }
+                }
+
                 return result;
             }
-
-            if (model.ClientId.HasValue)
+            else if (model.ClientId.HasValue)
             {
                 foreach (var order in _source.Orders)
                 {
@@ -55,16 +62,26 @@ namespace FurnitureAssemblyListImplement.Implements
                         result.Add(GetViewModel(order));
                     }
                 }
-            }
 
-            if (model.DateFrom.HasValue && model.DateTo.HasValue)
+                return result;
+            }
+            else if (model.Status.HasValue)
             {
                 foreach (var order in _source.Orders)
                 {
-                    if (order.Id == model.Id || model.DateFrom <= order.DateCreate && order.DateCreate <= model.DateTo)
+                    if (order.Status == model.Status)
                     {
                         result.Add(GetViewModel(order));
                     }
+                }
+                return result;
+            }
+
+            foreach (var order in _source.Orders)
+            {
+                if (order.Id == model.Id)
+                {
+                    result.Add(GetViewModel(order));
                 }
             }
 
@@ -90,7 +107,7 @@ namespace FurnitureAssemblyListImplement.Implements
             return null;
         }
 
-        // Метод для записи названия изделия на форме с заказами
+        // Метод для записи названия изделия на форме с заказами и исполнителя
         private OrderViewModel GetViewModel(Order order)
         {
             var viewModel = order.GetViewModel;
@@ -113,6 +130,17 @@ namespace FurnitureAssemblyListImplement.Implements
                     break;
                 }
             }
+
+            foreach (var implementer in _source.Implementers)
+            {
+                if (implementer.Id == order.ImplementerId)
+                {
+                    viewModel.ImplementerFIO = implementer.ImplementerFIO;
+
+                    break;
+                }
+            }
+
 
             return viewModel;
         }

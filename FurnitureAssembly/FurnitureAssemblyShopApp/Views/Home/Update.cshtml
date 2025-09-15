@@ -27,7 +27,7 @@
 	</div>
 	<div class="row  mb-3">
 		<div class="col-4">Максимальная вместимость магазина:</div>
-		<div class="col-8"><input type="number" id="maxCountFurnitures" name="maxCountFurnitures" /></div>
+		<div class="col-8"><input type="number" id="count" name="count" /></div>
 	</div>
 	<div class="row  mb-3">
 		<div class="col-4">Мебель в магазине:</div>
@@ -62,10 +62,10 @@
 		 });
 
 		 if (selectedShop) {
-			$("#shopname").val(selectedShop.shopName);
-			$("#dateOpening").val(new Date(selectedShop.dateOpen).toISOString().substring(0, 16));
+			$("#shopname").val(selectedShop.shopname);
+			$("#dateOpening").val(new Date(selectedShop.dateOpening).toISOString().substring(0, 16));
 			$("#address").val(selectedShop.address);
-			$("#maxCountFurnitures").val(selectedShop.maxCountFurnitures);
+			$("#count").val(selectedShop.count);
 			 fillTable(selectedShop.furnitureCount);
 		 }
 	 }

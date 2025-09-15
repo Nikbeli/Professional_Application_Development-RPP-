@@ -14,6 +14,8 @@ namespace FurnitureAssemblyContracts.BusinessLogicsContracts
     {
         List<OrderViewModel>? ReadList(OrderSearchModel? model);
 
+        OrderViewModel? ReadElement(OrderSearchModel model);
+
         bool CreateOrder(OrderBindingModel model);
 
         bool TakeOrderInWork(OrderBindingModel model);

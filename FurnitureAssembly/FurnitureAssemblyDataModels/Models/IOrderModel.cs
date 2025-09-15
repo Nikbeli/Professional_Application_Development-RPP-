@@ -16,6 +16,9 @@ namespace FurnitureAssemblyDataModels.Models
         // Id клиента
         int ClientId { get; }
 
+        // Id исполнителя
+        int? ImplementerId { get; }
+
         // Кол-во продуктов
         int Count { get; }
 

@@ -12,26 +12,25 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 {
-    // Класс, реализующий логику для клиентов
-    public class ClientLogic : IClientLogic
+    // Класс, реализующий логику для исполнителей
+    public class ImplementerLogic : IImplementerLogic
     {
         private readonly ILogger _logger;
 
-        private readonly IClientStorage _clientStorage;
+        private readonly IImplementerStorage _implementerStorage;
 
-        // Конструктор
-        public ClientLogic(ILogger<ClientLogic> logger, IClientStorage clientStorage)
+        public ImplementerLogic(ILogger<ImplementerLogic> logger, IImplementerStorage implementerStorage)
         {
             _logger = logger;
-            _clientStorage = clientStorage;
+            _implementerStorage = implementerStorage;
         }
 
-        public List<ClientViewModel>? ReadList(ClientSearchModel? model)
+        public List<ImplementerViewModel>? ReadList(ImplementerSearchModel? model)
         {
-            _logger.LogInformation("ReadList. Email:{Email}. Id:{Id}", model?.Email, model?.Id);
+            _logger.LogInformation("ReadList. ImplementerFIO:{ImplementerFIO}. Id:{Id}", model?.ImplementerFIO, model?.Id);
 
             // list хранит весь список в случае, если model пришло со значением null на вход метода
-            var list = model == null ? _clientStorage.GetFullList() : _clientStorage.GetFilteredList(model);
+            var list = model == null ? _implementerStorage.GetFullList() : _implementerStorage.GetFilteredList(model);
 
             if (list == null)
             {
@@ -44,67 +43,63 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             return list;
         }
 
-        public ClientViewModel? ReadElement(ClientSearchModel model)
+        public ImplementerViewModel? ReadElement(ImplementerSearchModel model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            _logger.LogInformation("ReadList. Email:{Email}. Id:{Id}", model.Email, model?.Id);
+            _logger.LogInformation("ReadList. ImplementerFIO:{ImplementerFIO}. Id:{Id}", model.ImplementerFIO, model?.Id);
 
-            var element = _clientStorage.GetElement(model!);
+            var element = _implementerStorage.GetElement(model!);
 
             if (element == null)
             {
                 _logger.LogWarning("ReadElement element not found");
-
                 return null;
             }
 
-            _logger.LogInformation("ReadElement find .Id:{Id}", element.Id);
+            _logger.LogInformation("ReadElement find. Id:{Id}", element.Id);
 
             return element;
         }
 
-        public bool Create(ClientBindingModel model)
+        public bool Create(ImplementerBindingModel model)
         {
             CheckModel(model);
 
-            if (_clientStorage.Insert(model) == null)
+            if (_implementerStorage.Insert(model) == null)
             {
                 _logger.LogWarning("Insert operation failed");
-
                 return false;
             }
 
             return true;
         }
 
-        public bool Update(ClientBindingModel model)
+        public bool Update(ImplementerBindingModel model)
         {
             CheckModel(model);
 
-            if (_clientStorage.Update(model) == null)
+            if (_implementerStorage.Update(model) == null)
             {
                 _logger.LogWarning("Update operation failed");
-
                 return false;
             }
 
             return true;
         }
 
-        public bool Delete(ClientBindingModel model)
+        public bool Delete(ImplementerBindingModel model)
         {
             CheckModel(model, false);
 
             _logger.LogInformation("Delete. Id:{Id}", model.Id);
 
-            if (_clientStorage.Delete(model) == null)
+            if (_implementerStorage.Delete(model) == null)
             {
                 _logger.LogWarning("Delete operation failed");
-
                 return false;
             }
 
@@ -112,29 +107,23 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
         }
 
         // Проверка входного аргумента для методов Insert, Update и Delete
-        private void CheckModel(ClientBindingModel model, bool withParams = true)
+        private void CheckModel(ImplementerBindingModel model, bool withParams = true)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            // При удалении передаём как параметр false
+            // Так как при удалении передаём как параметр false
             if (!withParams)
             {
                 return;
             }
 
-            // Проверка на наличие Фамилии Имени и Отчества
-            if (string.IsNullOrEmpty(model.ClientFIO))
+            // Проверка на наличие ФИО
+            if (string.IsNullOrEmpty(model.ImplementerFIO))
             {
-                throw new ArgumentNullException("Отсутствие ФИО в учётной записи", nameof(model.ClientFIO));
-            }
-
-            // Проверка на наличие эл. почты
-            if (string.IsNullOrEmpty(model.Email))
-            {
-                throw new ArgumentNullException("Отсутствие эл. почты в учётной записи (логина)", nameof(model.Email));
+                throw new ArgumentNullException("Отсутствие ФИО в учётной записи", nameof(model.ImplementerFIO));
             }
 
             // Проверка на наличие пароля
@@ -143,18 +132,32 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 throw new ArgumentNullException("Отсутствие пароля в учётной записи", nameof(model.Password));
             }
 
-            _logger.LogInformation("Client. ClientFIO:{ClientFIO}. Email:{Email}. Id:{Id} ", model.ClientFIO, model.Email, model.Id);
+            // Проверка на наличие квалификации
+            if (model.Qualification <= 0)
+            {
+                throw new ArgumentNullException("Указана некорректная квалификация", nameof(model.Qualification));
+            }
+
+            // Проверка на наличие квалификации
+            if (model.WorkExperience < 0)
+            {
+                throw new ArgumentNullException("Указан некоректный стаж работы", nameof(model.WorkExperience));
+            }
+
+            _logger.LogInformation("Implementer. ImplementerFIO:{ImplementerFIO}. Password:{Password}. " +
+                "Qualification:{Qualification}. WorkExperience:{ WorkExperience}. Id:{Id}",
+                model.ImplementerFIO, model.Password, model.Qualification, model.WorkExperience, model.Id);
 
             // Для проверка на наличие такого же аккаунта
-            var element = _clientStorage.GetElement(new ClientSearchModel
+            var element = _implementerStorage.GetElement(new ImplementerSearchModel
             {
-                Email = model.Email
+                ImplementerFIO = model.ImplementerFIO,
             });
 
             // Если элемент найден и его Id не совпадает с Id переданного объекта
             if (element != null && element.Id != model.Id)
             {
-                throw new InvalidOperationException("Аккаунт с таким логином уже есть");
+                throw new InvalidOperationException("Исполнитель с таким именем уже есть");
             }
         }
     }

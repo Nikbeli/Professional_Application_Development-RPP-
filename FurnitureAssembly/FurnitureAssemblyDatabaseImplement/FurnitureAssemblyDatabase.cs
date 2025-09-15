@@ -33,5 +33,7 @@ namespace FurnitureAssemblyDatabaseImplement
         public virtual DbSet<ShopFurniture> ShopFurnitures { get; set; }
 
         public virtual DbSet<Client> Clients { set; get; }
+
+        public virtual DbSet<Implementer> Implementers { set; get; }
     }
 }

@@ -27,6 +27,9 @@ namespace FurnitureAssemblyListImplement
         // Список для хранения Клиентов
         public List<Client> Clients { get; set; }
 
+        // Список для хранения исполнителей
+        public List<Implementer> Implementers { get; set; }
+
         public DataListSingleton()
         {
             WorkPiece = new List<WorkPiece>();
@@ -34,6 +37,7 @@ namespace FurnitureAssemblyListImplement
             Orders = new List<Order>();
             Shops = new List<Shop>();
             Clients = new List<Client>();
+            Implementers = new List<Implementer>();
         }
 
         public static DataListSingleton GetInstance()

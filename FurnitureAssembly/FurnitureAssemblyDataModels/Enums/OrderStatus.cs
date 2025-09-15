@@ -17,6 +17,8 @@ namespace FurnitureAssemblyDataModels.Enums
 
         Готов = 2,
 
-        Выдан = 3
+        Выдан = 3,
+
+        Ожидание = 4
     }
 }
