@@ -1,0 +1,19 @@
+﻿using FurnitureAssemblyContracts.BindingModels;
+using FurnitureAssemblyContracts.SearchModels;
+using FurnitureAssemblyContracts.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FurnitureAssemblyContracts.BusinessLogicsContracts
+{
+    // Бизнес-логика сообщений
+    public interface IMessageInfoLogic
+    {
+        List<MessageInfoViewModel>? ReadList(MessageInfoSearchModel? model);
+
+        bool Create(MessageInfoBindingModel model);
+    }
+}

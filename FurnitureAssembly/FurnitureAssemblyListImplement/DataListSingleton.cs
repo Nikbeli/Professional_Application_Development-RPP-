@@ -27,6 +27,9 @@ namespace FurnitureAssemblyListImplement
 		// Список для хранения исполнителей
 		public List<Implementer> Implementers { get; set; }
 
+		// Список для хранения писем
+		public List<MessageInfo> MessageInfos { get; set; }
+
 		public DataListSingleton()
 		{
 			WorkPiece = new List<WorkPiece>();
@@ -34,6 +37,7 @@ namespace FurnitureAssemblyListImplement
 			Orders = new List<Order>();
 			Clients = new List<Client>();
 			Implementers = new List<Implementer>();
+			MessageInfos = new List<MessageInfo>();
 		}
 
 		public static DataListSingleton GetInstance()

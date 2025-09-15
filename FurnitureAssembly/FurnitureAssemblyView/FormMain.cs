@@ -195,5 +195,15 @@ namespace FurnitureAssemblyView
 				form.ShowDialog();
 			}
 		}
+
+		private void MailsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var service = Program.ServiceProvider?.GetService(typeof(FormMails));
+
+			if (service is FormMails form)
+			{
+				form.ShowDialog();
+			}
+		}
 	}
 }

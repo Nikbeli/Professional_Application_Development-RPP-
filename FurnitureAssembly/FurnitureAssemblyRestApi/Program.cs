@@ -1,4 +1,6 @@
 using FurnitureAssemblyBusinessLogic.BussinessLogic;
+using FurnitureAssemblyBusinessLogic.MailWorker;
+using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.StoragesContracts;
 using FurnitureAssemblyDatabaseImplement.Implements;
@@ -17,11 +19,15 @@ builder.Services.AddTransient<IClientStorage, ClientStorage>();
 builder.Services.AddTransient<IOrderStorage, OrderStorage>();
 builder.Services.AddTransient<IFurnitureStorage, FurnitureStorage>();
 builder.Services.AddTransient<IImplementerStorage, ImplementerStorage>();
+builder.Services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
 
 builder.Services.AddTransient<IOrderLogic, OrderLogic>();
 builder.Services.AddTransient<IClientLogic, ClientLogic>();
 builder.Services.AddTransient<IFurnitureLogic, FurnitureLogic>();
 builder.Services.AddTransient<IImplementerLogic, ImplementerLogic>();
+builder.Services.AddTransient<IMessageInfoLogic, MessageInfoLogic>();
+
+builder.Services.AddSingleton<AbstractMailWorker, MailKitWorker>();
 
 
 builder.Services.AddControllers();
@@ -35,6 +41,18 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+var mailSender = app.Services.GetService<AbstractMailWorker>();
+
+mailSender?.MailConfig(new MailConfigBindingModel
+{
+    MailLogin = builder.Configuration?.GetSection("MailLogin")?.Value?.ToString() ?? string.Empty,
+    MailPassword = builder.Configuration?.GetSection("MailPassword")?.Value?.ToString() ?? string.Empty,
+    SmtpClientHost = builder.Configuration?.GetSection("SmtpClientHost")?.Value?.ToString() ?? string.Empty,
+    SmtpClientPort = Convert.ToInt32(builder.Configuration?.GetSection("SmtpClientPort")?.Value?.ToString()),
+    PopHost = builder.Configuration?.GetSection("PopHost")?.Value?.ToString() ?? string.Empty,
+    PopPort = Convert.ToInt32(builder.Configuration?.GetSection("PopPort")?.Value?.ToString())
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

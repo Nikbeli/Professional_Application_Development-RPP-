@@ -31,5 +31,7 @@ namespace FurnitureAssemblyDatabaseImplement
 		public virtual DbSet<Client> Clients { set; get; }
 
 		public virtual DbSet<Implementer> Implementers { set; get; }
+
+		public virtual DbSet<MessageInfo> Messages { set; get; }
 	}
 }

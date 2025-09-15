@@ -171,5 +171,18 @@ namespace FurnitureAssemblyClientApp.Controllers
 
             return count * (furnitures?.Price ?? 1);
         }
+
+        // Для работы с письмами
+        [HttpGet]
+        [HttpGet]
+        public IActionResult Mails()
+        {
+            if (APIClient.Client == null)
+            {
+                return Redirect("~/Home/Enter");
+            }
+
+            return View(APIClient.GetRequest<List<MessageInfoViewModel>>($"api/client/getmessages?clientId={APIClient.Client.Id}"));
+        }
     }
 }
