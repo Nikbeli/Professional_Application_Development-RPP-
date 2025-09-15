@@ -20,6 +20,8 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
 		private readonly IOrderStorage _orderStorage;
 
+		static readonly object locker = new object();
+
 		// Конструктор
 		public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage)
 		{
@@ -38,12 +40,37 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 			if (list == null)
 			{
 				_logger.LogWarning("ReadList return null list");
+
 				return null;
 			}
 
 			_logger.LogInformation("ReadList. Count:{Count}", list.Count);
 
 			return list;
+		}
+
+		// Вывод конкретного чека
+		public OrderViewModel? ReadElement(OrderSearchModel model)
+		{
+			if (model == null)
+			{
+				throw new ArgumentNullException(nameof(model));
+			}
+
+			_logger.LogInformation("ReadElement. Id:{Id}", model?.Id);
+
+			var element = _orderStorage.GetElement(model!);
+
+			if (element == null)
+			{
+				_logger.LogWarning("ReadElement element not found");
+
+				return null;
+			}
+
+			_logger.LogInformation("ReadElement find. Id:{Id}", element.Id);
+
+			return element;
 		}
 
 		// Создание чека
@@ -71,7 +98,10 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
 		public bool TakeOrderInWork(OrderBindingModel model)
 		{
-			return StatusUpdate(model, OrderStatus.Выполняется);
+			lock (locker)
+			{
+				return StatusUpdate(model, OrderStatus.Выполняется);
+			}
 		}
 
 		public bool FinishOrder(OrderBindingModel model)
@@ -150,6 +180,12 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 			}
 
 			model.Status = newOrderStatus;
+
+			// Помещаем id работника, не забываем про него...
+			if (viewModel.ImplementerId.HasValue)
+			{
+				model.ImplementerId = viewModel.ImplementerId;
+			}
 
 			// Проверка на выдачу
 			if (model.Status == OrderStatus.Выдан)

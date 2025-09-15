@@ -90,7 +90,7 @@ namespace FurnitureAssemblyListImplement.Implements
 			return null;
 		}
 
-		// Метод для записи названия изделия на форме с заказами
+		// Метод для записи названия изделия на форме с заказами и исполнителя
 		private OrderViewModel GetViewModel(Order order)
 		{
 			var viewModel = order.GetViewModel;
@@ -110,6 +110,16 @@ namespace FurnitureAssemblyListImplement.Implements
 				if (client.Id == order.ClientId)
 				{
 					viewModel.ClientFIO = client.ClientFIO;
+					break;
+				}
+			}
+
+			foreach (var implementer in _source.Implementers)
+			{
+				if (implementer.Id == order.ImplementerId)
+				{
+					viewModel.ImplementerFIO = implementer.ImplementerFIO;
+
 					break;
 				}
 			}

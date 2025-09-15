@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FurnitureAssemblyDataModels.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,15 @@ namespace FurnitureAssemblyContracts.SearchModels
 		// Для поиска по клиенту
 		public int? ClientId { get; set; }
 
+		// Для поиска по исполнителю
+		public int? ImplementerId { get; set; }
+
 		// Два поля для возможности производить выборку
 		public DateTime? DateFrom { get; set; }
 
 		public DateTime? DateTo { get; set; }
+
+		// Для статуса заказа
+		public OrderStatus? Status { get; set; }
 	}
 }

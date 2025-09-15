@@ -20,6 +20,8 @@ namespace FurnitureAssemblyFileImplement.Models
 
 		public int ClientId { get; private set; }
 
+		public int? ImplementerId { get; private set; }
+
 		public int Count { get; private set; }
 
 		public double Sum { get; private set; }
@@ -42,6 +44,7 @@ namespace FurnitureAssemblyFileImplement.Models
 				Id = model.Id,
 				FurnitureId = model.FurnitureId,
 				ClientId = model.ClientId,
+				ImplementerId = model.ImplementerId,
 				Count = model.Count,
 				Sum = model.Sum,
 				Status = model.Status,
@@ -62,6 +65,7 @@ namespace FurnitureAssemblyFileImplement.Models
 				Id = Convert.ToInt32(element.Attribute("Id")!.Value),
 				FurnitureId = Convert.ToInt32(element.Element("FurnitureId")!.Value),
 				ClientId = Convert.ToInt32(element.Attribute("Id")!.Value),
+				ImplementerId = Convert.ToInt32(element.Attribute("ImplementerId")!.Value),
 				Count = Convert.ToInt32(element.Element("Count")!.Value),
 				Sum = Convert.ToDouble(element.Element("Sum")!.Value),
 				Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), element.Element("Status")!.Value),
@@ -87,6 +91,7 @@ namespace FurnitureAssemblyFileImplement.Models
 			Id = Id,
 			FurnitureId = FurnitureId,
 			ClientId = ClientId,
+			ImplementerId = ImplementerId,
 			Count = Count,
 			Sum = Sum,
 			Status = Status,
@@ -98,6 +103,7 @@ namespace FurnitureAssemblyFileImplement.Models
 			new XAttribute("Id", Id),
 			new XElement("FurnitureId", FurnitureId.ToString()),
 			new XElement("ClientId", ClientId.ToString()),
+			new XElement("ImplementerId", ImplementerId.ToString()),
 			new XElement("Count", Count.ToString()),
 			new XElement("Sum", Sum.ToString()),
 			new XElement("Status", Status.ToString()),

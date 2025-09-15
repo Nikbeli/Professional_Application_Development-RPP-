@@ -29,9 +29,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="ReportOrders.rdlc">
+		<Compile Update="FormReportOrders.cs">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		</Compile>
 	</ItemGroup>
 
 </Project>
