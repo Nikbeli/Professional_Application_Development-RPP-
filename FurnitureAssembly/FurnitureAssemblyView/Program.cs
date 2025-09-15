@@ -1,4 +1,6 @@
 using FurnitureAssemblyBusinessLogic.BussinessLogic;
+using FurnitureAssemblyBusinessLogic.OfficePackage.Implements;
+using FurnitureAssemblyBusinessLogic.OfficePackage;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.StoragesContracts;
 using FurnitureAssemblyDatabaseImplement.Implements;
@@ -43,6 +45,11 @@ namespace FurnitureAssemblyView
 			services.AddTransient<IWorkPieceLogic, WorkPieceLogic>();
 			services.AddTransient<IOrderLogic, OrderLogic>();
 			services.AddTransient<IFurnitureLogic, FurnitureLogic>();
+			services.AddTransient<IReportLogic, ReportLogic>();
+
+			services.AddTransient<AbstractSaveToExcel, SaveToExcel>();
+			services.AddTransient<AbstractSaveToWord, SaveToWord>();
+			services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
 
 			services.AddTransient<FormMain>();
 			services.AddTransient<FormWorkPiece>();
@@ -51,6 +58,8 @@ namespace FurnitureAssemblyView
 			services.AddTransient<FormFurniture>();
 			services.AddTransient<FormFurnitures>();
 			services.AddTransient<FormFurnitureWorkPiece>();
+			services.AddTransient<FormReportFurnitureWorkPieces>();
+			services.AddTransient<FormReportOrders>();
 		}
 	}
 }

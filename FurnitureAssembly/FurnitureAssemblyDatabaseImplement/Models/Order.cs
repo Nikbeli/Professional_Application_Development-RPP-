@@ -11,70 +11,70 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyDatabaseImplement.Models
 {
-    public class Order : IOrderModel
-    {
-        public int Id { get; private set; }
+	public class Order : IOrderModel
+	{
+		public int Id { get; private set; }
 
-        [Required]
-        public int FurnitureId { get; private set; }
+		[Required]
+		public int FurnitureId { get; private set; }
 
-        [Required]
-        public int Count { get; private set; }
+		[Required]
+		public int Count { get; private set; }
 
-        [Required]
-        public double Sum { get; private set; }
+		[Required]
+		public double Sum { get; private set; }
 
-        [Required]
-        public OrderStatus Status { get; private set; } = OrderStatus.Неизвестен;
+		[Required]
+		public OrderStatus Status { get; private set; } = OrderStatus.Неизвестен;
 
-        [Required]
-        public DateTime DateCreate { get; private set; } = DateTime.Now;
+		[Required]
+		public DateTime DateCreate { get; private set; } = DateTime.Now;
 
-        public DateTime? DateImplement { get; private set; }
+		public DateTime? DateImplement { get; private set; }
 
-        // Для передачи названия изделия
-        public virtual Furniture Furniture { get; set; }
+		// Для передачи названия изделия
+		public virtual Furniture Furniture { get; set; }
 
-        public static Order? Create(OrderBindingModel model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
+		public static Order? Create(OrderBindingModel model)
+		{
+			if (model == null)
+			{
+				return null;
+			}
 
-            return new Order()
-            {
-                Id = model.Id,
-                FurnitureId = model.FurnitureId,
-                Count = model.Count,
-                Sum = model.Sum,
-                Status = model.Status,
-                DateCreate = model.DateCreate,
-                DateImplement = model.DateImplement,
-            };
-        }
+			return new Order()
+			{
+				Id = model.Id,
+				FurnitureId = model.FurnitureId,
+				Count = model.Count,
+				Sum = model.Sum,
+				Status = model.Status,
+				DateCreate = model.DateCreate,
+				DateImplement = model.DateImplement,
+			};
+		}
 
-        public void Update(OrderBindingModel model)
-        {
-            if (model == null)
-            {
-                return;
-            }
+		public void Update(OrderBindingModel model)
+		{
+			if (model == null)
+			{
+				return;
+			}
 
-            Status = model.Status;
-            DateImplement = model.DateImplement;
-        }
+			Status = model.Status;
+			DateImplement = model.DateImplement;
+		}
 
-        public OrderViewModel GetViewModel => new()
-        {
-            Id = Id,
-            FurnitureId = FurnitureId,
-            Count = Count,
-            Sum = Sum,
-            Status = Status,
-            DateCreate = DateCreate,
-            DateImplement = DateImplement,
-            FurnitureName = Furniture.FurnitureName
-        };
-    }
+		public OrderViewModel GetViewModel => new()
+		{
+			Id = Id,
+			FurnitureId = FurnitureId,
+			Count = Count,
+			Sum = Sum,
+			Status = Status,
+			DateCreate = DateCreate,
+			DateImplement = DateImplement,
+			FurnitureName = Furniture.FurnitureName
+		};
+	}
 }

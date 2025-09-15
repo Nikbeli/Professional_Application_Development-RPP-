@@ -12,108 +12,107 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyDatabaseImplement.Models
 {
-    public class Furniture : IFurnitureModel
-    {
-        public int Id { get; set; }
+	public class Furniture : IFurnitureModel
+	{
+		public int Id { get; set; }
 
-        [Required]
-        public string FurnitureName { get; set; } = string.Empty;
+		[Required]
+		public string FurnitureName { get; set; } = string.Empty;
 
-        [Required]
-        public double Price { get; set; }
+		[Required]
+		public double Price { get; set; }
 
-        public Dictionary<int, (IWorkPieceModel, int)>? _furnitureWorkPieces = null;
+		public Dictionary<int, (IWorkPieceModel, int)>? _furnitureWorkPieces = null;
 
-        // Это поле не будет "мапиться" в бд
-        [NotMapped]
-        public Dictionary<int, (IWorkPieceModel, int)> FurnitureWorkPieces
-        {
-            get
-            {
-                if(_furnitureWorkPieces == null)
-                {
-                    _furnitureWorkPieces = WorkPieces
-                        .ToDictionary(recPC => recPC.WorkPieceId, recPC => (recPC.WorkPiece as IWorkPieceModel, recPC.Count));
-                }
+		// Это поле не будет "мапиться" в бд
+		[NotMapped]
+		public Dictionary<int, (IWorkPieceModel, int)> FurnitureWorkPieces
+		{
+			get
+			{
+				if (_furnitureWorkPieces == null)
+				{
+					_furnitureWorkPieces = WorkPieces
+						.ToDictionary(recPC => recPC.WorkPieceId, recPC => (recPC.WorkPiece as IWorkPieceModel, recPC.Count));
+				}
 
-                return _furnitureWorkPieces;
-            }
-        }
+				return _furnitureWorkPieces;
+			}
+		}
 
-        // Для реализации связи многие ко многим с заготовками
-        [ForeignKey("FurnitureId")]
-        public virtual List<FurnitureWorkPiece> WorkPieces { get; set; } = new();
+		// Для реализации связи многие ко многим с заготовками
+		[ForeignKey("FurnitureId")]
+		public virtual List<FurnitureWorkPiece> WorkPieces { get; set; } = new();
 
-        [ForeignKey("FurnitureId")]
-        public virtual List<Order> Orders { get; set; } = new();
+		[ForeignKey("FurnitureId")]
+		public virtual List<Order> Orders { get; set; } = new();
 
-        public static Furniture Create(FurnitureAssemblyDatabase context, FurnitureBindingModel model)
-        {
-            return new Furniture()
-            {
-                Id = model.Id,
-                FurnitureName = model.FurnitureName,
-                Price = model.Price,
-                WorkPieces = model.FurnitureWorkPieces.Select(x => new FurnitureWorkPiece
-                {
-                    WorkPiece = context.WorkPieces.First(y => y.Id == x.Key),
-                    Count = x.Value.Item2
-                }).ToList()
-            };
-        }
+		public static Furniture Create(FurnitureAssemblyDatabase context, FurnitureBindingModel model)
+		{
+			return new Furniture()
+			{
+				Id = model.Id,
+				FurnitureName = model.FurnitureName,
+				Price = model.Price,
+				WorkPieces = model.FurnitureWorkPieces.Select(x => new FurnitureWorkPiece
+				{
+					WorkPiece = context.WorkPieces.First(y => y.Id == x.Key),
+					Count = x.Value.Item2
+				}).ToList()
+			};
+		}
 
-        public void Update(FurnitureBindingModel model)
-        {
-            FurnitureName = model.FurnitureName;
-            Price = model.Price;
-        }
+		public void Update(FurnitureBindingModel model)
+		{
+			FurnitureName = model.FurnitureName;
+			Price = model.Price;
+		}
 
-        public FurnitureViewModel GetViewModel => new()
-        {
-            Id = Id,
-            FurnitureName = FurnitureName,
-            Price = Price,
-            FurnitureWorkPieces = FurnitureWorkPieces
-        };
+		public FurnitureViewModel GetViewModel => new()
+		{
+			Id = Id,
+			FurnitureName = FurnitureName,
+			Price = Price,
+			FurnitureWorkPieces = FurnitureWorkPieces
+		};
 
-        Dictionary<int, (IWorkPieceModel, int)> IFurnitureModel.FurnitureWorkPieces => throw new NotImplementedException();
+		Dictionary<int, (IWorkPieceModel, int)> IFurnitureModel.FurnitureWorkPieces => throw new NotImplementedException();
 
+		public void UpdateWorkPieces(FurnitureAssemblyDatabase context, FurnitureBindingModel model)
+		{
+			var furnitureWorkPieces = context.FurnitureWorkPieces.Where(rec => rec.FurnitureId == model.Id).ToList();
 
-        public void UpdateWorkPieces(FurnitureAssemblyDatabase context, FurnitureBindingModel model)
-        {
-            var furnitureWorkPieces = context.FurnitureWorkPieces.Where(rec => rec.FurnitureId == model.Id).ToList();
+			if (furnitureWorkPieces != null && furnitureWorkPieces.Count > 0)
+			{
+				// удалили те, которых нет в модели
+				context.FurnitureWorkPieces.RemoveRange(furnitureWorkPieces.Where(rec => !model.FurnitureWorkPieces.ContainsKey(rec.FurnitureId)));
+				context.SaveChanges();
 
-            if(furnitureWorkPieces != null && furnitureWorkPieces.Count > 0)
-            {
-                // удалили те, которых нет в модели
-                context.FurnitureWorkPieces.RemoveRange(furnitureWorkPieces.Where(rec => !model.FurnitureWorkPieces.ContainsKey(rec.FurnitureId)));
-                context.SaveChanges();
+				// обновили количество у существующих записей
+				foreach (var updateFurniture in furnitureWorkPieces)
+				{
+					updateFurniture.Count = model.FurnitureWorkPieces[updateFurniture.FurnitureId].Item2;
+					model.FurnitureWorkPieces.Remove(updateFurniture.FurnitureId);
+				}
 
-                // обновили количество у существующих записей
-                foreach (var updateFurniture in furnitureWorkPieces)
-                {
-                    updateFurniture.Count = model.FurnitureWorkPieces[updateFurniture.FurnitureId].Item2;
-                    model.FurnitureWorkPieces.Remove(updateFurniture.FurnitureId);
-                }
+				context.SaveChanges();
+			}
 
-                context.SaveChanges();
-            }
+			var furniture = context.Furnitures.First(x => x.Id == Id);
 
-            var furniture = context.Furnitures.First(x => x.Id == Id);
+			foreach (var pc in model.FurnitureWorkPieces)
+			{
+				context.FurnitureWorkPieces.Add(new FurnitureWorkPiece
+				{
+					Furniture = furniture,
+					WorkPiece = context.WorkPieces.First(x => x.Id == pc.Key),
+					Count = pc.Value.Item2
+				});
 
-            foreach(var pc in model.FurnitureWorkPieces)
-            {
-                context.FurnitureWorkPieces.Add(new FurnitureWorkPiece
-                {
-                    Furniture = furniture,
-                    WorkPiece = context.WorkPieces.First(x => x.Id == pc.Key),
-                    Count = pc.Value.Item2
-                });
+				context.SaveChanges();
+			}
 
-                context.SaveChanges();
-            }
-
-            _furnitureWorkPieces = null;
-        }
-    }
+			_furnitureWorkPieces = null;
+		}
+	}
 }
