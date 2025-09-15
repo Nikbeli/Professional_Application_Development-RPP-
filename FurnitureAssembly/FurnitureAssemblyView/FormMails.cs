@@ -37,15 +37,7 @@ namespace FurnitureAssemblyView
 
 			try
 			{
-				var list = _messageLogic.ReadList(null);
-
-				if (list != null)
-				{
-					dataGridView.DataSource = list;
-					dataGridView.Columns["MessageId"].Visible = false;
-					dataGridView.Columns["ClientId"].Visible = false;
-					dataGridView.Columns["Body"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-				}
+				dataGridView.FillandConfigGrid(_messageLogic.ReadList(null));
 
 				_logger.LogInformation("Успешная загрузка писем");
 			}

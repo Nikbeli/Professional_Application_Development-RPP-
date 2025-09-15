@@ -1,4 +1,5 @@
-﻿using FurnitureAssemblyDataModels.Models;
+﻿using FurnitureAssemblyContracts.Attributes;
+using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,23 +9,28 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyContracts.ViewModels
 {
-    // Класс для отображения пользователю информации о сообщениях
-    public class MessageInfoViewModel : IMessageInfoModel
-    {
-        public string MessageId { get; set; } = string.Empty;
+	// Класс для отображения пользователю информации о сообщениях
+	public class MessageInfoViewModel : IMessageInfoModel
+	{
+		[Column(visible: false)]
+		public int Id { get; set; }
 
-        public int? ClientId {  get; set; }
+		[Column(visible: false)]
+		public string MessageId { get; set; } = string.Empty;
 
-        [DisplayName("Отправитель")]
-        public string SenderName { get; set; } = string.Empty;
+		[Column(visible: false)]
+		public int? ClientId { get; set; }
 
-        [DisplayName("Дата отправки")]
-        public DateTime DateDelivery { get; set; } = DateTime.Now;
+		[Column(title: "Отправитель", width: 150)]
+		public string SenderName { get; set; } = string.Empty;
 
-        [DisplayName("Заголовок")]
-        public string Subject { get; set; } = string.Empty;
+		[Column(title: "Дата отправки", width: 150)]
+		public DateTime DateDelivery { get; set; } = DateTime.Now;
 
-        [DisplayName("Текст")]
-        public string Body { get; set; } = string.Empty;
-    }
+		[Column(title: "Заголовок", width: 150)]
+		public string Subject { get; set; } = string.Empty;
+
+		[Column(title: "Текст", width: 150)]
+		public string Body { get; set; } = string.Empty;
+	}
 }

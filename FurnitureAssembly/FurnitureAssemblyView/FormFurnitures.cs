@@ -1,5 +1,6 @@
 ﻿using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
+using FurnitureAssemblyContracts.DI;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -36,15 +37,7 @@ namespace FurnitureAssemblyView
 		{
 			try
 			{
-				var list = _logic.ReadList(null);
-
-				if (list != null)
-				{
-					dataGridView.DataSource = list;
-					dataGridView.Columns["Id"].Visible = false;
-					dataGridView.Columns["FurnitureWorkPieces"].Visible = false;
-					dataGridView.Columns["FurnitureName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-				}
+				dataGridView.FillandConfigGrid(_logic.ReadList(null));
 
 				_logger.LogInformation("Загрузка изделий");
 			}
@@ -57,14 +50,11 @@ namespace FurnitureAssemblyView
 
 		private void ButtonAdd_Click(object sender, EventArgs e)
 		{
-			var service = Program.ServiceProvider?.GetService(typeof(FormFurniture));
+			var form = DependencyManager.Instance.Resolve<FormFurniture>();
 
-			if (service is FormFurniture form)
+			if (form.ShowDialog() == DialogResult.OK)
 			{
-				if (form.ShowDialog() == DialogResult.OK)
-				{
-					LoadData();
-				}
+				LoadData();
 			}
 		}
 
@@ -72,16 +62,13 @@ namespace FurnitureAssemblyView
 		{
 			if (dataGridView.SelectedRows.Count == 1)
 			{
-				var service = Program.ServiceProvider?.GetService(typeof(FormFurniture));
+				var form = DependencyManager.Instance.Resolve<FormFurniture>();
 
-				if (service is FormFurniture form)
+				form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+
+				if (form.ShowDialog() == DialogResult.OK)
 				{
-					form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-
-					if (form.ShowDialog() == DialogResult.OK)
-					{
-						LoadData();
-					}
+					LoadData();
 				}
 			}
 		}

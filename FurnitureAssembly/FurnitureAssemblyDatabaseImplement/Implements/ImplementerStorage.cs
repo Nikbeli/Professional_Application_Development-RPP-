@@ -18,14 +18,14 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 		{
 			using var context = new FurnitureAssemblyDatabase();
 
-			if (model.Id.HasValue) 
+			if (model.Id.HasValue)
 				return context.Implementers.FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
 
-			if (model.ImplementerFIO != null && model.Password != null) 
+			if (model.ImplementerFIO != null && model.Password != null)
 				return context.Implementers.FirstOrDefault(x => x.ImplementerFIO
 				.Equals(model.ImplementerFIO) && x.Password.Equals(model.Password))?.GetViewModel;
 
-			if (model.ImplementerFIO != null) 
+			if (model.ImplementerFIO != null)
 				return context.Implementers.FirstOrDefault(x => x.ImplementerFIO
 				.Equals(model.ImplementerFIO))?.GetViewModel;
 

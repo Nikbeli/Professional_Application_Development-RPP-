@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyDataModels.Models
 {
-    // Интерфейс, отвечающий за сообщения
-    public interface IMessageInfoModel
-    {
-        string MessageId { get; }
+	// Интерфейс, отвечающий за сообщения
+	public interface IMessageInfoModel : IId
+	{
+		string MessageId { get; }
 
-        int? ClientId { get; }
+		int? ClientId { get; }
 
-        string SenderName { get; }
+		string SenderName { get; }
 
-        DateTime DateDelivery { get; }
+		DateTime DateDelivery { get; }
 
-        string Subject { get; }
+		string Subject { get; }
 
-        string Body { get; }
-    }
+		string Body { get; }
+	}
 }

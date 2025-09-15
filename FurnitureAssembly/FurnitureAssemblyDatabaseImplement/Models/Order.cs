@@ -6,35 +6,46 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FurnitureAssemblyDatabaseImplement.Models
 {
+	[DataContract]
 	public class Order : IOrderModel
 	{
+		[DataMember]
 		public int Id { get; private set; }
 
 		[Required]
+		[DataMember]
 		public int FurnitureId { get; private set; }
 
 		[Required]
+		[DataMember]
 		public int ClientId { get; private set; }
 
+		[DataMember]
 		public int? ImplementerId { get; private set; }
 
 		[Required]
+		[DataMember]
 		public int Count { get; private set; }
 
 		[Required]
+		[DataMember]
 		public double Sum { get; private set; }
 
 		[Required]
+		[DataMember]
 		public OrderStatus Status { get; private set; } = OrderStatus.Неизвестен;
 
 		[Required]
+		[DataMember]
 		public DateTime DateCreate { get; private set; } = DateTime.Now;
 
+		[DataMember]
 		public DateTime? DateImplement { get; private set; }
 
 		// Для передачи названия изделия

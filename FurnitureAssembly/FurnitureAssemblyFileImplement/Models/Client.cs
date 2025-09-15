@@ -4,20 +4,26 @@ using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace FurnitureAssemblyFileImplement.Models
 {
+	[DataContract]
 	public class Client : IClientModel
 	{
+		[DataMember]
 		public int Id { get; private set; }
 
+		[DataMember]
 		public string ClientFIO { get; private set; } = string.Empty;
 
+		[DataMember]
 		public string Email { get; private set; } = string.Empty;
 
+		[DataMember]
 		public string Password { get; private set; } = string.Empty;
 
 		public static Client? Create(ClientBindingModel model)

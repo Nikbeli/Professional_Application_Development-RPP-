@@ -4,6 +4,7 @@ using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -11,18 +12,23 @@ using System.Xml.Linq;
 namespace FurnitureAssemblyFileImplement.Models
 {
 	// Класс, реализующий интерфейс модели изделия
+	[DataContract]
 	public class Furniture : IFurnitureModel
 	{
+		[DataMember]
 		public int Id { get; private set; }
 
+		[DataMember]
 		public string FurnitureName { get; private set; } = string.Empty;
 
+		[DataMember]
 		public double Price { get; private set; }
 
 		public Dictionary<int, int> WorkPieces { get; private set; } = new();
 
 		private Dictionary<int, (IWorkPieceModel, int)>? _furnitureWorkPieces = null;
 
+		[DataMember]
 		public Dictionary<int, (IWorkPieceModel, int)> FurnitureWorkPieces
 		{
 			get

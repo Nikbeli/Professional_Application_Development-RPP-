@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyContracts.BindingModels
 {
-    // Реализации сущности "Сообщение"
+    // Реализация сущности "Сообщение"
     public class MessageInfoBindingModel : IMessageInfoModel
     {
+        public int Id { get; set; }
+
         public string MessageId { get; set; } = string.Empty;
 
         public int? ClientId { get; set; }

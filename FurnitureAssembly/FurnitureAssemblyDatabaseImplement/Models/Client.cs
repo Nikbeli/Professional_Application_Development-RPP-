@@ -8,20 +8,26 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace FurnitureAssemblyDatabaseImplement.Models
 {
+	[DataContract]
 	public class Client : IClientModel
 	{
+		[DataMember]
 		public int Id { get; private set; }
 
 		[Required]
+		[DataMember]
 		public string ClientFIO { get; private set; } = string.Empty;
 
 		[Required]
+		[DataMember]
 		public string Email { get; private set; } = string.Empty;
 
 		[Required]
+		[DataMember]
 		public string Password { get; private set; } = string.Empty;
 
 		// Для реализации связи многие-ко-многим с заказами (клиенты могу сделать одинаковый заказ)

@@ -8,23 +8,30 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace FurnitureAssemblyDatabaseImplement.Models
 {
+	[DataContract]
 	public class Implementer : IImplementerModel
 	{
+		[DataMember]
 		public int Id { get; set; }
 
 		[Required]
+		[DataMember]
 		public string ImplementerFIO { get; set; } = string.Empty;
 
 		[Required]
+		[DataMember]
 		public string Password { get; set; } = string.Empty;
 
 		[Required]
+		[DataMember]
 		public int WorkExperience { get; set; }
 
 		[Required]
+		[DataMember]
 		public int Qualification { get; set; }
 
 		// Для реализации связи один ко многим с заказами

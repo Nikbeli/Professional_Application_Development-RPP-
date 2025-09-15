@@ -46,6 +46,7 @@
             workWithImplementerToolStripMenuItem = new ToolStripMenuItem();
             implementerToolStripMenuItem = new ToolStripMenuItem();
             startingWorkToolStripMenuItem = new ToolStripMenuItem();
+            createBackUpToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             menuStrip.SuspendLayout();
             SuspendLayout();
@@ -92,12 +93,12 @@
             buttonRefresh.TabIndex = 5;
             buttonRefresh.Text = "Обновить";
             buttonRefresh.UseVisualStyleBackColor = true;
-            buttonRefresh.Click += ButtonRef_Click;
+            buttonRefresh.Click += ButtonRefresh_Click;
             // 
             // menuStrip
             // 
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem, reportsToolStripMenuItem, workWithClientsToolStripMenuItem, workWithImplementerToolStripMenuItem, startingWorkToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem, reportsToolStripMenuItem, workWithClientsToolStripMenuItem, workWithImplementerToolStripMenuItem, startingWorkToolStripMenuItem, createBackUpToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Padding = new Padding(5, 2, 0, 2);
@@ -115,21 +116,21 @@
             // workPieceToolStripMenuItem
             // 
             workPieceToolStripMenuItem.Name = "workPieceToolStripMenuItem";
-            workPieceToolStripMenuItem.Size = new Size(180, 22);
+            workPieceToolStripMenuItem.Size = new Size(130, 22);
             workPieceToolStripMenuItem.Text = "Заготовки";
             workPieceToolStripMenuItem.Click += WorkPieceToolStripMenuItem_Click;
             // 
             // furnitureToolStripMenuItem
             // 
             furnitureToolStripMenuItem.Name = "furnitureToolStripMenuItem";
-            furnitureToolStripMenuItem.Size = new Size(180, 22);
+            furnitureToolStripMenuItem.Size = new Size(130, 22);
             furnitureToolStripMenuItem.Text = "Изделия";
             furnitureToolStripMenuItem.Click += FurnitureToolStripMenuItem_Click;
             // 
             // mailsToolStripMenuItem
             // 
             mailsToolStripMenuItem.Name = "mailsToolStripMenuItem";
-            mailsToolStripMenuItem.Size = new Size(180, 22);
+            mailsToolStripMenuItem.Size = new Size(130, 22);
             mailsToolStripMenuItem.Text = "Письма";
             mailsToolStripMenuItem.Click += MailsToolStripMenuItem_Click;
             // 
@@ -196,6 +197,13 @@
             startingWorkToolStripMenuItem.Text = "Запуск работ";
             startingWorkToolStripMenuItem.Click += StartingWorkToolStripMenuItem_Click;
             // 
+            // createBackUpToolStripMenuItem
+            // 
+            createBackUpToolStripMenuItem.Name = "createBackUpToolStripMenuItem";
+            createBackUpToolStripMenuItem.Size = new Size(97, 20);
+            createBackUpToolStripMenuItem.Text = "Создать бекап";
+            createBackUpToolStripMenuItem.Click += CreateBackUpToolStripMenuItem_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -238,5 +246,6 @@
 		private ToolStripMenuItem implementerToolStripMenuItem;
 		private ToolStripMenuItem startingWorkToolStripMenuItem;
         private ToolStripMenuItem mailsToolStripMenuItem;
+        private ToolStripMenuItem createBackUpToolStripMenuItem;
     }
 }
