@@ -28,13 +28,13 @@ namespace FurnitureAssemblyFileImplement.Implements
 
 		public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
 		{
-			if (!model.Id.HasValue && model.DateFrom.HasValue && model.DateTo.HasValue)
+			if (!model.Id.HasValue && !model.DateFrom.HasValue && !model.DateTo.HasValue && !model.ClientId.HasValue)
 			{
-				return source.Orders.Where(x => x.DateCreate >= model.DateFrom && x.DateCreate <= model.DateTo)
-				   .Select(x => GetViewModel(x)).ToList();
+				return new();
 			}
 
-			return source.Orders.Where(x => x.Id == model.Id).Select(x => GetViewModel(x)).ToList();
+			return source.Orders.Where(x => x.Id == model.Id || model.DateFrom <= x.DateCreate
+				&& x.DateCreate <= model.DateTo || x.ClientId == model.ClientId).Select(x => GetViewModel(x)).ToList();
 		}
 
 		public OrderViewModel? GetElement(OrderSearchModel model)
@@ -44,7 +44,8 @@ namespace FurnitureAssemblyFileImplement.Implements
 				return null;
 			}
 
-			return source.Orders.FirstOrDefault(x => (model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
+			return source.Orders.FirstOrDefault(x =>
+				(model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
 		}
 
 		// Для загрузки названий изделия в заказе
@@ -54,7 +55,14 @@ namespace FurnitureAssemblyFileImplement.Implements
 
 			var furniture = source.Furnitures.FirstOrDefault(x => x.Id == order.FurnitureId);
 
+			var client = source.Clients.FirstOrDefault(x => x.Id == order.ClientId);
+
 			viewModel.FurnitureName = furniture?.FurnitureName ?? "Не указано";
+
+			if (client != null)
+			{
+				viewModel.ClientFIO = client.ClientFIO;
+			}
 
 			return viewModel;
 		}
@@ -93,14 +101,14 @@ namespace FurnitureAssemblyFileImplement.Implements
 
 		public OrderViewModel? Delete(OrderBindingModel model)
 		{
-			var element = source.Orders.FirstOrDefault(x => x.Id == model.Id);
+			var order = source.Orders.FirstOrDefault(x => x.Id == model.Id);
 
-			if (element != null)
+			if (order != null)
 			{
-				source.Orders.Remove(element);
+				source.Orders.Remove(order);
 				source.SaveOrders();
 
-				return GetViewModel(element);
+				return GetViewModel(order);
 			}
 
 			return null;

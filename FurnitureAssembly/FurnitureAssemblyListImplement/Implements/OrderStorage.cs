@@ -41,24 +41,30 @@ namespace FurnitureAssemblyListImplement.Implements
 		{
 			var result = new List<OrderViewModel>();
 
-			if (!model.Id.HasValue && model.DateFrom.HasValue && model.DateTo.HasValue)
+			if (!model.Id.HasValue)
+			{
+				return result;
+			}
+
+			if (model.ClientId.HasValue)
 			{
 				foreach (var order in _source.Orders)
 				{
-					if (order.DateCreate >= model.DateFrom && order.DateCreate <= model.DateTo)
+					if (order.ClientId == model.ClientId)
 					{
 						result.Add(GetViewModel(order));
 					}
 				}
-
-				return result;
 			}
 
-			foreach (var order in _source.Orders)
+			if (model.DateFrom.HasValue && model.DateTo.HasValue)
 			{
-				if (order.Id == model.Id)
+				foreach (var order in _source.Orders)
 				{
-					result.Add(GetViewModel(order));
+					if (order.Id == model.Id || model.DateFrom <= order.DateCreate && order.DateCreate <= model.DateTo)
+					{
+						result.Add(GetViewModel(order));
+					}
 				}
 			}
 
@@ -95,6 +101,15 @@ namespace FurnitureAssemblyListImplement.Implements
 				{
 					viewModel.FurnitureName = furniture.FurnitureName;
 
+					break;
+				}
+			}
+
+			foreach (var client in _source.Clients)
+			{
+				if (client.Id == order.ClientId)
+				{
+					viewModel.ClientFIO = client.ClientFIO;
 					break;
 				}
 			}

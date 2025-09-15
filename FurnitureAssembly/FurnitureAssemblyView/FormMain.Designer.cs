@@ -42,6 +42,8 @@
             workPiecesToolStripMenuItem = new ToolStripMenuItem();
             workPieceFurnituresToolStripMenuItem = new ToolStripMenuItem();
             ordersToolStripMenuItem = new ToolStripMenuItem();
+            workWithClientsToolStripMenuItem = new ToolStripMenuItem();
+            clientsToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             menuStrip.SuspendLayout();
             SuspendLayout();
@@ -115,7 +117,7 @@
             // menuStrip
             // 
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem, reportsToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem, reportsToolStripMenuItem, workWithClientsToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Padding = new Padding(5, 2, 0, 2);
@@ -172,6 +174,20 @@
             ordersToolStripMenuItem.Text = "Список заказов";
             ordersToolStripMenuItem.Click += OrdersToolStripMenuItem_Click;
             // 
+            // workWithClientsToolStripMenuItem
+            // 
+            workWithClientsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clientsToolStripMenuItem });
+            workWithClientsToolStripMenuItem.Name = "workWithClientsToolStripMenuItem";
+            workWithClientsToolStripMenuItem.Size = new Size(129, 20);
+            workWithClientsToolStripMenuItem.Text = "Работа с клиентами";
+            // 
+            // clientsToolStripMenuItem
+            // 
+            clientsToolStripMenuItem.Name = "clientsToolStripMenuItem";
+            clientsToolStripMenuItem.Size = new Size(180, 22);
+            clientsToolStripMenuItem.Text = "Клиенты";
+            clientsToolStripMenuItem.Click += ClientsToolStripMenuItem_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -212,5 +228,7 @@
         private ToolStripMenuItem workPiecesToolStripMenuItem;
         private ToolStripMenuItem workPieceFurnituresToolStripMenuItem;
         private ToolStripMenuItem ordersToolStripMenuItem;
+        private ToolStripMenuItem workWithClientsToolStripMenuItem;
+        private ToolStripMenuItem clientsToolStripMenuItem;
     }
 }

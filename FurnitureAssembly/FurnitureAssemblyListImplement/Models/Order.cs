@@ -5,6 +5,7 @@ using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,8 @@ namespace FurnitureAssemblyListImplement.Models
 	{
 		// Методы set сделали приватными, чтобы исключить неразрешённые манипуляции
 		public int Id { get; private set; }
+
+		public int ClientId { get; private set; }
 
 		public int FurnitureId { get; private set; }
 
@@ -39,6 +42,7 @@ namespace FurnitureAssemblyListImplement.Models
 			{
 				Id = model.Id,
 				FurnitureId = model.FurnitureId,
+				ClientId = model.ClientId,
 				Count = model.Count,
 				Sum = model.Sum,
 				Status = model.Status,
@@ -64,6 +68,7 @@ namespace FurnitureAssemblyListImplement.Models
 		{
 			Id = Id,
 			FurnitureId = FurnitureId,
+			ClientId = ClientId,
 			Count = Count,
 			Sum = Sum,
 			Status = Status,

@@ -122,7 +122,13 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 				throw new InvalidOperationException("Дата создания должна быть более ранней, нежели дата завершения");
 			}
 
-			_logger.LogInformation("Order. OrderId:{Id}, Sum:{Sum}. FurnitureId:{Id}", model.Id, model.Sum, model.FurnitureId);
+			// Проверка на клиента
+			if (model.ClientId < 0)
+			{
+				throw new ArgumentNullException("Некорректный идентификатор у клиента", nameof(model.ClientId));
+			}
+
+			_logger.LogInformation("Order. OrderId:{Id}. Sum:{Sum}. ClientId:{ClientId}. FurnitureId:{Id}", model.Id, model.Sum, model.ClientId, model.FurnitureId);
 		}
 
 		// Обновление статуса заказа

@@ -12,6 +12,9 @@ namespace FurnitureAssemblyContracts.SearchModels
 		// Для поиска по идентификатору
 		public int? Id { get; set; }
 
+		// Для поиска по клиенту
+		public int? ClientId { get; set; }
+
 		// Два поля для возможности производить выборку
 		public DateTime? DateFrom { get; set; }
 

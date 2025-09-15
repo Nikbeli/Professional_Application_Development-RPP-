@@ -21,11 +21,15 @@ namespace FurnitureAssemblyListImplement
 		// Список для хранения заказов
 		public List<Order> Orders { get; set; }
 
+		// Список для хранения клиентов
+		public List<Client> Clients { get; set; }
+
 		public DataListSingleton()
 		{
 			WorkPiece = new List<WorkPiece>();
 			Furnitures = new List<Furniture>();
 			Orders = new List<Order>();
+			Clients = new List<Client>();
 		}
 
 		public static DataListSingleton GetInstance()
