@@ -80,16 +80,19 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 var record = new ReportShopFurnituresViewModel
                 {
                     ShopName = shop.ShopName,
-                    Furnitures = new List<Tuple<string, int>>(),
+                    Furnitures = new List<(string, int)>(),
                     TotalCount = 0
                 };
-                foreach (var furniturecount in shop.ShopFurnitures.Values)
+
+                foreach (var furniture in shop.ShopFurnitures)
                 {
-                    record.Furnitures.Add(new Tuple<string, int>(furniturecount.Item1.FurnitureName, furniturecount.Item2));
-                    record.TotalCount += furniturecount.Item2;
+                    record.Furnitures.Add(new(furniture.Value.Item1.FurnitureName, furniture.Value.Item2));
+                    record.TotalCount += furniture.Value.Item2;
                 }
+
                 list.Add(record);
             }
+
             return list;
         }
 
@@ -135,7 +138,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
         // Сохранение магазинов в файл-Word
         public void SaveShopsToWordFile(ReportBindingModel model)
         {
-            _saveToWord.CreateTableDoc(new WordInfo
+            _saveToWord.CreateTable(new WordInfo
             {
                 FileName = model.FileName,
                 Title = "Таблица магазинов",

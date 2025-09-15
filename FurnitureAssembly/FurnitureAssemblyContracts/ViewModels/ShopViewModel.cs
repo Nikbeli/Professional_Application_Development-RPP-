@@ -26,5 +26,7 @@ namespace FurnitureAssemblyContracts.ViewModels
 
         [DisplayName("Вместимость магазина")]
         public int MaxCountFurnitures { get; set; }
+
+        public List<Tuple<string, int>>? FurnitureCount { get; set; } = new ();
     }
 }

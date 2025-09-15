@@ -15,6 +15,11 @@ namespace FurnitureAssemblyContracts.ViewModels
         [DisplayName("Номер")]
         public int Id { get; set; }
 
+        public int ClientId { get; set; }
+
+        [DisplayName("ФИО клиента")]
+        public string ClientFIO { get; set; } = string.Empty;
+
         public int FurnitureId { get; set; }
 
         [DisplayName("Изделие")]

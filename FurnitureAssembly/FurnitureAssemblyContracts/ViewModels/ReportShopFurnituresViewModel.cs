@@ -12,6 +12,6 @@ namespace FurnitureAssemblyContracts.ViewModels
 
         public int TotalCount { get; set; }
 
-        public List<Tuple<string, int>> Furnitures { get; set; } = new();
+        public List<(string Furniture, int Count)> Furnitures { get; set; } = new();
     }
 }

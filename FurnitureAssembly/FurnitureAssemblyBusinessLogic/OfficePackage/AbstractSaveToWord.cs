@@ -44,30 +44,53 @@ namespace FurnitureAssemblyBusinessLogic.OfficePackage
             SaveWord(info);
         }
 
-        public void CreateTableDoc(WordInfo wordInfo)
+        public void CreateTable(WordInfo info)
         {
-            CreateWord(wordInfo);
+            CreateWord(info);
 
-            var list = new List<string>();
-
-            foreach (var shop in wordInfo.Shops)
+            CreateParagraph(new WordParagraph
             {
-                list.Add(shop.ShopName);
-                list.Add(shop.Address);
-                list.Add(shop.DateOpen.ToString());
-            }
+                Texts = new List<(string, WordTextProperties)> { (info.Title, new WordTextProperties { Bold = true, Size = "24" }) },
+                TextProperties = new WordTextProperties
+                {
+                    Size = "24",
+                    JustificationType = WordJustificationType.Center
+                }
+            });
 
-            var wordTable = new WordTable
+            List<List<(string, WordTextProperties)>> rowList = new()
             {
-                Headers = new List<string> {
-                    "Название",
-                    "Адрес",
-                    "Дата открытия"},
-                Texts = list
+                new()
+                {
+                    new("Название", new WordTextProperties { Bold = true, Size = "24" } ),
+                    new("Адрес", new WordTextProperties { Bold = true, Size = "24" } ),
+                    new("Дата открытия", new WordTextProperties { Bold = true, Size = "24" } )
+                }
             };
 
-            CreateTable(wordTable);
-            SaveWord(wordInfo);
+            foreach (var shop in info.Shops)
+            {
+                List<(string, WordTextProperties)> cellList = new()
+                {
+                    new(shop.ShopName, new WordTextProperties { Size = "24" }),
+                    new(shop.Address, new WordTextProperties { Size = "24" }),
+                    new(shop.DateOpen.ToShortDateString(), new WordTextProperties { Size = "24"})
+                };
+
+                rowList.Add(cellList);
+            }
+
+            CreateTable(new WordParagraph
+            {
+                RowTexts = rowList,
+                TextProperties = new WordTextProperties
+                {
+                    Size = "24",
+                    JustificationType = WordJustificationType.Center
+                }
+            });
+
+            SaveWord(info);
         }
 
         // Создание Doc-файла
@@ -77,7 +100,7 @@ namespace FurnitureAssemblyBusinessLogic.OfficePackage
         protected abstract void CreateParagraph(WordParagraph paragraph);
 
         // Создание таблицы
-        protected abstract void CreateTable(WordTable info);
+        protected abstract void CreateTable(WordParagraph paragraph);
 
         // Сохранение файла
         protected abstract void SaveWord(WordInfo info);

@@ -122,6 +122,12 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 throw new ArgumentNullException("Некорректный id у изделия", nameof(model.FurnitureId));
             }
 
+            // Проверка на клиента
+            if (model.ClientId < 0)
+            {
+                throw new ArgumentNullException("Некорректный идентификатор у клиента", nameof(model.ClientId));
+            }
+
             // Проверка корректности дат
             if (model.DateCreate > model.DateImplement)
             {

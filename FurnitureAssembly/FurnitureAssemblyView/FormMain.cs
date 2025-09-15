@@ -48,7 +48,9 @@ namespace FurnitureAssemblyView
                 {
                     dataGridView.DataSource = list;
                     dataGridView.Columns["FurnitureId"].Visible = false;
+					dataGridView.Columns["ClientId"].Visible = false;
                     dataGridView.Columns["FurnitureName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Columns["ClientFIO"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
 
                 _logger.LogInformation("Загрузка заказов");
@@ -278,6 +280,16 @@ namespace FurnitureAssemblyView
             var service = Program.ServiceProvider?.GetService(typeof(FormReportFurnitureWorkPieces));
 
             if (service is FormReportFurnitureWorkPieces form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void ClientsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormClients));
+
+            if (service is FormClients form)
             {
                 form.ShowDialog();
             }
