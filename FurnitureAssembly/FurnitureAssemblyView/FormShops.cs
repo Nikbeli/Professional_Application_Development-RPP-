@@ -43,7 +43,7 @@ namespace FurnitureAssemblyView
                 {
                     dataGridView.DataSource = list;
                     dataGridView.Columns["Id"].Visible = false;
-                    dataGridView.Columns["Furnitures"].Visible = false;
+                    dataGridView.Columns["ShopFurnitures"].Visible = false;
                     dataGridView.Columns["ShopName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
 

@@ -25,9 +25,9 @@ namespace FurnitureAssemblyFileImplement.Models
 
         public Dictionary<int, int> countFurniture { get; private set; } = new();
 
-        public Dictionary<int, (IFurnitureModel, int)> _furnitures = null;
+        public Dictionary<int, (IFurnitureModel, int)> _furnitures = null!;
 
-        public Dictionary<int, (IFurnitureModel, int)> Furnitures
+        public Dictionary<int, (IFurnitureModel, int)> ShopFurnitures
         {
             get
             {
@@ -54,7 +54,7 @@ namespace FurnitureAssemblyFileImplement.Models
                 Address = model.Address,
                 DateOpen = model.DateOpen,
                 MaxCountFurnitures = model.MaxCountFurnitures,
-                countFurniture = model.Furnitures.ToDictionary(x => x.Key, x => x.Value.Item2)
+                countFurniture = model.ShopFurnitures.ToDictionary(x => x.Key, x => x.Value.Item2)
             };
         }
         public static Shop? Create(XElement element)
@@ -85,8 +85,8 @@ namespace FurnitureAssemblyFileImplement.Models
             Address = model.Address;
             DateOpen = model.DateOpen;
             MaxCountFurnitures = model.MaxCountFurnitures;
-            countFurniture = model.Furnitures.ToDictionary(x => x.Key, x => x.Value.Item2);
-            _furnitures = null;
+            countFurniture = model.ShopFurnitures.ToDictionary(x => x.Key, x => x.Value.Item2);
+            _furnitures = null!;
         }
 
         public ShopViewModel GetViewModel => new()
@@ -96,8 +96,9 @@ namespace FurnitureAssemblyFileImplement.Models
             Address = Address,
             DateOpen = DateOpen,
             MaxCountFurnitures = MaxCountFurnitures,
-            Furnitures = Furnitures
+            ShopFurnitures = ShopFurnitures
         };
+
         public XElement GetXElement => new("Shop",
             new XAttribute("Id", Id),
             new XElement("ShopName", ShopName),

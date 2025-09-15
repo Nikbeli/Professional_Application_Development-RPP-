@@ -23,7 +23,7 @@ namespace FurnitureAssemblyListImplement.Models
 
         public int MaxCountFurnitures { get; set; }
 
-        public Dictionary<int, (IFurnitureModel, int)> Furnitures { get; private set; } =
+        public Dictionary<int, (IFurnitureModel, int)> ShopFurnitures { get; private set; } =
             new Dictionary<int, (IFurnitureModel, int)>();
 
         // Метод для создания объекта от класса-компонента на основе класса-BindingModel
@@ -40,7 +40,7 @@ namespace FurnitureAssemblyListImplement.Models
                 ShopName = model.ShopName,
                 Address = model.Address,
                 DateOpen = model.DateOpen,
-                Furnitures = model.Furnitures
+                ShopFurnitures = model.ShopFurnitures
             };
         }
 
@@ -55,7 +55,7 @@ namespace FurnitureAssemblyListImplement.Models
             ShopName = model.ShopName;
             Address = model.Address;
             DateOpen = model.DateOpen;
-            Furnitures = model.Furnitures;
+            ShopFurnitures = model.ShopFurnitures;
         }
 
         // Метод для создания объекта класса ViewModel на основе данных объекта класса-компонента
@@ -65,7 +65,7 @@ namespace FurnitureAssemblyListImplement.Models
             ShopName = ShopName,
             Address = Address,
             DateOpen = DateOpen,
-            Furnitures = Furnitures
+            ShopFurnitures = ShopFurnitures
         };
     }
 }

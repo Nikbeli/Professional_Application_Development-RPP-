@@ -17,17 +17,17 @@ namespace FurnitureAssemblyView
     {
         private readonly ILogger _logger;
 
-        private readonly IFurnitureLogic _logicI;
+        private readonly IFurnitureLogic _logicFurniture;
 
-        private readonly IShopLogic _logicS;
+        private readonly IShopLogic _logicShop;
 
-        public FormSellFurniture(ILogger<FormAddFurniture> logger, IFurnitureLogic logicI, IShopLogic logicS)
+        public FormSellFurniture(ILogger<FormAddFurniture> logger, IFurnitureLogic logicFurniture, IShopLogic logicShop)
         {
             InitializeComponent();
 
             _logger = logger;
-            _logicI = logicI;
-            _logicS = logicS;
+            _logicFurniture = logicFurniture;
+            _logicShop = logicShop;
         }
 
         private void FormSellFurniture_Load(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace FurnitureAssemblyView
 
             try
             {
-                var list = _logicI.ReadList(null);
+                var list = _logicFurniture.ReadList(null);
                 if (list != null)
                 {
                     comboBoxFurniture.DisplayMember = "FurnitureName";
@@ -70,14 +70,14 @@ namespace FurnitureAssemblyView
 
             try
             {
-                var operationResult = _logicS.SellFurnitures(_logicI.ReadElement(new FurnitureSearchModel()
+                var operationResult = _logicShop.SellFurnitures(_logicFurniture.ReadElement(new FurnitureSearchModel()
                 {
                     Id = Convert.ToInt32(comboBoxFurniture.SelectedValue)
                 })!, Convert.ToInt32(textBoxCount.Text));
 
                 if (!operationResult)
                 {
-                    throw new Exception("Ошибка при продаже изделия. Дополнительная информация в логах.");
+                    throw new Exception("Ошибка при продаже изделия. Дополнительная информация в логах. Недостаточно изделий");
                 }
 
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);

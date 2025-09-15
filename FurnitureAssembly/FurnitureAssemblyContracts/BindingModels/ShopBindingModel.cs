@@ -16,7 +16,7 @@ namespace FurnitureAssemblyContracts.BindingModels
 
         public DateTime DateOpen { get; set; } = DateTime.Now;
 
-        public Dictionary<int, (IFurnitureModel, int)> Furnitures { get; set; } = new();
+        public Dictionary<int, (IFurnitureModel, int)> ShopFurnitures { get; set; } = new();
 
         public int Id { get; set; }
 

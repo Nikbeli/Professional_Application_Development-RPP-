@@ -69,7 +69,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
         }
 
         // Пополнение магазина
-        public bool AddFurniture(ShopSearchModel model, IFurnitureModel furniture, int count)
+        public bool SupplyFurniture(ShopSearchModel model, IFurnitureModel furniture, int count)
         {
             if (model == null)
             {
@@ -90,27 +90,28 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 return false;
             }
 
-            if (shop.MaxCountFurnitures - shop.Furnitures.Select(x => x.Value.Item2).Sum() < count)
+            if (shop.MaxCountFurnitures - shop.ShopFurnitures.Select(x => x.Value.Item2).Sum() < count)
             {
                 throw new ArgumentNullException("Слишком много изделий для одного магазина", nameof(count));
             }
 
-            if (!shop.Furnitures.ContainsKey(furniture.Id))
+            if (!shop.ShopFurnitures.ContainsKey(furniture.Id))
             {
-                shop.Furnitures[furniture.Id] = (furniture, count);
+                shop.ShopFurnitures[furniture.Id] = (furniture, count);
             }
             else
             {
-                shop.Furnitures[furniture.Id] = (furniture, shop.Furnitures[furniture.Id].Item2 + count);
+                shop.ShopFurnitures[furniture.Id] = (furniture, shop.ShopFurnitures[furniture.Id].Item2 + count);
             }
 
             _shopStorage.Update(new ShopBindingModel()
             {
+                Id = shop.Id,
                 ShopName = shop.ShopName,
                 Address = shop.Address,
                 DateOpen = shop.DateOpen,
                 MaxCountFurnitures = shop.MaxCountFurnitures,
-                Furnitures = shop.Furnitures
+                ShopFurnitures = shop.ShopFurnitures
             });
 
             return true;
@@ -210,7 +211,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
             _logger.LogInformation("AddFurnitures. Furniture: {Furniture}. Count: {Count}", model?.FurnitureName, count);
 
-            var capacity = _shopStorage.GetFullList().Select(x => x.MaxCountFurnitures - x.Furnitures.Select(x => x.Value.Item2).Sum()).Sum() - count;
+            var capacity = _shopStorage.GetFullList().Select(x => x.MaxCountFurnitures - x.ShopFurnitures.Select(x => x.Value.Item2).Sum()).Sum() - count;
 
             if (capacity < 0)
             {
@@ -220,20 +221,20 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
             foreach (var shop in _shopStorage.GetFullList())
             {
-                if (shop.MaxCountFurnitures - shop.Furnitures.Select(x => x.Value.Item2).Sum() < count)
+                if (shop.MaxCountFurnitures - shop.ShopFurnitures.Select(x => x.Value.Item2).Sum() < count)
                 {
-                    if (!AddFurniture(new() { Id = shop.Id }, model, shop.MaxCountFurnitures - shop.Furnitures.Select(x => x.Value.Item2).Sum()))
+                    if (!SupplyFurniture(new() { Id = shop.Id }, model!, shop.MaxCountFurnitures - shop.ShopFurnitures.Select(x => x.Value.Item2).Sum()))
                     {
                         _logger.LogWarning("AddFurnitures operation failed.");
 
                         return false;
                     }
 
-                    count -= shop.MaxCountFurnitures - shop.Furnitures.Select(x => x.Value.Item2).Sum();
+                    count -= shop.MaxCountFurnitures - shop.ShopFurnitures.Select(x => x.Value.Item2).Sum();
                 }
                 else
                 {
-                    if (!AddFurniture(new() { Id = shop.Id }, model, count))
+                    if (!SupplyFurniture(new() { Id = shop.Id }, model!, count))
                     {
                         _logger.LogWarning("AddFurnitures operation failed.");
 

@@ -81,7 +81,7 @@ namespace FurnitureAssemblyView
                 if (service is FormWorkPiece form)
                 {
                     form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                    
+
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         LoadData();
