@@ -18,6 +18,9 @@ namespace FurnitureAssemblyDataModels.Models
         // Дата открытия магазина
         DateTime DateOpen { get; }
 
+        // Максимальное кол-во изделий в магазине
+        int MaxCountFurnitures { get; }
+
         // Изделия в магазине
         Dictionary<int, (IFurnitureModel, int)> Furnitures { get; }
     }

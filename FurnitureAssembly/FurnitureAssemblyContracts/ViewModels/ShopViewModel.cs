@@ -23,5 +23,8 @@ namespace FurnitureAssemblyContracts.ViewModels
         public DateTime DateOpen { get; set; } = DateTime.Now;
 
         public Dictionary<int, (IFurnitureModel, int)> Furnitures { get; set; } = new();
+
+        [DisplayName("Вместимость магазина")]
+        public int MaxCountFurnitures { get; set; }
     }
 }

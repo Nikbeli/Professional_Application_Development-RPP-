@@ -1,6 +1,7 @@
 ﻿using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.SearchModels;
 using FurnitureAssemblyContracts.ViewModels;
+using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,7 @@ namespace FurnitureAssemblyContracts.StoragesContracts
         ShopViewModel? Update(ShopBindingModel model);
 
         ShopViewModel? Delete(ShopBindingModel model);
+
+        bool SellFurnitures(IFurnitureModel model, int count);
     }
 }

@@ -19,5 +19,7 @@ namespace FurnitureAssemblyContracts.BindingModels
         public Dictionary<int, (IFurnitureModel, int)> Furnitures { get; set; } = new();
 
         public int Id { get; set; }
+
+        public int MaxCountFurnitures { get; set; }
     }
 }

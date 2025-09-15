@@ -2,6 +2,7 @@
 using FurnitureAssemblyContracts.SearchModels;
 using FurnitureAssemblyContracts.StoragesContracts;
 using FurnitureAssemblyContracts.ViewModels;
+using FurnitureAssemblyDataModels.Models;
 using FurnitureAssemblyListImplement.Models;
 using System;
 using System.Collections.Generic;
@@ -132,6 +133,11 @@ namespace FurnitureAssemblyListImplement.Implements
             }
 
             return null;
+        }
+
+        public bool SellFurnitures(IFurnitureModel model, int count)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,7 +1,7 @@
 using FurnitureAssemblyBusinessLogic.BussinessLogic;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.StoragesContracts;
-using FurnitureAssemblyListImplement.Implements;
+using FurnitureAssemblyFileImplement.Implements;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,6 +27,7 @@ namespace FurnitureAssemblyView
             _serviceProvider = services.BuildServiceProvider();
             Application.Run(_serviceProvider.GetRequiredService<FormMain>());
         }
+
         private static void ConfigureServices(ServiceCollection services)
         {
             services.AddLogging(option =>
@@ -55,6 +56,7 @@ namespace FurnitureAssemblyView
             services.AddTransient<FormShop>();
             services.AddTransient<FormShops>();
             services.AddTransient<FormAddFurniture>();
+            services.AddTransient<FormSellFurniture>();
         }
     }
 }
