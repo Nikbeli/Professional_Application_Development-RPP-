@@ -23,7 +23,7 @@ namespace FurnitureAssemblyContracts.BusinessLogicsContracts
 
         bool Delete(ShopBindingModel model);
 
-        bool SupplyFurniture(ShopSearchModel model, IFurnitureModel furniture, int count);
+        bool AddFurniture(ShopSearchModel model, IFurnitureModel furniture, int count);
 
         bool SellFurnitures(IFurnitureModel model, int count);
 

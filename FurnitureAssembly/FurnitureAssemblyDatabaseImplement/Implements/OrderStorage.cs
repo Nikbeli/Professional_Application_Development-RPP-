@@ -29,12 +29,19 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
         public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
         {
-            if (!model.Id.HasValue)
+            if (!model.Id.HasValue && !model.DateFrom.HasValue && !model.DateTo.HasValue)
             {
                 return new();
             }
 
             using var context = new FurnitureAssemblyDatabase();
+
+            if (!model.Id.HasValue && model.DateFrom.HasValue && model.DateTo.HasValue)
+            {
+                return context.Orders.Include(x => x.Furniture)
+                    .Where(x => x.DateCreate >= model.DateFrom && x.DateCreate <= model.DateTo)
+                    .Select(x => x.GetViewModel).ToList();
+            }
 
             return context.Orders.Include(x => x.Furniture).Where(x => x.Id == model.Id)
                 .Select(x => x.GetViewModel).ToList();
@@ -89,10 +96,14 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
             if (element != null)
             {
+                // для отображения корректной ViewModel-и
+                var deletedElement = context.Orders.Include(x => x.Furniture)
+                    .FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
+
                 context.Orders.Remove(element);
                 context.SaveChanges();
 
-                return element.GetViewModel;
+                return deletedElement;
             }
 
             return null;

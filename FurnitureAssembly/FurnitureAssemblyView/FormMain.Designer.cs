@@ -40,6 +40,13 @@
             furnitureToolStripMenuItem = new ToolStripMenuItem();
             shopToolStripMenuItem = new ToolStripMenuItem();
             addFurnitureToolStripMenuItem = new ToolStripMenuItem();
+            reportToolStripMenuItem = new ToolStripMenuItem();
+            groupedOrdersReportToolStripMenuItem = new ToolStripMenuItem();
+            ordersReportToolStripMenuItem = new ToolStripMenuItem();
+            workloadStoresReportToolStripMenuItem = new ToolStripMenuItem();
+            shopsReportToolStripMenuItem = new ToolStripMenuItem();
+            reportManufactureToolStripMenuItem = new ToolStripMenuItem();
+            workPieceManufacturesToolStripMenuItem = new ToolStripMenuItem();
             buttonSellFurniture = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             menuStrip.SuspendLayout();
@@ -114,7 +121,7 @@
             // menuStrip
             // 
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem, reportToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Padding = new Padding(5, 2, 0, 2);
@@ -156,6 +163,55 @@
             addFurnitureToolStripMenuItem.Size = new Size(198, 22);
             addFurnitureToolStripMenuItem.Text = "Пополнение магазина";
             addFurnitureToolStripMenuItem.Click += AddFurnitureToolStripMenuItem_Click;
+            // 
+            // reportToolStripMenuItem
+            // 
+            reportToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { groupedOrdersReportToolStripMenuItem, ordersReportToolStripMenuItem, workloadStoresReportToolStripMenuItem, shopsReportToolStripMenuItem, reportManufactureToolStripMenuItem, workPieceManufacturesToolStripMenuItem });
+            reportToolStripMenuItem.Name = "reportToolStripMenuItem";
+            reportToolStripMenuItem.Size = new Size(60, 20);
+            reportToolStripMenuItem.Text = "Отчёты";
+            // 
+            // groupedOrdersReportToolStripMenuItem
+            // 
+            groupedOrdersReportToolStripMenuItem.Name = "groupedOrdersReportToolStripMenuItem";
+            groupedOrdersReportToolStripMenuItem.Size = new Size(243, 22);
+            groupedOrdersReportToolStripMenuItem.Text = "Список заказов за весь период";
+            groupedOrdersReportToolStripMenuItem.Click += GroupedOrdersReportToolStripMenuItem_Click;
+            // 
+            // ordersReportToolStripMenuItem
+            // 
+            ordersReportToolStripMenuItem.Name = "ordersReportToolStripMenuItem";
+            ordersReportToolStripMenuItem.Size = new Size(243, 22);
+            ordersReportToolStripMenuItem.Text = "Список заказов";
+            ordersReportToolStripMenuItem.Click += OrdersReportToolStripMenuItem_Click;
+            // 
+            // workloadStoresReportToolStripMenuItem
+            // 
+            workloadStoresReportToolStripMenuItem.Name = "workloadStoresReportToolStripMenuItem";
+            workloadStoresReportToolStripMenuItem.Size = new Size(243, 22);
+            workloadStoresReportToolStripMenuItem.Text = "Загруженность магазинов";
+            workloadStoresReportToolStripMenuItem.Click += WorkloadStoresReportToolStripMenuItem_Click;
+            // 
+            // shopsReportToolStripMenuItem
+            // 
+            shopsReportToolStripMenuItem.Name = "shopsReportToolStripMenuItem";
+            shopsReportToolStripMenuItem.Size = new Size(243, 22);
+            shopsReportToolStripMenuItem.Text = "Таблица магазинов";
+            shopsReportToolStripMenuItem.Click += ShopsReportToolStripMenuItem_Click;
+            // 
+            // reportManufactureToolStripMenuItem
+            // 
+            reportManufactureToolStripMenuItem.Name = "reportManufactureToolStripMenuItem";
+            reportManufactureToolStripMenuItem.Size = new Size(243, 22);
+            reportManufactureToolStripMenuItem.Text = "Список изделий";
+            reportManufactureToolStripMenuItem.Click += ReportFurnitureToolStripMenuItem_Click;
+            // 
+            // workPieceManufacturesToolStripMenuItem
+            // 
+            workPieceManufacturesToolStripMenuItem.Name = "workPieceManufacturesToolStripMenuItem";
+            workPieceManufacturesToolStripMenuItem.Size = new Size(243, 22);
+            workPieceManufacturesToolStripMenuItem.Text = "Заготовки по изделиям";
+            workPieceManufacturesToolStripMenuItem.Click += WorkPieceFurnituresToolStripMenuItem_Click;
             // 
             // buttonSellFurniture
             // 
@@ -208,5 +264,12 @@
         private ToolStripMenuItem shopToolStripMenuItem;
         private ToolStripMenuItem addFurnitureToolStripMenuItem;
         private Button buttonSellFurniture;
+        private ToolStripMenuItem reportToolStripMenuItem;
+        private ToolStripMenuItem groupedOrdersReportToolStripMenuItem;
+        private ToolStripMenuItem ordersReportToolStripMenuItem;
+        private ToolStripMenuItem workloadStoresReportToolStripMenuItem;
+        private ToolStripMenuItem shopsReportToolStripMenuItem;
+        private ToolStripMenuItem reportManufactureToolStripMenuItem;
+        private ToolStripMenuItem workPieceManufacturesToolStripMenuItem;
     }
 }

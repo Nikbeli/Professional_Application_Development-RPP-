@@ -97,7 +97,7 @@ namespace FurnitureAssemblyView
 
             try
             {
-                var operationResult = _logicShop.SupplyFurniture(new ShopSearchModel
+                var operationResult = _logicShop.AddFurniture(new ShopSearchModel
                 {
                     Id = Convert.ToInt32(comboBoxShop.SelectedValue)
                 },

@@ -31,7 +31,7 @@
             buttonAdd = new Button();
             buttonUpdate = new Button();
             buttonDelete = new Button();
-            buttonRef = new Button();
+            buttonRefresh = new Button();
             dataGridView = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
@@ -69,16 +69,16 @@
             buttonDelete.UseVisualStyleBackColor = true;
             buttonDelete.Click += ButtonDelete_Click;
             // 
-            // buttonRef
+            // buttonRefresh
             // 
-            buttonRef.Location = new Point(561, 197);
-            buttonRef.Margin = new Padding(3, 2, 3, 2);
-            buttonRef.Name = "buttonRef";
-            buttonRef.Size = new Size(100, 34);
-            buttonRef.TabIndex = 3;
-            buttonRef.Text = "Обновить";
-            buttonRef.UseVisualStyleBackColor = true;
-            buttonRef.Click += ButtonRefresh_Click;
+            buttonRefresh.Location = new Point(561, 197);
+            buttonRefresh.Margin = new Padding(3, 2, 3, 2);
+            buttonRefresh.Name = "buttonRef";
+            buttonRefresh.Size = new Size(100, 34);
+            buttonRefresh.TabIndex = 3;
+            buttonRefresh.Text = "Обновить";
+            buttonRefresh.UseVisualStyleBackColor = true;
+            buttonRefresh.Click += ButtonRefresh_Click;
             // 
             // dataGridView
             // 
@@ -97,7 +97,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(683, 338);
             Controls.Add(dataGridView);
-            Controls.Add(buttonRef);
+            Controls.Add(buttonRefresh);
             Controls.Add(buttonDelete);
             Controls.Add(buttonUpdate);
             Controls.Add(buttonAdd);
@@ -114,7 +114,7 @@
         private Button buttonAdd;
         private Button buttonUpdate;
         private Button buttonDelete;
-        private Button buttonRef;
+        private Button buttonRefresh;
         private DataGridView dataGridView;
     }
 }
