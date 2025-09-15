@@ -1,4 +1,5 @@
-﻿using FurnitureAssemblyContracts.BindingModels;
+﻿using FurnitureAssemblyBusinessLogic.MailWorker;
+using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.SearchModels;
 using FurnitureAssemblyContracts.StoragesContracts;
@@ -20,13 +21,20 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
 		private readonly IOrderStorage _orderStorage;
 
-		static readonly object locker = new object();
+		private readonly AbstractMailWorker _mailWorker;
+
+		private readonly IClientLogic _clientLogic;
+
+		private readonly object locker = new object();
 
 		// Конструктор
-		public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage)
+		public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, AbstractMailWorker mailWorker, IClientLogic clientLogic)
 		{
 			_logger = logger;
+
 			_orderStorage = orderStorage;
+			_mailWorker = mailWorker;
+			_clientLogic = clientLogic;
 		}
 
 		// Вывод отфильтрованного списка компонентов
@@ -86,12 +94,16 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
 			model.Status = OrderStatus.Принят;
 
-			if (_orderStorage.Insert(model) == null)
+			var result = _orderStorage.Insert(model);
+
+			if (result == null)
 			{
 				model.Status = OrderStatus.Неизвестен;
 				_logger.LogWarning("Insert operation failed");
 				return false;
 			}
+
+			SendOrderMessage(result.ClientId, $"Сборка мебели, Заказ №{result.Id}", $"Заказ №{result.Id} от {result.DateCreate} на сумму {result.Sum:0.00} принят");
 
 			return true;
 		}
@@ -200,12 +212,35 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 			CheckModel(model, false);
 
 			// Финальная проверка на возможность обновления
-			if (_orderStorage.Update(model) == null)
+			var result = _orderStorage.Update(model);
+
+			if (result == null)
 			{
 				model.Status--;
 				_logger.LogWarning("Update operation failed");
 				return false;
 			}
+
+			SendOrderMessage(result.ClientId, $"Сборка мебели, Заказ №{result.Id}", $"Заказ №{model.Id} изменен статус на {result.Status}");
+
+			return true;
+		}
+
+		private bool SendOrderMessage(int clientId, string subject, string text)
+		{
+			var client = _clientLogic.ReadElement(new() { Id = clientId });
+
+			if (client == null)
+			{
+				return false;
+			}
+
+			_mailWorker.MailSendAsync(new()
+			{
+				MailAddress = client.Email,
+				Subject = subject,
+				Text = text
+			});
 
 			return true;
 		}

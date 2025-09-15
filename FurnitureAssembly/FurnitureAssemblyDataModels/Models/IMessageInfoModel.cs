@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FurnitureAssemblyDataModels.Models
+{
+    // Интерфейс, отвечающий за сообщения
+    public interface IMessageInfoModel
+    {
+        string MessageId { get; }
+
+        int? ClientId { get; }
+
+        string SenderName { get; }
+
+        DateTime DateDelivery { get; }
+
+        string Subject { get; }
+
+        string Body { get; }
+    }
+}

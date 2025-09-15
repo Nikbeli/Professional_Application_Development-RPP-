@@ -15,10 +15,13 @@ namespace FurnitureAssemblyRestApi.Controllers
 
         private readonly IClientLogic _logic;
 
-        public ClientController(IClientLogic logic, ILogger<ClientController> logger)
+        private readonly IMessageInfoLogic _mailLogic;
+
+        public ClientController(IClientLogic logic, ILogger<ClientController> logger, IMessageInfoLogic mailLogic)
         {
             _logic = logic;
             _logger = logger;
+            _mailLogic = mailLogic;
         }
 
         [HttpGet]
@@ -66,6 +69,23 @@ namespace FurnitureAssemblyRestApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка обновления данных");
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public List<MessageInfoViewModel>? GetMessages(int clientId)
+        {
+            try
+            {
+                return _mailLogic.ReadList(new MessageInfoSearchModel
+                {
+                    ClientId = clientId
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка получения писем клиента");
                 throw;
             }
         }

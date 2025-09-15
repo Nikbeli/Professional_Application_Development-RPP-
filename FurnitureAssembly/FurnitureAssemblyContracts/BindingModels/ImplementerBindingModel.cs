@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace FurnitureAssemblyContracts.BindingModels
 {
-    // Реализация сущности "Исполнитель"
-    public class ImplementerBindingModel : IImplementerModel
+	// Реализация сущности "Исполнитель"
+	public class ImplementerBindingModel : IImplementerModel
 	{
 		public int Id { get; set; }
 
-		public string ImplementerFIO {  get; set; } = string.Empty;
+		public string ImplementerFIO { get; set; } = string.Empty;
 
 		public string Password { get; set; } = string.Empty;
 
