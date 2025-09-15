@@ -98,23 +98,23 @@ namespace FurnitureAssemblyFileImplement.Implements
 
         public bool SellFurnitures(IFurnitureModel model, int count)
         {
-            if (_source.Shops.Select(x => x.Furnitures.FirstOrDefault(x => x.Key == model.Id).Value.Item2).Sum() < count)
+            if (_source.Shops.Select(x => x.ShopFurnitures.FirstOrDefault(x => x.Key == model.Id).Value.Item2).Sum() < count)
             {
                 return false;
             }
 
-            var list = _source.Shops.Where(x => x.Furnitures.ContainsKey(model.Id));
+            var list = _source.Shops.Where(x => x.ShopFurnitures.ContainsKey(model.Id));
 
             foreach (var shop in list)
             {
-                if (shop.Furnitures[model.Id].Item2 < count)
+                if (shop.ShopFurnitures[model.Id].Item2 < count)
                 {
-                    count -= shop.Furnitures[model.Id].Item2;
-                    shop.Furnitures[model.Id] = (shop.Furnitures[model.Id].Item1, 0);
+                    count -= shop.ShopFurnitures[model.Id].Item2;
+                    shop.ShopFurnitures[model.Id] = (shop.ShopFurnitures[model.Id].Item1, 0);
                 }
                 else
                 {
-                    shop.Furnitures[model.Id] = (shop.Furnitures[model.Id].Item1, shop.Furnitures[model.Id].Item2 - count);
+                    shop.ShopFurnitures[model.Id] = (shop.ShopFurnitures[model.Id].Item1, shop.ShopFurnitures[model.Id].Item2 - count);
                     count -= count;
                 }
 
@@ -124,7 +124,7 @@ namespace FurnitureAssemblyFileImplement.Implements
                     Address = shop.Address,
                     DateOpen = shop.DateOpen,
                     MaxCountFurnitures = shop.MaxCountFurnitures,
-                    Furnitures = shop.Furnitures
+                    ShopFurnitures = shop.ShopFurnitures
                 });
 
                 if (count == 0)

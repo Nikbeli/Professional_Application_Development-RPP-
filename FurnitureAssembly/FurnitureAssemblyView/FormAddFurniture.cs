@@ -53,7 +53,7 @@ namespace FurnitureAssemblyView
             }
 
             _logger.LogInformation("Загрузка списка магазинов для пополнения");
-            
+
             try
             {
                 var list = _logicShop.ReadList(null);
@@ -97,7 +97,7 @@ namespace FurnitureAssemblyView
 
             try
             {
-                var operationResult = _logicShop.AddFurniture(new ShopSearchModel
+                var operationResult = _logicShop.SupplyFurniture(new ShopSearchModel
                 {
                     Id = Convert.ToInt32(comboBoxShop.SelectedValue)
                 },

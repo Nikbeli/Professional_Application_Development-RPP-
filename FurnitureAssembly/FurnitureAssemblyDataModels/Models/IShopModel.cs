@@ -22,6 +22,6 @@ namespace FurnitureAssemblyDataModels.Models
         int MaxCountFurnitures { get; }
 
         // Изделия в магазине
-        Dictionary<int, (IFurnitureModel, int)> Furnitures { get; }
+        Dictionary<int, (IFurnitureModel, int)> ShopFurnitures { get; }
     }
 }

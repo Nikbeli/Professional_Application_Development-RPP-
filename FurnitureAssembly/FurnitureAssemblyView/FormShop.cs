@@ -54,8 +54,7 @@ namespace FurnitureAssemblyView
                         textBoxAddress.Text = view.Address.ToString();
                         dateTimePickerDate.Value = view.DateOpen;
                         numericUpDownCount.Value = view.MaxCountFurnitures;
-                        _shopFurnitures = view.Furnitures ?? new Dictionary<int, (IFurnitureModel, int)>();
-                        
+                        _shopFurnitures = view.ShopFurnitures ?? new Dictionary<int, (IFurnitureModel, int)>();
                         LoadData();
                     }
                 }
@@ -102,7 +101,7 @@ namespace FurnitureAssemblyView
             }
             
             _logger.LogInformation("Сохранение магазина");
-           
+            
             try
             {
                 var model = new ShopBindingModel
@@ -111,7 +110,7 @@ namespace FurnitureAssemblyView
                     ShopName = textBoxName.Text,
                     Address = textBoxAddress.Text,
                     DateOpen = dateTimePickerDate.Value.Date,
-                    Furnitures = _shopFurnitures,
+                    ShopFurnitures = _shopFurnitures,
                     MaxCountFurnitures = (int)numericUpDownCount.Value
                 };
 
