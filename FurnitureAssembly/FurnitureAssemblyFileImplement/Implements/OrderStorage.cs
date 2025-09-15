@@ -28,9 +28,10 @@ namespace FurnitureAssemblyFileImplement.Implements
 
 		public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
 		{
-			if (!model.Id.HasValue)
+			if (!model.Id.HasValue && model.DateFrom.HasValue && model.DateTo.HasValue)
 			{
-				return new();
+				return source.Orders.Where(x => x.DateCreate >= model.DateFrom && x.DateCreate <= model.DateTo)
+				   .Select(x => GetViewModel(x)).ToList();
 			}
 
 			return source.Orders.Where(x => x.Id == model.Id).Select(x => GetViewModel(x)).ToList();

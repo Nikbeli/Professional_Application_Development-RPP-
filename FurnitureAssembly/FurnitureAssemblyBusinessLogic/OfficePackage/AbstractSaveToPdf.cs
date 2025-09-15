@@ -1,0 +1,76 @@
+﻿using FurnitureAssemblyBusinessLogic.OfficePackage.HelperEnums;
+using FurnitureAssemblyBusinessLogic.OfficePackage.HelperModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FurnitureAssemblyBusinessLogic.OfficePackage
+{
+	public abstract class AbstractSaveToPdf
+	{
+		// Публичный метод создания документа. Описание методов ниже
+		public void CreateDoc(PdfInfo info)
+		{
+			CreatePdf(info);
+
+			CreateParagraph(new PdfParagraph
+			{
+				Text = info.Title,
+				Style = "NormalTitle",
+				ParagraphAlignment = PdfParagraphAlignmentType.Center
+			});
+
+			CreateParagraph(new PdfParagraph
+			{
+				Text = $"с {info.DateFrom.ToShortDateString()} по {info.DateTo.ToShortDateString()}",
+				Style = "Normal",
+				ParagraphAlignment = PdfParagraphAlignmentType.Center
+			});
+
+			CreateTable(new List<string> { "2cm", "3cm", "6cm", "3cm", "3cm" });
+
+			CreateRow(new PdfRowParameters
+			{
+				Texts = new List<string> { "Номер", "Дата заказа", "Изделие", "Сумма", "Статус заказа" },
+				Style = "NormalTitle",
+				ParagraphAlignment = PdfParagraphAlignmentType.Center
+			});
+
+			foreach (var order in info.Orders)
+			{
+				CreateRow(new PdfRowParameters
+				{
+					Texts = new List<string> { order.Id.ToString(), order.DateCreate.ToShortDateString(), order.FurnitureName, order.Sum.ToString(), order.OrderStatus },
+					Style = "Normal",
+					ParagraphAlignment = PdfParagraphAlignmentType.Left
+				});
+			}
+
+			CreateParagraph(new PdfParagraph
+			{
+				Text = $"\nИтого: {info.Orders.Sum(x => x.Sum)}\t",
+				Style = "Normal",
+				ParagraphAlignment = PdfParagraphAlignmentType.Right
+			});
+
+			SavePdf(info);
+		}
+
+		/// Создание Pdf-файла
+		protected abstract void CreatePdf(PdfInfo info);
+
+		/// Создание параграфа с текстом
+		protected abstract void CreateParagraph(PdfParagraph paragraph);
+
+		/// Создание таблицы
+		protected abstract void CreateTable(List<string> columns);
+
+		/// Создание и заполнение строки
+		protected abstract void CreateRow(PdfRowParameters rowParameters);
+
+		/// Сохранение файла
+		protected abstract void SavePdf(PdfInfo info);
+	}
+}
