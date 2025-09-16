@@ -33,7 +33,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             using var context = new FurnitureAssemblyDatabase();
 
             return context.Shops.Include(x => x.Furnitures).ThenInclude(x => x.Furniture)
-                    .Where(x => x.ShopName.Contains(model.ShopName)).ToList()
+                .Where(x => x.ShopName.Contains(model.ShopName)).ToList()
                     .Select(x => x.GetViewModel).ToList();
         }
 
@@ -117,7 +117,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
         public bool SellFurnitures(IFurnitureModel model, int count)
         {
             using var context = new FurnitureAssemblyDatabase();
-            
+
             using var transaction = context.Database.BeginTransaction();
 
             try

@@ -23,7 +23,7 @@ namespace FurnitureAssemblyView
         public FormWorkPieces(ILogger<FormWorkPieces> logger, IWorkPieceLogic logic)
         {
             InitializeComponent();
-            
+
             _logger = logger;
             _logic = logic;
         }
@@ -61,7 +61,7 @@ namespace FurnitureAssemblyView
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
             var service = Program.ServiceProvider?.GetService(typeof(FormWorkPiece));
-            
+
             if (service is FormWorkPiece form)
             {
                 if (form.ShowDialog() == DialogResult.OK)
@@ -81,7 +81,7 @@ namespace FurnitureAssemblyView
                 if (service is FormWorkPiece form)
                 {
                     form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                    
+
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         LoadData();

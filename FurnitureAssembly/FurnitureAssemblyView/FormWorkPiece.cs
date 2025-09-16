@@ -85,7 +85,7 @@ namespace FurnitureAssemblyView
 
                 Close();
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка сохранения компонента");
 

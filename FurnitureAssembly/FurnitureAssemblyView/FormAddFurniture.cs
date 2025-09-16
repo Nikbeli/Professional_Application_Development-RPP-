@@ -53,7 +53,7 @@ namespace FurnitureAssemblyView
             }
 
             _logger.LogInformation("Загрузка списка магазинов для пополнения");
-            
+
             try
             {
                 var list = _logicShop.ReadList(null);
@@ -114,7 +114,7 @@ namespace FurnitureAssemblyView
 
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
-                
+
                 Close();
             }
             catch (Exception ex)
