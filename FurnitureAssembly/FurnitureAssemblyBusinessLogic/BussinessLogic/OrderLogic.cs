@@ -1,4 +1,5 @@
-﻿using FurnitureAssemblyContracts.BindingModels;
+﻿using FurnitureAssemblyBusinessLogic.MailWorker;
+using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
 using FurnitureAssemblyContracts.SearchModels;
 using FurnitureAssemblyContracts.StoragesContracts;
@@ -22,17 +23,23 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
         private readonly IShopLogic _shopLogic;
 
+        private readonly AbstractMailWorker _mailWorker;
+
         private readonly IFurnitureStorage _furnitureStorage;
 
-        static readonly object locker = new object();
+        private readonly IClientLogic _clientLogic;
+
+        private readonly object locker = new object();
 
         // Конструктор
-        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, IShopLogic shopLogic, IFurnitureStorage furnitureStorage)
+        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, IShopLogic shopLogic, IFurnitureStorage furnitureStorage, IClientLogic clientLogic, AbstractMailWorker mailWorker)
         {
             _logger = logger;
             _orderStorage = orderStorage;
             _shopLogic = shopLogic;
             _furnitureStorage = furnitureStorage;
+            _clientLogic = clientLogic;
+            _mailWorker = mailWorker;
         }
 
         // Вывод отфильтрованного списка компонентов
@@ -54,6 +61,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             return list;
         }
 
+        // Вывод конкретного чека
         public OrderViewModel? ReadElement(OrderSearchModel model)
         {
             if (model == null)
@@ -68,7 +76,6 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             if (element == null)
             {
                 _logger.LogWarning("ReadElement element not found");
-
                 return null;
             }
 
@@ -90,11 +97,15 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
             model.Status = OrderStatus.Принят;
 
-            if (_orderStorage.Insert(model) == null)
+            var result = _orderStorage.Insert(model);
+
+            if (result == null)
             {
                 _logger.LogWarning("Insert operation failed");
                 return false;
             }
+
+            SendOrderMessage(result.ClientId, $"Сборка мебели, Заказ №{result.Id}", $"Заказ №{result.Id} от {result.DateCreate} на сумму {result.Sum:0.00} принят");
 
             return true;
         }
@@ -149,16 +160,16 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 throw new ArgumentNullException("Некорректный id у изделия", nameof(model.FurnitureId));
             }
 
-            // Проверка на клиента
-            if (model.ClientId < 0)
-            {
-                throw new ArgumentNullException("Некорректный идентификатор у клиента", nameof(model.ClientId));
-            }
-
             // Проверка корректности дат
             if (model.DateCreate > model.DateImplement)
             {
                 throw new InvalidOperationException("Дата создания должна быть более ранней, нежели дата завершения");
+            }
+
+            // Проверка на клиента
+            if (model.ClientId < 0)
+            {
+                throw new ArgumentNullException("Некорректный идентификатор у клиента", nameof(model.ClientId));
             }
 
             _logger.LogInformation("Order. OrderId:{Id}, Sum:{Sum}. ClientId:{ClientId}. FurnitureId:{Id}", model.Id, model.Sum, model.ClientId, model.FurnitureId);
@@ -220,11 +231,35 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             CheckModel(model, false);
 
             // Финальная проверка на возможность обновления
-            if (_orderStorage.Update(model) == null)
+            var result = _orderStorage.Update(model);
+
+            if (result == null)
             {
                 _logger.LogWarning("Update operation failed");
+
                 return false;
             }
+
+            SendOrderMessage(result.ClientId, $"Сборка мебели, Заказ №{result.Id}", $"Заказ №{model.Id} изменен статус на {result.Status}");
+
+            return true;
+        }
+
+        private bool SendOrderMessage(int clientId, string subject, string text)
+        {
+            var client = _clientLogic.ReadElement(new() { Id = clientId });
+
+            if (client == null)
+            {
+                return false;
+            }
+
+            _mailWorker.MailSendAsync(new()
+            {
+                MailAddress = client.Email,
+                Subject = subject,
+                Text = text
+            });
 
             return true;
         }

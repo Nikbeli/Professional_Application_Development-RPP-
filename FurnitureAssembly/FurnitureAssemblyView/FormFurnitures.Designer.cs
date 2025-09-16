@@ -31,7 +31,7 @@
             buttonAdd = new Button();
             buttonUpdate = new Button();
             buttonDelete = new Button();
-            buttonRef = new Button();
+            buttonRefresh = new Button();
             dataGridView = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
@@ -68,13 +68,13 @@
             // 
             // buttonRefresh
             // 
-            buttonRef.Location = new Point(640, 245);
-            buttonRef.Name = "buttonRefresh";
-            buttonRef.Size = new Size(116, 50);
-            buttonRef.TabIndex = 3;
-            buttonRef.Text = "Обновить";
-            buttonRef.UseVisualStyleBackColor = true;
-            buttonRef.Click += ButtonRefresh_Click;
+            buttonRefresh.Location = new Point(640, 245);
+            buttonRefresh.Name = "buttonRefresh";
+            buttonRefresh.Size = new Size(116, 50);
+            buttonRefresh.TabIndex = 3;
+            buttonRefresh.Text = "Обновить";
+            buttonRefresh.UseVisualStyleBackColor = true;
+            buttonRefresh.Click += ButtonRefresh_Click;
             // 
             // dataGridView
             // 
@@ -92,7 +92,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(781, 450);
             Controls.Add(dataGridView);
-            Controls.Add(buttonRef);
+            Controls.Add(buttonRefresh);
             Controls.Add(buttonDelete);
             Controls.Add(buttonUpdate);
             Controls.Add(buttonAdd);
@@ -108,7 +108,7 @@
         private Button buttonAdd;
         private Button buttonUpdate;
         private Button buttonDelete;
-        private Button buttonRef;
+        private Button buttonRefresh;
         private DataGridView dataGridView;
     }
 }

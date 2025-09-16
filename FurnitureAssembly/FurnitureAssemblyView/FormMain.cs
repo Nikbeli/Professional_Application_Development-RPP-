@@ -258,5 +258,15 @@ namespace FurnitureAssemblyView
 
             MessageBox.Show("Процесс обработки запущен", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void MessageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormMails));
+
+            if (service is FormMails form)
+            {
+                form.ShowDialog();
+            }
+        }
     }
 }

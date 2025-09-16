@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FurnitureAssemblyBusinessLogic.BussinessLogic
@@ -141,6 +142,17 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             if (string.IsNullOrEmpty(model.Password))
             {
                 throw new ArgumentNullException("Отсутствие пароля в учётной записи", nameof(model.Password));
+            }
+
+            if (!Regex.IsMatch(model.Email, @"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$", RegexOptions.IgnoreCase))
+            {
+                throw new ArgumentException("Некорректная почта", nameof(model.Email));
+            }
+
+            if (!Regex.IsMatch(model.Password, @"^((\w+\d+\W+)|(\w+\W+\d+)|(\d+\w+\W+)|(\d+\W+\w+)|(\W+\w+\d+)|(\W+\d+\w+))[\w\d\W]*$", RegexOptions.IgnoreCase) 
+                && model.Password.Length < 10 && model.Password.Length > 50)
+            {
+                throw new ArgumentException("Необходимо придумать другой пароль", nameof(model.Password));
             }
 
             _logger.LogInformation("Client. ClientFIO:{ClientFIO}. Email:{Email}. Id:{Id} ", model.ClientFIO, model.Email, model.Id);

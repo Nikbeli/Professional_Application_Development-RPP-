@@ -20,12 +20,12 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
             if (model.Id.HasValue)
             {
-                return context.Implementers.Include(x => x.Order)
+                return context.Implementers.Include(x => x.Orders)
                     .FirstOrDefault(x => model.Id.HasValue && x.Id == model.Id)?.GetViewModel;
             }
             else if (!string.IsNullOrEmpty(model.ImplementerFIO) && !string.IsNullOrEmpty(model.Password))
             {
-                return context.Implementers.Include(x => x.Order)
+                return context.Implementers.Include(x => x.Orders)
                     .FirstOrDefault(x => (x.ImplementerFIO == model.ImplementerFIO 
                         && x.Password == model.Password))?.GetViewModel;
             }
@@ -37,7 +37,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
         {
             using var context = new FurnitureAssemblyDatabase();
 
-            return context.Implementers.Include(x => x.Order)
+            return context.Implementers.Include(x => x.Orders)
                 .Select(x => x.GetViewModel).ToList();
         }
 
@@ -50,9 +50,9 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
             using var context = new FurnitureAssemblyDatabase();
 
-            return context.Implementers.Include(x => x.Order)
+            return context.Implementers.Include(x => x.Orders)
                 .Where(x => x.ImplementerFIO.Contains(model.ImplementerFIO))
-                .Select(x => x.GetViewModel).ToList();
+                    .Select(x => x.GetViewModel).ToList();
         }
 
         public ImplementerViewModel? Insert(ImplementerBindingModel model)
@@ -69,7 +69,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             context.Implementers.Add(newImplementer);
             context.SaveChanges();
 
-            return context.Implementers.Include(x => x.Order)
+            return context.Implementers.Include(x => x.Orders)
                 .FirstOrDefault(x => x.Id == newImplementer.Id)?.GetViewModel;
         }
 
@@ -77,7 +77,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
         {
             using var context = new FurnitureAssemblyDatabase();
 
-            var order = context.Implementers.Include(x => x.Order)
+            var order = context.Implementers.Include(x => x.Orders)
                 .FirstOrDefault(x => x.Id == model.Id);
 
             if (order == null)
@@ -88,7 +88,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             order.Update(model);
             context.SaveChanges();
 
-            return context.Implementers.Include(x => x.Order)
+            return context.Implementers.Include(x => x.Orders)
                 .FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
         }
 
@@ -102,7 +102,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             if (element != null)
             {
                 // для отображения КОРРЕКТНОЙ ViewModel-и
-                var deletedElement = context.Implementers.Include(x => x.Order)
+                var deletedElement = context.Implementers.Include(x => x.Orders)
                     .FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
 
                 context.Implementers.Remove(element);

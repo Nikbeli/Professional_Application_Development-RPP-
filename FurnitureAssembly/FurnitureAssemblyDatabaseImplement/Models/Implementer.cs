@@ -29,7 +29,7 @@ namespace FurnitureAssemblyDatabaseImplement.Models
 
         // Для реализации связи один ко многим с заказами
         [ForeignKey("ImplementerId")]
-        public virtual List<Order> Order { get; set; } = new();
+        public virtual List<Order> Orders { get; set; } = new();
 
         public static Implementer? Create(ImplementerBindingModel model)
         {

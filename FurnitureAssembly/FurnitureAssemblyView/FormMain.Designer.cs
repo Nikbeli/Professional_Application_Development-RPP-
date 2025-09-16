@@ -47,10 +47,11 @@
             workPieceManufacturesToolStripMenuItem = new ToolStripMenuItem();
             workWithClientsToolStripMenuItem = new ToolStripMenuItem();
             clientsToolStripMenuItem = new ToolStripMenuItem();
-            startWorkToolStripMenuItem = new ToolStripMenuItem();
-            buttonSellFurniture = new Button();
             workWithImplementerToolStripMenuItem = new ToolStripMenuItem();
             implementerToolStripMenuItem = new ToolStripMenuItem();
+            startWorkToolStripMenuItem = new ToolStripMenuItem();
+            buttonSellFurniture = new Button();
+            письмаToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             menuStrip.SuspendLayout();
             SuspendLayout();
@@ -196,7 +197,7 @@
             // 
             // workWithClientsToolStripMenuItem
             // 
-            workWithClientsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clientsToolStripMenuItem });
+            workWithClientsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clientsToolStripMenuItem, письмаToolStripMenuItem });
             workWithClientsToolStripMenuItem.Name = "workWithClientsToolStripMenuItem";
             workWithClientsToolStripMenuItem.Size = new Size(129, 20);
             workWithClientsToolStripMenuItem.Text = "Работа с клиентами";
@@ -204,9 +205,23 @@
             // clientsToolStripMenuItem
             // 
             clientsToolStripMenuItem.Name = "clientsToolStripMenuItem";
-            clientsToolStripMenuItem.Size = new Size(122, 22);
+            clientsToolStripMenuItem.Size = new Size(180, 22);
             clientsToolStripMenuItem.Text = "Клиенты";
             clientsToolStripMenuItem.Click += ClientsToolStripMenuItem_Click;
+            // 
+            // workWithImplementerToolStripMenuItem
+            // 
+            workWithImplementerToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { implementerToolStripMenuItem });
+            workWithImplementerToolStripMenuItem.Name = "workWithImplementerToolStripMenuItem";
+            workWithImplementerToolStripMenuItem.Size = new Size(157, 20);
+            workWithImplementerToolStripMenuItem.Text = "Работа с исполнителями";
+            workWithImplementerToolStripMenuItem.Click += ImplementerToolStripMenuItem_Click;
+            // 
+            // implementerToolStripMenuItem
+            // 
+            implementerToolStripMenuItem.Name = "implementerToolStripMenuItem";
+            implementerToolStripMenuItem.Size = new Size(149, 22);
+            implementerToolStripMenuItem.Text = "Исполнители";
             // 
             // startWorkToolStripMenuItem
             // 
@@ -226,19 +241,12 @@
             buttonSellFurniture.UseVisualStyleBackColor = true;
             buttonSellFurniture.Click += ButtonSellFurniture_Click;
             // 
-            // workWithImplementerToolStripMenuItem
+            // письмаToolStripMenuItem
             // 
-            workWithImplementerToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { implementerToolStripMenuItem });
-            workWithImplementerToolStripMenuItem.Name = "workWithImplementerToolStripMenuItem";
-            workWithImplementerToolStripMenuItem.Size = new Size(157, 20);
-            workWithImplementerToolStripMenuItem.Text = "Работа с исполнителями";
-            workWithImplementerToolStripMenuItem.Click += ImplementerToolStripMenuItem_Click;
-            // 
-            // implementerToolStripMenuItem
-            // 
-            implementerToolStripMenuItem.Name = "implementerToolStripMenuItem";
-            implementerToolStripMenuItem.Size = new Size(180, 22);
-            implementerToolStripMenuItem.Text = "Исполнители";
+            письмаToolStripMenuItem.Name = "письмаToolStripMenuItem";
+            письмаToolStripMenuItem.Size = new Size(180, 22);
+            письмаToolStripMenuItem.Text = "Письма";
+            письмаToolStripMenuItem.Click += MessageToolStripMenuItem_Click;
             // 
             // FormMain
             // 
@@ -288,5 +296,6 @@
         private ToolStripMenuItem startWorkToolStripMenuItem;
         private ToolStripMenuItem workWithImplementerToolStripMenuItem;
         private ToolStripMenuItem implementerToolStripMenuItem;
+        private ToolStripMenuItem письмаToolStripMenuItem;
     }
 }

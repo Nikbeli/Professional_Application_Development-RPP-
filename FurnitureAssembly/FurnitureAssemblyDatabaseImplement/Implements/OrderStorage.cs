@@ -28,13 +28,14 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             {
                 return context.Orders.Include(x => x.Furniture)
                     .Include(x => x.Client).Include(x => x.Implementer)
-                        .FirstOrDefault(x => x.ImplementerId == model.ImplementerId)?.GetViewModel;
+                    .FirstOrDefault(x => x.ImplementerId == model.ImplementerId)?.GetViewModel;
             }
 
             if (!model.Id.HasValue)
             {
                 return null;
             }
+
             return context.Orders.Include(x => x.Furniture).Include(x => x.Client).Include(x => x.Implementer)
                 .FirstOrDefault(x => model.Id.HasValue && x.Id == model.Id)?.GetViewModel;
         }
@@ -51,8 +52,8 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
             return context.Orders.Where(x => x.Id == model.Id || model.DateFrom <= x.DateCreate 
                 && x.DateCreate <= model.DateTo || x.ClientId == model.ClientId || model.Status.Equals(x.Status))
-                    .Include(x => x.Furniture).Include(x => x.Client).Include(x => x.Implementer)
-                        .Select(x => x.GetViewModel).ToList();
+                .Include(x => x.Furniture).Include(x => x.Client).Include(x => x.Implementer)
+                .Select(x => x.GetViewModel).ToList();
         }
 
         public List<OrderViewModel> GetFullList()
@@ -107,8 +108,8 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             {
                 // для отображения корректной ViewModel-и
                 var deletedElement = context.Orders.Include(x => x.Furniture)
-                    .Include(x => x.Client).Include(x => x.Implementer).
-                        FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
+                    .Include(x => x.Client).Include(x => x.Implementer)
+                    .FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
 
                 context.Orders.Remove(element);
                 context.SaveChanges();
