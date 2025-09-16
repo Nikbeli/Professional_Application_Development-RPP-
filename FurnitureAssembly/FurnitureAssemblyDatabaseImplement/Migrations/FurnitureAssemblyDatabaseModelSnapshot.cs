@@ -120,6 +120,42 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
                     b.ToTable("Implementers");
                 });
 
+            modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.MessageInfo", b =>
+                {
+                    b.Property<string>("MessageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateDelivery")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SenderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -255,6 +291,15 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
                     b.Navigation("WorkPiece");
                 });
 
+            modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.MessageInfo", b =>
+                {
+                    b.HasOne("FurnitureAssemblyDatabaseImplement.Models.Client", "Client")
+                        .WithMany("Messages")
+                        .HasForeignKey("ClientId");
+
+                    b.Navigation("Client");
+                });
+
             modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Order", b =>
                 {
                     b.HasOne("FurnitureAssemblyDatabaseImplement.Models.Client", "Client")
@@ -270,7 +315,7 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
                         .IsRequired();
 
                     b.HasOne("FurnitureAssemblyDatabaseImplement.Models.Implementer", "Implementer")
-                        .WithMany("Order")
+                        .WithMany("Orders")
                         .HasForeignKey("ImplementerId");
 
                     b.Navigation("Client");
@@ -301,6 +346,8 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
 
             modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Client", b =>
                 {
+                    b.Navigation("Messages");
+
                     b.Navigation("Orders");
                 });
 
@@ -315,7 +362,7 @@ namespace FurnitureAssemblyDatabaseImplement.Migrations
 
             modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Implementer", b =>
                 {
-                    b.Navigation("Order");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("FurnitureAssemblyDatabaseImplement.Models.Shop", b =>

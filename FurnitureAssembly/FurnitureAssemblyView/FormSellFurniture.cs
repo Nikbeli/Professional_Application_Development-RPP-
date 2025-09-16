@@ -1,4 +1,4 @@
-﻿using FurnitureAssemblyContracts.BusinessLogicsContracts;
+﻿using FurnitureAssemblyContracts.BusinesslogicShopContracts;
 using FurnitureAssemblyContracts.SearchModels;
 using Microsoft.Extensions.Logging;
 using System;

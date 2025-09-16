@@ -14,15 +14,25 @@ namespace FurnitureAssemblyFileImplement.Implements
     public class ImplementerStorage : IImplementerStorage
     {
         private readonly DataFileSingleton _source;
+
         public ImplementerStorage()
         {
             _source = DataFileSingleton.GetInstance();
         }
+
         public ImplementerViewModel? GetElement(ImplementerSearchModel model)
         {
-            if (model.Id.HasValue) return _source.Implementers.FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
-            if (model.ImplementerFIO != null && model.Password != null) return _source.Implementers.FirstOrDefault(x => x.ImplementerFIO.Equals(model.ImplementerFIO) && x.Password.Equals(model.Password))?.GetViewModel;
-            if (model.ImplementerFIO != null) return _source.Implementers.FirstOrDefault(x => x.ImplementerFIO.Equals(model.ImplementerFIO))?.GetViewModel;
+            if (model.Id.HasValue) 
+                return _source.Implementers.FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
+            
+            if (model.ImplementerFIO != null && model.Password != null) 
+                return _source.Implementers.FirstOrDefault(x => x.ImplementerFIO
+                    .Equals(model.ImplementerFIO) && x.Password.Equals(model.Password))?.GetViewModel;
+            
+            if (model.ImplementerFIO != null) 
+                return _source.Implementers
+                    .FirstOrDefault(x => x.ImplementerFIO.Equals(model.ImplementerFIO))?.GetViewModel;
+            
             return null;
         }
 
@@ -32,12 +42,11 @@ namespace FurnitureAssemblyFileImplement.Implements
             {
                 return new();
             }
+
             if (model.ImplementerFIO != null)
             {
-                return _source.Implementers
-                    .Where(x => x.ImplementerFIO.Contains(model.ImplementerFIO))
-                    .Select(x => x.GetViewModel)
-                    .ToList();
+                return _source.Implementers.Where(x => x.ImplementerFIO.Contains(model.ImplementerFIO))
+                    .Select(x => x.GetViewModel).ToList();
             }
             return new();
         }

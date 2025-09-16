@@ -13,6 +13,9 @@ namespace FurnitureAssemblyClientApp
         // Поле, хранящее клиента, которого необходимо авторизовать
         public static ClientViewModel? Client { get; set; } = null;
 
+        // Для пагинации
+        public static int CurrentPage { get; set; } = 0;
+
         public static void Connect(IConfiguration configuration)
         {
             _client.BaseAddress = new Uri(configuration["IPAddress"]);

@@ -184,8 +184,11 @@ namespace FurnitureAssemblyBusinessLogic.OfficePackage.Implements
             };
 
             var stylesheetExtensionList = new StylesheetExtensionList();
+            var stylesheetExtension1 = new StylesheetExtension()
+            {
+                Uri = "{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}"
+            };
 
-            var stylesheetExtension1 = new StylesheetExtension() { Uri = "{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" };
             stylesheetExtension1.AddNamespaceDeclaration("x14", "http://schemas.microsoft.com/office/spreadsheetml/2009/9/main");
             stylesheetExtension1.Append(new SlicerStyles()
             {
@@ -328,7 +331,6 @@ namespace FurnitureAssemblyBusinessLogic.OfficePackage.Implements
                 };
 
                 row.InsertBefore(newCell, refCell);
-
                 cell = newCell;
             }
 

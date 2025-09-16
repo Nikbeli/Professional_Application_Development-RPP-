@@ -223,7 +223,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             {
                 if (shop.MaxCountFurnitures - shop.ShopFurnitures.Select(x => x.Value.Item2).Sum() < count)
                 {
-                    if (!AddFurniture(new() { Id = shop.Id }, model!, shop.MaxCountFurnitures - shop.ShopFurnitures.Select(x => x.Value.Item2).Sum()))
+                    if (!AddFurniture(new() { Id = shop.Id }, model, shop.MaxCountFurnitures - shop.ShopFurnitures.Select(x => x.Value.Item2).Sum()))
                     {
                         _logger.LogWarning("AddFurnitures operation failed.");
 
@@ -234,7 +234,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 }
                 else
                 {
-                    if (!AddFurniture(new() { Id = shop.Id }, model!, count))
+                    if (!AddFurniture(new() { Id = shop.Id }, model, count))
                     {
                         _logger.LogWarning("AddFurnitures operation failed.");
 

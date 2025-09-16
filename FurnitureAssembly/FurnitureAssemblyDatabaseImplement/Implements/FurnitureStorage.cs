@@ -48,7 +48,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
             return context.Furnitures.Include(x => x.WorkPieces).ThenInclude(x => x.WorkPiece)
                 .FirstOrDefault(x => (!string.IsNullOrEmpty(model.FurnitureName) 
-                && x.FurnitureName == model.FurnitureName) || model.Id.HasValue && x.Id == model.Id)?.GetViewModel;
+                    && x.FurnitureName == model.FurnitureName) || model.Id.HasValue && x.Id == model.Id)?.GetViewModel;
         }
 
         public FurnitureViewModel? Insert(FurnitureBindingModel model)

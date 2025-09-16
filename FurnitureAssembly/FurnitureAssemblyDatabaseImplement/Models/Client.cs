@@ -28,6 +28,9 @@ namespace FurnitureAssemblyDatabaseImplement.Models
         [ForeignKey("ClientId")]
         public virtual List<Order> Orders { get; set; } = new();
 
+        [ForeignKey("ClientId")]
+        public virtual List<MessageInfo> Messages { get; set; } = new();
+
         public static Client? Create(ClientBindingModel model)
         {
             if (model == null)

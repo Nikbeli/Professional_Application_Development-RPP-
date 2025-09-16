@@ -60,7 +60,7 @@ namespace FurnitureAssemblyFileImplement.Implements
                 .Select(x => GetViewModel(x)).ToList();
         }
 
-        // Для загрузки названий изделия и исполнителя в заказе
+        // Для загрузки названий изделия в заказе
         private OrderViewModel GetViewModel(Order order)
         {
             var viewModel = order.GetViewModel;

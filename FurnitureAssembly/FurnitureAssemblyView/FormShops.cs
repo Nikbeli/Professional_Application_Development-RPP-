@@ -24,7 +24,7 @@ namespace FurnitureAssemblyView
         public FormShops(ILogger<FormShops> logger, IShopLogic logic)
         {
             InitializeComponent();
-
+            
             _logger = logger;
             _logic = logic;
         }
@@ -46,7 +46,7 @@ namespace FurnitureAssemblyView
                     dataGridView.Columns["ShopFurnitures"].Visible = false;
                     dataGridView.Columns["ShopName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
-
+                
                 _logger.LogInformation("Загрузка магазинов");
             }
             catch (Exception ex)
@@ -104,7 +104,7 @@ namespace FurnitureAssemblyView
                         {
                             throw new Exception("Ошибка при удалении. Дополнительная информация в логах.");
                         }
-
+                        
                         LoadData();
                     }
                     catch (Exception ex)
