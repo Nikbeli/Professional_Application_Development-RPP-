@@ -1,5 +1,6 @@
 ﻿using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
+using FurnitureAssemblyContracts.DI;
 using FurnitureAssemblyContracts.SearchModels;
 using FurnitureAssemblyDataModels.Models;
 using Microsoft.Extensions.Logging;
@@ -24,7 +25,7 @@ namespace FurnitureAssemblyView
         public FormShops(ILogger<FormShops> logger, IShopLogic logic)
         {
             InitializeComponent();
-
+            
             _logger = logger;
             _logic = logic;
         }
@@ -38,14 +39,7 @@ namespace FurnitureAssemblyView
         {
             try
             {
-                var list = _logic.ReadList(null);
-                if (list != null)
-                {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns["Id"].Visible = false;
-                    dataGridView.Columns["ShopFurnitures"].Visible = false;
-                    dataGridView.Columns["ShopName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                dataGridView.FillandConfigGrid(_logic.ReadList(null));
 
                 _logger.LogInformation("Загрузка магазинов");
             }
@@ -58,30 +52,26 @@ namespace FurnitureAssemblyView
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            var service = Program.ServiceProvider?.GetService(typeof(FormShop));
-            
-            if (service is FormShop form)
+            var form = DependencyManager.Instance.Resolve<FormShop>();
+
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    LoadData();
-                }
+                LoadData();
             }
+
         }
 
         private void ButtonUpdate_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var service = Program.ServiceProvider?.GetService(typeof(FormShop));
-                
-                if (service is FormShop form)
+                var form = DependencyManager.Instance.Resolve<FormShop>();
+
+                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadData();
-                    }
+                    LoadData();
                 }
             }
         }

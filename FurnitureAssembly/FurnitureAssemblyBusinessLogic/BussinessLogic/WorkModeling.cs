@@ -20,6 +20,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
         private IOrderLogic? _orderLogic;
 
+        // Конструктор
         public WorkModeling(ILogger<WorkModeling> logger)
         {
             _logger = logger;
@@ -44,7 +45,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 return;
             }
 
-            _logger.LogDebug("DoWork for {Count} orders", orders.Count);
+            _logger.LogDebug("DoWork for {count} orders", orders.Count);
 
             foreach (var implementer in implementers)
             {
@@ -114,24 +115,26 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                             ImplementerId = implementer.Id
                         });
 
-                        // делаем работу
+                        // Работу работаем, делаем-делаем
                         Thread.Sleep(implementer.WorkExperience * order.Count);
 
                         _logger.LogDebug("DoWork. Worker {Id} finish order {Order}", implementer.Id, order.Id);
 
                         _orderLogic.FinishOrder(new OrderBindingModel
                         {
-                            Id = order.Id,
+                            Id = order.Id
                         });
 
-                        // Отдыхаем
+                        // Усёёё отдыхаем
                         Thread.Sleep(implementer.Qualification);
                     }
-                    // Кто-то мог уже перехватить заказ, игнорируем ошибку
+
+                    // Игнорируем ошибку, если с заказом что-то случится
                     catch (InvalidOperationException ex)
                     {
                         _logger.LogWarning(ex, "Error try get work");
                     }
+
                     // Заканчиваем выполнение имитации в случае иной ошибки
                     catch (Exception ex)
                     {
@@ -163,9 +166,9 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                     return;
                 }
 
-                _logger.LogDebug("DoWork. Worker {Id} back to order {Order}", implementer.Id, runOrder.Id);
+                _logger.LogDebug("DoWork {Id} back to order {Order}", implementer.Id, runOrder.Id);
 
-                // Доделываем работу
+                // Доделываем работу 
                 Thread.Sleep(implementer.WorkExperience * runOrder.Count);
 
                 _logger.LogDebug("DoWork. Worker {Id} finish order {Order}", implementer.Id, runOrder.Id);
@@ -175,15 +178,17 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                     Id = runOrder.Id
                 });
 
-                // Отдыхаем
+                // Отдыхаем, хватит работы
                 Thread.Sleep(implementer.Qualification);
             }
+
             // Заказа может не быть, просто игнорируем ошибку
             catch (InvalidOperationException ex)
             {
                 _logger.LogWarning(ex, "Error try get work");
             }
-            // Может возникнуть иная ошибка, тогда просто заканчиваем выполнение имитации
+
+            // Просто возникнет тупая ошибка, тогда заканчиваем выполнение имитации
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error while do work");

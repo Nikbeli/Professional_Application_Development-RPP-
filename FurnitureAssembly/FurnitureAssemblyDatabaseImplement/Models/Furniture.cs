@@ -7,25 +7,31 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FurnitureAssemblyDatabaseImplement.Models
 {
+    [DataContract]
     public class Furniture : IFurnitureModel
     {
+        [DataMember]
         public int Id { get; set; }
 
         [Required]
+        [DataMember]
         public string FurnitureName { get; set; } = string.Empty;
 
         [Required]
+        [DataMember]
         public double Price { get; set; }
 
         public Dictionary<int, (IWorkPieceModel, int)>? _furnitureWorkPieces = null;
 
         // Это поле не будет "мапиться" в бд
         [NotMapped]
+        [DataMember]
         public Dictionary<int, (IWorkPieceModel, int)> FurnitureWorkPieces
         {
             get

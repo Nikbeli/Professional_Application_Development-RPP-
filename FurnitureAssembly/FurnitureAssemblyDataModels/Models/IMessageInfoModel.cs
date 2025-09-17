@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FurnitureAssemblyDataModels.Models
 {
     // Интерфейс, отвечающий за сообщения
-    public interface IMessageInfoModel
+    public interface IMessageInfoModel : IId
     {
         string MessageId { get; }
 

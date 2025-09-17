@@ -172,7 +172,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
                 throw new ArgumentNullException("Некорректный идентификатор у клиента", nameof(model.ClientId));
             }
 
-            _logger.LogInformation("Order. OrderId:{Id}, Sum:{Sum}. ClientId:{ClientId}. FurnitureId:{Id}", model.Id, model.Sum, model.ClientId, model.FurnitureId);
+            _logger.LogInformation("Order. OrderId:{Id}, Sum:{Sum}. FurnitureId:{Id}. Sum:{Sum}", model.Id, model.Sum, model.FurnitureId, model.Sum);
         }
 
         // Обновление статуса заказа

@@ -11,6 +11,8 @@ namespace FurnitureAssemblyListImplement.Models
 {
     public class MessageInfo : IMessageInfoModel
     {
+        public int Id { get; private set; }
+
         public string MessageId { get; private set; } = string.Empty;
 
         public int? ClientId { get; private set; }

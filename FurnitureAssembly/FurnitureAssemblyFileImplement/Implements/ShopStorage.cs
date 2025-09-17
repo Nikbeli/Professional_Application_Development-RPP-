@@ -45,7 +45,7 @@ namespace FurnitureAssemblyFileImplement.Implements
                 return null;
             }
 
-            return _source.Shops.FirstOrDefault(x => (!string.IsNullOrEmpty(model.ShopName) && x.ShopName == model.ShopName) 
+            return _source.Shops.FirstOrDefault(x => (!string.IsNullOrEmpty(model.ShopName) && x.ShopName == model.ShopName)
                 || (model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
         }
 

@@ -12,7 +12,7 @@ namespace FurnitureAssemblyBusinessLogic.OfficePackage.HelperModels
         // Набор текстов в абзаце (для случая, если в абзаце текст разных стилей)
         public List<(string, WordTextProperties)> Texts { get; set; } = new();
 
-        // Свойства параграфа, если они есть
+        // Cвойства параграфа, если они есть
         public WordTextProperties? TextProperties { get; set; }
 
         public List<List<(string, WordTextProperties)>> RowTexts { get; set; } = new();

@@ -51,7 +51,7 @@ namespace FurnitureAssemblyView
                     comboBoxFurniture.SelectedItem = null;
 				}
 
-				if (listClients != null)
+				if(listClients != null)
 				{
 					comboBoxClient.DisplayMember = "ClientFIO";
 					comboBoxClient.ValueMember = "Id";
@@ -108,18 +108,21 @@ namespace FurnitureAssemblyView
 			if (string.IsNullOrEmpty(textBoxCount.Text))
 			{
 				MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
 				return;
 			}
 
 			if (comboBoxFurniture.SelectedValue == null)
 			{
 				MessageBox.Show("Выберите изделие", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
 				return;
 			}
 
 			if (comboBoxClient.SelectedValue == null)
 			{
 				MessageBox.Show("Выберите заказчика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
 				return;
 			}
 

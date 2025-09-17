@@ -14,7 +14,7 @@ namespace FurnitureAssemblyFileImplement.Implements
     public class MessageInfoStorage : IMessageInfoStorage
     {
         private readonly DataFileSingleton _source;
-        
+
         public MessageInfoStorage()
         {
             _source = DataFileSingleton.GetInstance();
@@ -68,7 +68,7 @@ namespace FurnitureAssemblyFileImplement.Implements
         public MessageInfoViewModel? Update(MessageInfoBindingModel model)
         {
             var res = _source.Messages.FirstOrDefault(x => x.MessageId.Equals(model.MessageId));
-            
+
             if (res != null)
             {
                 res.Update(model);

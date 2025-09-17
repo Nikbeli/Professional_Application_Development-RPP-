@@ -37,13 +37,13 @@ namespace FurnitureAssemblyView
 
                     var view = _logic.ReadElement(new WorkPieceSearchModel { Id = _id.Value });
 
-                    if (view != null)
+                    if(view != null)
                     {
                         textBoxName.Text = view.WorkPieceName;
                         textBoxCost.Text = view.Cost.ToString();
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     _logger.LogError(ex, "Ошибка получения компонента");
 
@@ -59,6 +59,7 @@ namespace FurnitureAssemblyView
             if (string.IsNullOrEmpty(textBoxName.Text))
             {
                 MessageBox.Show("Заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 return;
             }
 
@@ -85,7 +86,7 @@ namespace FurnitureAssemblyView
 
                 Close();
             }
-            catch (Exception ex)
+            catch(Exception ex )
             {
                 _logger.LogError(ex, "Ошибка сохранения компонента");
 

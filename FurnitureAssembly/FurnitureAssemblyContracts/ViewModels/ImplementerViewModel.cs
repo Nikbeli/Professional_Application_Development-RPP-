@@ -1,4 +1,5 @@
-﻿using FurnitureAssemblyDataModels.Models;
+﻿using FurnitureAssemblyContracts.Attributes;
+using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,18 +12,19 @@ namespace FurnitureAssemblyContracts.ViewModels
     // Класс для отображения информации об исполнителях
     public class ImplementerViewModel : IImplementerModel
     {
+        [Column(visible: false)]
         public int Id { get; set; }
 
-        [DisplayName("ФИО исполнителя")]
+        [Column(title: "ФИО исполнителя", width: 150)]
         public string ImplementerFIO { get; set; } = string.Empty;
 
-        [DisplayName("Пароль")]
+        [Column(title: "Пароль", width: 150)]
         public string Password { get; set; } = string.Empty;
 
-        [DisplayName("Стаж")]
+        [Column(title: "Стаж", width: 150)]
         public int WorkExperience { get; set; }
 
-        [DisplayName("Квалификация")]
+        [Column(title: "Квалификация", width: 150)]
         public int Qualification { get; set; }
     }
 }

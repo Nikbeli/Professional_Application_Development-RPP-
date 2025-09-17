@@ -4,6 +4,7 @@ using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -11,12 +12,16 @@ using System.Xml.Linq;
 namespace FurnitureAssemblyFileImplement.Models
 {
     // Класс, реализующий интерфейс модели заготовки
+    [DataContract]
     public class WorkPiece : IWorkPieceModel
     {
+        [DataMember]
         public int Id { get; private set; }
 
+        [DataMember]
         public string WorkPieceName { get; private set; } = string.Empty;
 
+        [DataMember]
         public double Cost { get; set; }
 
         public static WorkPiece? Create(WorkPieceBindingModel model)

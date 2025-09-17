@@ -6,19 +6,24 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FurnitureAssemblyDatabaseImplement.Models
 {
+    [DataContract]
     public class WorkPiece : IWorkPieceModel
     {
+        [DataMember]
         public int Id { get; private set; }
 
         [Required]
+        [DataMember]
         public string WorkPieceName { get; private set; } = string.Empty;
 
         [Required]
+        [DataMember]
         public double Cost { get; set; }
 
         // для реализации связи многие ко многим с изделиями

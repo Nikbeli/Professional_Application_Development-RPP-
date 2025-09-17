@@ -4,26 +4,38 @@ using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace FurnitureAssemblyFileImplement.Models
 {
+    [DataContract]
     public class MessageInfo : IMessageInfoModel
     {
+        [DataMember]
+        public int Id { get; private set; }
+
+        [DataMember]
         public string MessageId { get; private set; } = string.Empty;
 
+        [DataMember]
         public int? ClientId { get; private set; }
 
         public bool IsRead { get; private set; } = false;
 
+        [DataMember]
         public string SenderName { get; private set; } = string.Empty;
 
+        [DataMember]
         public DateTime DateDelivery { get; private set; } = DateTime.Now;
 
+        [DataMember]
         public string Subject { get; private set; } = string.Empty;
 
+        [DataMember]
         public string Body { get; private set; } = string.Empty;
 
         public string? Answer { get; private set; } = string.Empty;

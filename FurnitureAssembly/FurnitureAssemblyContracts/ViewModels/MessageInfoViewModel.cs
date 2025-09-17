@@ -1,4 +1,5 @@
-﻿using FurnitureAssemblyDataModels.Models;
+﻿using FurnitureAssemblyContracts.Attributes;
+using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,26 +12,31 @@ namespace FurnitureAssemblyContracts.ViewModels
     // Класс для отображения пользователю информации о сообщениях
     public class MessageInfoViewModel : IMessageInfoModel
     {
+        [Column(visible: false)]
+        public int Id { get; set; }
+
+        [Column(visible: false)]
         public string MessageId { get; set; } = string.Empty;
 
+        [Column(visible: false)]
         public int? ClientId { get; set; }
 
-        [DisplayName("Отправитель")]
+        [Column(title: "Отправитель", width: 150)]
         public string SenderName { get; set; } = string.Empty;
 
-        [DisplayName("Дата отправки")]
+        [Column(title: "Дата отправки", width: 150, format: "D")]
         public DateTime DateDelivery { get; set; } = DateTime.Now;
 
-        [DisplayName("Заголовок")]
+        [Column(title: "Заголовок", width: 150)]
         public string Subject { get; set; } = string.Empty;
 
-        [DisplayName("Текст")]
+        [Column(title: "Текст", width: 150)]
         public string Body { get; set; } = string.Empty;
 
-        [DisplayName("Прочитано")]
+        [Column(title: "Прочитано", width: 150)]
         public bool IsRead { get; set; } = false;
 
-        [DisplayName("Ответ")]
+        [Column(title: "Ответ", width: 150)]
         public string? Answer { get; set; }
     }
 }

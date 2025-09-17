@@ -14,82 +14,75 @@ using System.Windows.Forms;
 
 namespace FurnitureAssemblyView
 {
-	public partial class FormClients : Form
-	{
-		private readonly ILogger _logger;
+    public partial class FormClients : Form
+    {
+        private readonly ILogger _logger;
 
-		private readonly IClientLogic _clientLogic;
+        private readonly IClientLogic _clientLogic;
 
-		public FormClients(ILogger<FormClients> logger, IClientLogic clientLogic)
-		{
-			InitializeComponent();
+        public FormClients(ILogger<FormClients> logger, IClientLogic clientLogic)
+        {
+            InitializeComponent();
 
-			_logger = logger;
-			_clientLogic = clientLogic;
-		}
+            _logger = logger;
+            _clientLogic = clientLogic;
+        }
 
-		private void FormClients_Load(object sender, EventArgs e)
-		{
-			LoadData();
-		}
+        private void FormClients_Load(object sender, EventArgs e)
+        {
+            LoadData();
+        }
 
-		private void LoadData()
-		{
-			_logger.LogInformation("Загрузка клиентов");
+        private void LoadData()
+        {
+            _logger.LogInformation("Загрузка клиентов");
 
-			try
-			{
-				var list = _clientLogic.ReadList(null);
+            try
+            {
+                dataGridView.FillandConfigGrid(_clientLogic.ReadList(null));
+                _logger.LogInformation("Успешная загрузка клиентов");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка загрузки клиентов");
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-				if (list != null)
-				{
-					dataGridView.DataSource = list;
-					dataGridView.Columns["ClientFIO"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-				}
+        private void ButtonDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 1)
+            {
+                if (MessageBox.Show("Удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
 
-				_logger.LogInformation("Успешная загрузка клиентов");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "Ошибка загрузки клиентов");
-				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
+                    _logger.LogInformation("Удаление клиента");
 
-		private void ButtonDelete_Click(object sender, EventArgs e)
-		{
-			if (dataGridView.SelectedRows.Count == 1)
-			{
-				if (MessageBox.Show("Удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-				{
-					int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+                    try
+                    {
+                        if (!_clientLogic.Delete(new ClientBindingModel
+                        {
+                            Id = id
+                        }))
+                        {
+                            throw new Exception("Ошибка при удалении. Дополнительная информация в логах.");
+                        }
 
-					_logger.LogInformation("Удаление клиента");
+                        LoadData();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Ошибка удаления компонента");
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
 
-					try
-					{
-						if (!_clientLogic.Delete(new ClientBindingModel
-						{
-							Id = id
-						}))
-						{
-							throw new Exception("Ошибка при удалении. Дополнительная информация в логах.");
-						}
-
-						LoadData();
-					}
-					catch (Exception ex)
-					{
-						_logger.LogError(ex, "Ошибка удаления компонента");
-						MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-				}
-			}
-		}
-
-		private void ButtonRefresh_Click(object sender, EventArgs e)
-		{
-			LoadData();
-		}
-	}
+        private void ButtonRef_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+    }
 }

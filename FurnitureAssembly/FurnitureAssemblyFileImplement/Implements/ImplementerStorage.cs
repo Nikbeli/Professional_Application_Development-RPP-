@@ -14,7 +14,6 @@ namespace FurnitureAssemblyFileImplement.Implements
     public class ImplementerStorage : IImplementerStorage
     {
         private readonly DataFileSingleton _source;
-
         public ImplementerStorage()
         {
             _source = DataFileSingleton.GetInstance();
@@ -27,7 +26,7 @@ namespace FurnitureAssemblyFileImplement.Implements
             
             if (model.ImplementerFIO != null && model.Password != null) 
                 return _source.Implementers.FirstOrDefault(x => x.ImplementerFIO
-                    .Equals(model.ImplementerFIO) && x.Password.Equals(model.Password))?.GetViewModel;
+                .Equals(model.ImplementerFIO) && x.Password.Equals(model.Password))?.GetViewModel;
             
             if (model.ImplementerFIO != null) 
                 return _source.Implementers
@@ -48,6 +47,7 @@ namespace FurnitureAssemblyFileImplement.Implements
                 return _source.Implementers.Where(x => x.ImplementerFIO.Contains(model.ImplementerFIO))
                     .Select(x => x.GetViewModel).ToList();
             }
+
             return new();
         }
 
@@ -60,7 +60,7 @@ namespace FurnitureAssemblyFileImplement.Implements
         {
             model.Id = _source.Implementers.Count > 0 ? _source.Implementers.Max(x => x.Id) + 1 : 1;
             var res = Implementer.Create(model);
-            
+
             if (res != null)
             {
                 _source.Implementers.Add(res);
@@ -73,7 +73,7 @@ namespace FurnitureAssemblyFileImplement.Implements
         public ImplementerViewModel? Update(ImplementerBindingModel model)
         {
             var res = _source.Implementers.FirstOrDefault(x => x.Id == model.Id);
-            
+
             if (res != null)
             {
                 res.Update(model);
@@ -86,7 +86,7 @@ namespace FurnitureAssemblyFileImplement.Implements
         public ImplementerViewModel? Delete(ImplementerBindingModel model)
         {
             var res = _source.Implementers.FirstOrDefault(x => x.Id == model.Id);
-            
+
             if (res != null)
             {
                 _source.Implementers.Remove(res);
