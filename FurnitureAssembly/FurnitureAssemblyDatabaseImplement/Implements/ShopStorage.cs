@@ -19,12 +19,8 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
         {
             using var context = new FurnitureAssemblyDatabase();
 
-            return context.Shops
-                    .Include(x => x.Furnitures)
-                    .ThenInclude(x => x.Furniture)
-                    .ToList()
-                    .Select(x => x.GetViewModel)
-                    .ToList();
+            return context.Shops.Include(x => x.Furnitures)
+                .ThenInclude(x => x.Furniture).ToList().Select(x => x.GetViewModel).ToList();
         }
 
         public List<ShopViewModel> GetFilteredList(ShopSearchModel model)
@@ -36,13 +32,9 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
             using var context = new FurnitureAssemblyDatabase();
 
-            return context.Shops
-                    .Include(x => x.Furnitures)
-                    .ThenInclude(x => x.Furniture)
-                    .Where(x => x.ShopName.Contains(model.ShopName))
-                    .ToList()
-                    .Select(x => x.GetViewModel)
-                    .ToList();
+            return context.Shops.Include(x => x.Furnitures).ThenInclude(x => x.Furniture)
+                .Where(x => x.ShopName.Contains(model.ShopName)).ToList()
+                    .Select(x => x.GetViewModel).ToList();
         }
 
         public ShopViewModel? GetElement(ShopSearchModel model)
@@ -55,8 +47,8 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             using var context = new FurnitureAssemblyDatabase();
 
             return context.Shops.Include(x => x.Furnitures).ThenInclude(x => x.Furniture)
-                .FirstOrDefault(x => (!string.IsNullOrEmpty(model.ShopName) && x.ShopName == model.ShopName) 
-                || (model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
+                .FirstOrDefault(x => (!string.IsNullOrEmpty(model.ShopName) 
+                    && x.ShopName == model.ShopName) || (model.Id.HasValue && x.Id == model.Id))?.GetViewModel;
         }
 
         public ShopViewModel? Insert(ShopBindingModel model)

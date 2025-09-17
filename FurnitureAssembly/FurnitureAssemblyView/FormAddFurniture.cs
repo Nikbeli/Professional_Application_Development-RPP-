@@ -53,7 +53,7 @@ namespace FurnitureAssemblyView
             }
 
             _logger.LogInformation("Загрузка списка магазинов для пополнения");
-            
+
             try
             {
                 var list = _logicShop.ReadList(null);

@@ -168,7 +168,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
                 _logger.LogDebug("DoWork {Id} back to order {Order}", implementer.Id, runOrder.Id);
 
-                // Доделываем работу 
+                // Доделываем работу
                 Thread.Sleep(implementer.WorkExperience * runOrder.Count);
 
                 _logger.LogDebug("DoWork. Worker {Id} finish order {Order}", implementer.Id, runOrder.Id);

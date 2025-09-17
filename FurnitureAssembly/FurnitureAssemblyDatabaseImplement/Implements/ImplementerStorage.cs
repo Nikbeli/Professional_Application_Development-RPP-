@@ -21,13 +21,13 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             if (model.Id.HasValue)
             {
                 return context.Implementers.Include(x => x.Orders)
-                .FirstOrDefault(x => model.Id.HasValue && x.Id == model.Id)?.GetViewModel;
+                    .FirstOrDefault(x => model.Id.HasValue && x.Id == model.Id)?.GetViewModel;
             }
             else if (!string.IsNullOrEmpty(model.ImplementerFIO) && !string.IsNullOrEmpty(model.Password))
             {
                 return context.Implementers.Include(x => x.Orders)
                     .FirstOrDefault(x => (x.ImplementerFIO == model.ImplementerFIO 
-                    && x.Password == model.Password))?.GetViewModel;
+                        && x.Password == model.Password))?.GetViewModel;
             }
 
             return new();
@@ -52,7 +52,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
 
             return context.Implementers.Include(x => x.Orders)
                 .Where(x => x.ImplementerFIO.Contains(model.ImplementerFIO))
-                .Select(x => x.GetViewModel).ToList();
+                    .Select(x => x.GetViewModel).ToList();
         }
 
         public ImplementerViewModel? Insert(ImplementerBindingModel model)

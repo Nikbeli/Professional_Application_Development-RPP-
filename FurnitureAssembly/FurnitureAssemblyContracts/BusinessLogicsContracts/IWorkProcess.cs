@@ -9,7 +9,7 @@ namespace FurnitureAssemblyContracts.BusinessLogicsContracts
     // Интерфейс для класса, имитирующего работу
     public interface IWorkProcess
     {
-        // Запуск работы
+        // Запуск работ
         void DoWork(IImplementerLogic implementerLogic, IOrderLogic orderLogic);
     }
 }

@@ -22,7 +22,7 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             {
                 return context.Orders.Include(x => x.Furniture).Include(x => x.Client)
                     .Include(x => x.Implementer).FirstOrDefault(x => x.ImplementerId == model.ImplementerId 
-                    && x.Status == model.Status)?.GetViewModel;
+                        && x.Status == model.Status)?.GetViewModel;
             }
             if (model.ImplementerId.HasValue)
             {

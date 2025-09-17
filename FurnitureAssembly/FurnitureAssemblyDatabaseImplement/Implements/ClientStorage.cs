@@ -21,14 +21,14 @@ namespace FurnitureAssemblyDatabaseImplement.Implements
             if (model.Id.HasValue)
             {
                 return context.Clients.Include(x => x.Orders).FirstOrDefault(x => x.Id == model.Id)
-                ?.GetViewModel;
+                    ?.GetViewModel;
             }
 
             if (!string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(model.Password))
             {
                 return context.Clients.Include(x => x.Orders)
                     .FirstOrDefault(x => (x.Email == model.Email && x.Password == model.Password))
-                    ?.GetViewModel;
+                        ?.GetViewModel;
             }
 
             if (!string.IsNullOrEmpty(model.Email))

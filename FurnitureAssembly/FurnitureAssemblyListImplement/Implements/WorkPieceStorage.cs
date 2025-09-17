@@ -28,7 +28,7 @@ namespace FurnitureAssemblyListImplement.Implements
         {
             var result = new List<WorkPieceViewModel>();
 
-            foreach(var workPiece in _source.WorkPiece)
+            foreach (var workPiece in _source.WorkPiece)
             {
                 result.Add(workPiece.GetViewModel);
             }
@@ -41,12 +41,12 @@ namespace FurnitureAssemblyListImplement.Implements
         {
             var result = new List<WorkPieceViewModel>();
 
-            if(string.IsNullOrEmpty(model.WorkPieceName))
+            if (string.IsNullOrEmpty(model.WorkPieceName))
             {
                 return result;
             }
 
-            foreach(var workPiece in _source.WorkPiece)
+            foreach (var workPiece in _source.WorkPiece)
             {
                 if (workPiece.WorkPieceName.Contains(model.WorkPieceName))
                 {
@@ -60,14 +60,14 @@ namespace FurnitureAssemblyListImplement.Implements
         // Получение элемента из списка заготовок
         public WorkPieceViewModel? GetElement(WorkPieceSearchModel model)
         {
-            if(string.IsNullOrEmpty(model.WorkPieceName) && !model.Id.HasValue)
+            if (string.IsNullOrEmpty(model.WorkPieceName) && !model.Id.HasValue)
             {
                 return null;
             }
 
-            foreach(var workPiece in _source.WorkPiece)
+            foreach (var workPiece in _source.WorkPiece)
             {
-                if((!string.IsNullOrEmpty(model.WorkPieceName) && workPiece.WorkPieceName == model.WorkPieceName) ||
+                if ((!string.IsNullOrEmpty(model.WorkPieceName) && workPiece.WorkPieceName == model.WorkPieceName) ||
                     (model.Id.HasValue && workPiece.Id == model.Id))
                 {
                     return workPiece.GetViewModel;
@@ -82,9 +82,9 @@ namespace FurnitureAssemblyListImplement.Implements
         {
             model.Id = 1;
 
-            foreach(var workPiece in _source.WorkPiece)
+            foreach (var workPiece in _source.WorkPiece)
             {
-                if(model.Id <= workPiece.Id)
+                if (model.Id <= workPiece.Id)
                 {
                     model.Id = workPiece.Id + 1;
                 }
@@ -92,7 +92,7 @@ namespace FurnitureAssemblyListImplement.Implements
 
             var newWorkPiece = WorkPiece.Create(model);
 
-            if(newWorkPiece == null)
+            if (newWorkPiece == null)
             {
                 return null;
             }
@@ -105,9 +105,9 @@ namespace FurnitureAssemblyListImplement.Implements
         // Обновление заготовки
         public WorkPieceViewModel? Update(WorkPieceBindingModel model)
         {
-            foreach(var workPiece in _source.WorkPiece)
+            foreach (var workPiece in _source.WorkPiece)
             {
-                if(workPiece.Id == model.Id)
+                if (workPiece.Id == model.Id)
                 {
                     workPiece.Update(model);
 
@@ -121,7 +121,7 @@ namespace FurnitureAssemblyListImplement.Implements
         // Удаление заготовки
         public WorkPieceViewModel? Delete(WorkPieceBindingModel model)
         {
-            for(int i = 0; i < _source.WorkPiece.Count; i++)
+            for (int i = 0; i < _source.WorkPiece.Count; i++)
             {
                 if (_source.WorkPiece[i].Id == model.Id)
                 {

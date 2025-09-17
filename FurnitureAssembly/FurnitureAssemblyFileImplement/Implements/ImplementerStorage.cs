@@ -26,7 +26,7 @@ namespace FurnitureAssemblyFileImplement.Implements
             
             if (model.ImplementerFIO != null && model.Password != null) 
                 return _source.Implementers.FirstOrDefault(x => x.ImplementerFIO
-                .Equals(model.ImplementerFIO) && x.Password.Equals(model.Password))?.GetViewModel;
+                    .Equals(model.ImplementerFIO) && x.Password.Equals(model.Password))?.GetViewModel;
             
             if (model.ImplementerFIO != null) 
                 return _source.Implementers

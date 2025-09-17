@@ -35,6 +35,7 @@ namespace FurnitureAssemblyListImplement.Implements
         public List<MessageInfoViewModel> GetFilteredList(MessageInfoSearchModel model)
         {
             List<MessageInfoViewModel> result = new();
+            
             foreach (var item in _source.MessageInfos)
             {
                 if (item.ClientId.HasValue && item.ClientId == model.ClientId)
@@ -48,12 +49,13 @@ namespace FurnitureAssemblyListImplement.Implements
                 return result;
             }
 
-            if (model.Page * model.PageSize >= result.Count)
+			if (model.Page * model.PageSize >= result.Count)
             {
                 return null;
             }
 
             List<MessageInfoViewModel> filteredResult = new();
+            
             for (var i = (model.Page.Value - 1) * model.PageSize.Value; i < model.Page.Value * model.PageSize.Value; i++)
             {
                 filteredResult.Add(result[i]);
@@ -65,6 +67,7 @@ namespace FurnitureAssemblyListImplement.Implements
         public List<MessageInfoViewModel> GetFullList()
         {
             List<MessageInfoViewModel> result = new();
+            
             foreach (var item in _source.MessageInfos)
             {
                 result.Add(item.GetViewModel);
@@ -77,7 +80,7 @@ namespace FurnitureAssemblyListImplement.Implements
         {
             var newMessage = MessageInfo.Create(model);
 
-            if (newMessage == null)
+			if (newMessage == null)
             {
                 return null;
             }

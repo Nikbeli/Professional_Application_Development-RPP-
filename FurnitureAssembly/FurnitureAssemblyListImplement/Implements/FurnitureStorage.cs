@@ -28,7 +28,7 @@ namespace FurnitureAssemblyListImplement.Implements
         {
             var result = new List<FurnitureViewModel>();
 
-            foreach(var furniture in _source.Furnitures)
+            foreach (var furniture in _source.Furnitures)
             {
                 result.Add(furniture.GetViewModel);
             }
@@ -41,12 +41,12 @@ namespace FurnitureAssemblyListImplement.Implements
         {
             var result = new List<FurnitureViewModel>();
 
-            if(string.IsNullOrEmpty(model.FurnitureName))
+            if (string.IsNullOrEmpty(model.FurnitureName))
             {
                 return result;
             }
 
-            foreach(var furniture in _source.Furnitures)
+            foreach (var furniture in _source.Furnitures)
             {
                 if (furniture.FurnitureName.Contains(model.FurnitureName))
                 {
@@ -65,9 +65,9 @@ namespace FurnitureAssemblyListImplement.Implements
                 return null;
             }
 
-            foreach(var furniture in _source.Furnitures)
+            foreach (var furniture in _source.Furnitures)
             {
-                if((!string.IsNullOrEmpty(model.FurnitureName) && furniture.FurnitureName == model.FurnitureName) ||
+                if ((!string.IsNullOrEmpty(model.FurnitureName) && furniture.FurnitureName == model.FurnitureName) ||
                     (model.Id.HasValue && furniture.Id == model.Id))
                 {
                     return furniture.GetViewModel;
@@ -82,9 +82,9 @@ namespace FurnitureAssemblyListImplement.Implements
         {
             model.Id = 1;
 
-            foreach(var furniture in _source.Furnitures)
+            foreach (var furniture in _source.Furnitures)
             {
-                if(model.Id <= furniture.Id)
+                if (model.Id <= furniture.Id)
                 {
                     model.Id = furniture.Id + 1;
                 }
@@ -92,7 +92,7 @@ namespace FurnitureAssemblyListImplement.Implements
 
             var newFurniture = Furniture.Create(model);
 
-            if(newFurniture == null)
+            if (newFurniture == null)
             {
                 return null;
             }
@@ -105,9 +105,9 @@ namespace FurnitureAssemblyListImplement.Implements
         // Обновление изделия
         public FurnitureViewModel? Update(FurnitureBindingModel model)
         {
-            foreach(var furniture in _source.Furnitures)
+            foreach (var furniture in _source.Furnitures)
             {
-                if(furniture.Id == model.Id)
+                if (furniture.Id == model.Id)
                 {
                     furniture.Update(model);
 
@@ -121,7 +121,7 @@ namespace FurnitureAssemblyListImplement.Implements
         // Удаление изделия
         public FurnitureViewModel? Delete(FurnitureBindingModel model)
         {
-            for(int i = 0; i < _source.Furnitures.Count; ++i)
+            for (int i = 0; i < _source.Furnitures.Count; ++i)
             {
                 if (_source.Furnitures[i].Id == model.Id)
                 {

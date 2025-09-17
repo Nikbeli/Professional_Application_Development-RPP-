@@ -14,7 +14,7 @@ namespace FurnitureAssemblyBusinessLogic.OfficePackage.HelperModels
 
         public string Title { get; set; } = string.Empty;
 
-        // Cписок заготовок для вывода и сохранения
+        // Список заготовок для вывода и сохранения
         public List<FurnitureViewModel> Furnitures { get; set; } = new();
 
         // Список магазинов для вывода и сохранения

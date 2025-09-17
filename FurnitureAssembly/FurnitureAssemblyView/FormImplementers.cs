@@ -14,103 +14,103 @@ using System.Windows.Forms;
 
 namespace FurnitureAssemblyView
 {
-    public partial class FormImplementers : Form
-    {
-        private readonly ILogger _logger;
+	public partial class FormImplementers : Form
+	{
+		private readonly ILogger _logger;
 
-        private readonly IImplementerLogic _logic;
+		private readonly IImplementerLogic _logic;
 
-        public FormImplementers(ILogger<FormWorkPieces> logger, IImplementerLogic logic)
-        {
-            InitializeComponent();
+		public FormImplementers(ILogger<FormWorkPieces> logger, IImplementerLogic logic)
+		{
+			InitializeComponent();
 
-            _logger = logger;
-            _logic = logic;
-        }
+			_logger = logger;
+			_logic = logic;
+		}
 
-        private void FormImplementers_Load(object sender, EventArgs e)
-        {
-            LoadData();
-        }
+		private void FormImplementers_Load(object sender, EventArgs e)
+		{
+			LoadData();
+		}
 
-        private void LoadData()
-        {
-            _logger.LogInformation("Загрузка исполнителей");
+		private void LoadData()
+		{
+			_logger.LogInformation("Загрузка исполнителей");
 
-            try
-            {
-                dataGridView.FillandConfigGrid(_logic.ReadList(null));
+			try
+			{
+				dataGridView.FillandConfigGrid(_logic.ReadList(null));
 
-                _logger.LogInformation("Успешная загрузка исполнителей");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ошибка загрузки исполнителей");
+				_logger.LogInformation("Успешная загрузка исполнителей");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Ошибка загрузки исполнителей");
 
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
-        private void ButtonCreate_Click(object sender, EventArgs e)
-        {
-            var form = DependencyManager.Instance.Resolve<FormImplementer>();
+		private void ButtonCreate_Click(object sender, EventArgs e)
+		{
+			var form = DependencyManager.Instance.Resolve<FormImplementer>();
 
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                LoadData();
-            }
-        }
+			if (form.ShowDialog() == DialogResult.OK)
+			{
+				LoadData();
+			}
+		}
 
-        private void ButtonChange_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                var form = DependencyManager.Instance.Resolve<FormImplementer>();
+		private void ButtonChange_Click(object sender, EventArgs e)
+		{
+			if (dataGridView.SelectedRows.Count == 1)
+			{
+				var form = DependencyManager.Instance.Resolve<FormImplementer>();
 
-                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+				form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
 
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    LoadData();
-                }
-            }
-        }
+				if (form.ShowDialog() == DialogResult.OK)
+				{
+					LoadData();
+				}
+			}
+		}
 
-        private void ButtonDelete_Click(object sender, EventArgs e)
-        {
-            // Проверяем наличие выделенной строки
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                if (MessageBox.Show("Удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+		private void ButtonDelete_Click(object sender, EventArgs e)
+		{
+			// Проверяем наличие выделенной строки
+			if (dataGridView.SelectedRows.Count == 1)
+			{
+				if (MessageBox.Show("Удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+				{
+					int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
 
-                    _logger.LogInformation("Удаление исполнителя");
+					_logger.LogInformation("Удаление исполнителя");
 
-                    try
-                    {
-                        if (!_logic.Delete(new ImplementerBindingModel
-                        {
-                            Id = id
-                        }))
-                        {
-                            throw new Exception("Ошибка при удалении. Дополнительная информация в логах.");
-                        }
+					try
+					{
+						if (!_logic.Delete(new ImplementerBindingModel
+						{
+							Id = id
+						}))
+						{
+							throw new Exception("Ошибка при удалении. Дополнительная информация в логах.");
+						}
 
-                        LoadData();
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Ошибка удаления исполнителя");
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-        }
+						LoadData();
+					}
+					catch (Exception ex)
+					{
+						_logger.LogError(ex, "Ошибка удаления исполнителя");
+						MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+				}
+			}
+		}
 
-        private void ButtonUpdate_Click(object sender, EventArgs e)
-        {
-            LoadData();
-        }
-    }
+		private void ButtonUpdate_Click(object sender, EventArgs e)
+		{
+			LoadData();
+		}
+	}
 }

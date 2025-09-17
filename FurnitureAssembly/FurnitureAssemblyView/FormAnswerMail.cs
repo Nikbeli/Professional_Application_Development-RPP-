@@ -49,7 +49,6 @@ namespace FurnitureAssemblyView
                     Text += $"для {_message.SenderName}";
 
                     textBoxHead.Text = _message.Subject;
-
                     textBoxBody.Text = _message.Body;
                 }
 
@@ -61,7 +60,6 @@ namespace FurnitureAssemblyView
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка получения письма");
-
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

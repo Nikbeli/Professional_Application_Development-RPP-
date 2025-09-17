@@ -56,7 +56,6 @@ namespace FurnitureAssemblyView
 				catch (Exception ex)
 				{
 					_logger.LogError(ex, "Ошибка получения исполнителя");
-
 					MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
@@ -68,7 +67,6 @@ namespace FurnitureAssemblyView
 			if (string.IsNullOrEmpty(textBoxImplementerFIO.Text))
 			{
 				MessageBox.Show("Заполните ФИО", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
 				return;
 			}
 
@@ -76,7 +74,6 @@ namespace FurnitureAssemblyView
 			if (string.IsNullOrEmpty(textBoxPassword.Text))
 			{
 				MessageBox.Show("Введите пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
 				return;
 			}
 
@@ -84,7 +81,6 @@ namespace FurnitureAssemblyView
 			if (string.IsNullOrEmpty(textBoxWorkExperience.Text))
 			{
 				MessageBox.Show("Введите ваш стаж", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
 				return;
 			}
 
@@ -92,7 +88,6 @@ namespace FurnitureAssemblyView
 			if (string.IsNullOrEmpty(textBoxQualification.Text))
 			{
 				MessageBox.Show("Введите свою квалификацию", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
 				return;
 			}
 
@@ -124,7 +119,6 @@ namespace FurnitureAssemblyView
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Ошибка сохранения исполнителя");
-
 				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}

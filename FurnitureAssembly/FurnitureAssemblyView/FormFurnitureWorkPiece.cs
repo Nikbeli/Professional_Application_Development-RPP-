@@ -65,14 +65,12 @@ namespace FurnitureAssemblyView
             if (string.IsNullOrEmpty(textBoxCount.Text))
             {
                 MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
                 return;
             }
 
             if (comboBoxWorkPiece.SelectedValue == null)
             {
                 MessageBox.Show("Выберите заготовку", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
                 return;
             }
 
