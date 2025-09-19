@@ -1,0 +1,228 @@
+﻿namespace FurnitureAssemblyView
+{
+    partial class FormMain
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            dataGridView = new DataGridView();
+            buttonCreateOrder = new Button();
+            buttonIssuedOrder = new Button();
+            buttonRefresh = new Button();
+            menuStrip = new MenuStrip();
+            toolStripMenuItem = new ToolStripMenuItem();
+            workPieceToolStripMenuItem = new ToolStripMenuItem();
+            furnitureToolStripMenuItem = new ToolStripMenuItem();
+            reportsToolStripMenuItem = new ToolStripMenuItem();
+            workPiecesToolStripMenuItem = new ToolStripMenuItem();
+            workPieceFurnituresToolStripMenuItem = new ToolStripMenuItem();
+            ordersToolStripMenuItem = new ToolStripMenuItem();
+            workWithClientsToolStripMenuItem = new ToolStripMenuItem();
+            clientsToolStripMenuItem = new ToolStripMenuItem();
+            workWithImplementerToolStripMenuItem = new ToolStripMenuItem();
+            implementerToolStripMenuItem = new ToolStripMenuItem();
+            startingWorkToolStripMenuItem = new ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
+            menuStrip.SuspendLayout();
+            SuspendLayout();
+            // 
+            // dataGridView
+            // 
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView.Location = new Point(11, 36);
+            dataGridView.Name = "dataGridView";
+            dataGridView.RowHeadersWidth = 51;
+            dataGridView.RowTemplate.Height = 29;
+            dataGridView.Size = new Size(1010, 403);
+            dataGridView.TabIndex = 0;
+            // 
+            // buttonCreateOrder
+            // 
+            buttonCreateOrder.Location = new Point(1057, 67);
+            buttonCreateOrder.Name = "buttonCreateOrder";
+            buttonCreateOrder.Size = new Size(235, 46);
+            buttonCreateOrder.TabIndex = 1;
+            buttonCreateOrder.Text = "Создать заказ";
+            buttonCreateOrder.UseVisualStyleBackColor = true;
+            buttonCreateOrder.Click += ButtonCreateOrder_Click;
+            // 
+            // buttonIssuedOrder
+            // 
+            buttonIssuedOrder.Location = new Point(1057, 133);
+            buttonIssuedOrder.Name = "buttonIssuedOrder";
+            buttonIssuedOrder.Size = new Size(235, 44);
+            buttonIssuedOrder.TabIndex = 4;
+            buttonIssuedOrder.Text = "Заказ выдан";
+            buttonIssuedOrder.UseVisualStyleBackColor = true;
+            buttonIssuedOrder.Click += ButtonIssuedOrder_Click;
+            // 
+            // buttonRefresh
+            // 
+            buttonRefresh.Location = new Point(1057, 203);
+            buttonRefresh.Name = "buttonRefresh";
+            buttonRefresh.Size = new Size(235, 39);
+            buttonRefresh.TabIndex = 5;
+            buttonRefresh.Text = "Обновить";
+            buttonRefresh.UseVisualStyleBackColor = true;
+            buttonRefresh.Click += ButtonRef_Click;
+            // 
+            // menuStrip
+            // 
+            menuStrip.ImageScalingSize = new Size(20, 20);
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem, reportsToolStripMenuItem, workWithClientsToolStripMenuItem, workWithImplementerToolStripMenuItem, startingWorkToolStripMenuItem });
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Padding = new Padding(6, 3, 0, 3);
+            menuStrip.Size = new Size(1331, 30);
+            menuStrip.TabIndex = 6;
+            menuStrip.Text = "menuStrip";
+            // 
+            // toolStripMenuItem
+            // 
+            toolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { workPieceToolStripMenuItem, furnitureToolStripMenuItem });
+            toolStripMenuItem.Name = "toolStripMenuItem";
+            toolStripMenuItem.Size = new Size(117, 24);
+            toolStripMenuItem.Text = "Справочники";
+            // 
+            // workPieceToolStripMenuItem
+            // 
+            workPieceToolStripMenuItem.Name = "workPieceToolStripMenuItem";
+            workPieceToolStripMenuItem.Size = new Size(162, 26);
+            workPieceToolStripMenuItem.Text = "Заготовки";
+            workPieceToolStripMenuItem.Click += WorkPieceToolStripMenuItem_Click;
+            // 
+            // furnitureToolStripMenuItem
+            // 
+            furnitureToolStripMenuItem.Name = "furnitureToolStripMenuItem";
+            furnitureToolStripMenuItem.Size = new Size(162, 26);
+            furnitureToolStripMenuItem.Text = "Изделия";
+            furnitureToolStripMenuItem.Click += FurnitureToolStripMenuItem_Click;
+            // 
+            // reportsToolStripMenuItem
+            // 
+            reportsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { workPiecesToolStripMenuItem, workPieceFurnituresToolStripMenuItem, ordersToolStripMenuItem });
+            reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
+            reportsToolStripMenuItem.Size = new Size(73, 24);
+            reportsToolStripMenuItem.Text = "Отчёты";
+            // 
+            // workPiecesToolStripMenuItem
+            // 
+            workPiecesToolStripMenuItem.Name = "workPiecesToolStripMenuItem";
+            workPiecesToolStripMenuItem.Size = new Size(256, 26);
+            workPiecesToolStripMenuItem.Text = "Список заготовок";
+            workPiecesToolStripMenuItem.Click += WorkPiecesToolStripMenuItem_Click;
+            // 
+            // workPieceFurnituresToolStripMenuItem
+            // 
+            workPieceFurnituresToolStripMenuItem.Name = "workPieceFurnituresToolStripMenuItem";
+            workPieceFurnituresToolStripMenuItem.Size = new Size(256, 26);
+            workPieceFurnituresToolStripMenuItem.Text = "Заготовки по изделиям";
+            workPieceFurnituresToolStripMenuItem.Click += WorkPieceFurnituresToolStripMenuItem_Click;
+            // 
+            // ordersToolStripMenuItem
+            // 
+            ordersToolStripMenuItem.Name = "ordersToolStripMenuItem";
+            ordersToolStripMenuItem.Size = new Size(256, 26);
+            ordersToolStripMenuItem.Text = "Список заказов";
+            ordersToolStripMenuItem.Click += OrdersToolStripMenuItem_Click;
+            // 
+            // workWithClientsToolStripMenuItem
+            // 
+            workWithClientsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clientsToolStripMenuItem });
+            workWithClientsToolStripMenuItem.Name = "workWithClientsToolStripMenuItem";
+            workWithClientsToolStripMenuItem.Size = new Size(161, 24);
+            workWithClientsToolStripMenuItem.Text = "Работа с клиентами";
+            // 
+            // clientsToolStripMenuItem
+            // 
+            clientsToolStripMenuItem.Name = "clientsToolStripMenuItem";
+            clientsToolStripMenuItem.Size = new Size(152, 26);
+            clientsToolStripMenuItem.Text = "Клиенты";
+            clientsToolStripMenuItem.Click += ClientsToolStripMenuItem_Click;
+            // 
+            // workWithImplementerToolStripMenuItem
+            // 
+            workWithImplementerToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { implementerToolStripMenuItem });
+            workWithImplementerToolStripMenuItem.Name = "workWithImplementerToolStripMenuItem";
+            workWithImplementerToolStripMenuItem.Size = new Size(196, 24);
+            workWithImplementerToolStripMenuItem.Text = "Работа с исполнителями";
+            // 
+            // implementerToolStripMenuItem
+            // 
+            implementerToolStripMenuItem.Name = "implementerToolStripMenuItem";
+            implementerToolStripMenuItem.Size = new Size(185, 26);
+            implementerToolStripMenuItem.Text = "Исполнители";
+            implementerToolStripMenuItem.Click += ImplementerToolStripMenuItem_Click;
+            // 
+            // startingWorkToolStripMenuItem
+            // 
+            startingWorkToolStripMenuItem.Name = "startingWorkToolStripMenuItem";
+            startingWorkToolStripMenuItem.Size = new Size(114, 24);
+            startingWorkToolStripMenuItem.Text = "Запуск работ";
+            startingWorkToolStripMenuItem.Click += StartingWorkToolStripMenuItem_Click;
+            // 
+            // FormMain
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1331, 474);
+            Controls.Add(buttonRefresh);
+            Controls.Add(buttonIssuedOrder);
+            Controls.Add(buttonCreateOrder);
+            Controls.Add(dataGridView);
+            Controls.Add(menuStrip);
+            MainMenuStrip = menuStrip;
+            Name = "FormMain";
+            Text = "Сборка мебели";
+            Load += FormMain_Load;
+            ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private DataGridView dataGridView;
+        private Button buttonCreateOrder;
+        private Button buttonIssuedOrder;
+        private Button buttonRefresh;
+        private MenuStrip menuStrip;
+        private ToolStripMenuItem toolStripMenuItem;
+        private ToolStripMenuItem workPieceToolStripMenuItem;
+        private ToolStripMenuItem furnitureToolStripMenuItem;
+        private ToolStripMenuItem reportsToolStripMenuItem;
+        private ToolStripMenuItem workPiecesToolStripMenuItem;
+        private ToolStripMenuItem workPieceFurnituresToolStripMenuItem;
+        private ToolStripMenuItem ordersToolStripMenuItem;
+        private ToolStripMenuItem workWithClientsToolStripMenuItem;
+        private ToolStripMenuItem clientsToolStripMenuItem;
+		private ToolStripMenuItem workWithImplementerToolStripMenuItem;
+		private ToolStripMenuItem implementerToolStripMenuItem;
+		private ToolStripMenuItem startingWorkToolStripMenuItem;
+	}
+}

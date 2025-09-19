@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureAssemblyContracts", "FurnitureAssemblyContracts\FurnitureAssemblyContracts.csproj", "{A5F526DF-C1CD-4FCA-87E6-BDB447FF959C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureAssemblyDataModels", "FurnitureAssemblyDataModels\FurnitureAssemblyDataModels.csproj", "{7A1F9F2F-DDA5-4C97-8FAA-149D5372365D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureAssemblyBusinessLogic", "FurnitureAssemblyBusinessLogic\FurnitureAssemblyBusinessLogic.csproj", "{27F73911-7647-475A-875D-C7A4046B0958}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureAssemblyListImplement", "FurnitureAssemblyListImplement\FurnitureAssemblyListImplement.csproj", "{332092CD-AA0D-475A-88A2-2E887E29E56A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureAssemblyView", "FurnitureAssemblyView\FurnitureAssemblyView.csproj", "{77944C5A-53FC-437B-A563-E7C09C769859}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FurnitureAssemblyFileImplement", "FurnitureAssemblyFileImplement\FurnitureAssemblyFileImplement.csproj", "{C987B2B5-56C1-434F-BBCF-6453CF6E5193}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5F526DF-C1CD-4FCA-87E6-BDB447FF959C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5F526DF-C1CD-4FCA-87E6-BDB447FF959C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5F526DF-C1CD-4FCA-87E6-BDB447FF959C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5F526DF-C1CD-4FCA-87E6-BDB447FF959C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A1F9F2F-DDA5-4C97-8FAA-149D5372365D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A1F9F2F-DDA5-4C97-8FAA-149D5372365D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A1F9F2F-DDA5-4C97-8FAA-149D5372365D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A1F9F2F-DDA5-4C97-8FAA-149D5372365D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27F73911-7647-475A-875D-C7A4046B0958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F73911-7647-475A-875D-C7A4046B0958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F73911-7647-475A-875D-C7A4046B0958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F73911-7647-475A-875D-C7A4046B0958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{332092CD-AA0D-475A-88A2-2E887E29E56A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{332092CD-AA0D-475A-88A2-2E887E29E56A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{332092CD-AA0D-475A-88A2-2E887E29E56A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{332092CD-AA0D-475A-88A2-2E887E29E56A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77944C5A-53FC-437B-A563-E7C09C769859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77944C5A-53FC-437B-A563-E7C09C769859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77944C5A-53FC-437B-A563-E7C09C769859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77944C5A-53FC-437B-A563-E7C09C769859}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C987B2B5-56C1-434F-BBCF-6453CF6E5193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C987B2B5-56C1-434F-BBCF-6453CF6E5193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C987B2B5-56C1-434F-BBCF-6453CF6E5193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C987B2B5-56C1-434F-BBCF-6453CF6E5193}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {27CD86DA-500B-4657-9703-3564F0C00790}
+	EndGlobalSection
+EndGlobal
