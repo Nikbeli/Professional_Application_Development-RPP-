@@ -99,7 +99,7 @@ namespace FurnitureAssemblyView
                 MessageBox.Show("Заполните адрес", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
+
             _logger.LogInformation("Сохранение магазина");
             
             try

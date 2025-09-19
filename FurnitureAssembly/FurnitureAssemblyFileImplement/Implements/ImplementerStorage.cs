@@ -48,6 +48,7 @@ namespace FurnitureAssemblyFileImplement.Implements
                 return _source.Implementers.Where(x => x.ImplementerFIO.Contains(model.ImplementerFIO))
                     .Select(x => x.GetViewModel).ToList();
             }
+
             return new();
         }
 
@@ -60,7 +61,7 @@ namespace FurnitureAssemblyFileImplement.Implements
         {
             model.Id = _source.Implementers.Count > 0 ? _source.Implementers.Max(x => x.Id) + 1 : 1;
             var res = Implementer.Create(model);
-            
+
             if (res != null)
             {
                 _source.Implementers.Add(res);
@@ -73,7 +74,7 @@ namespace FurnitureAssemblyFileImplement.Implements
         public ImplementerViewModel? Update(ImplementerBindingModel model)
         {
             var res = _source.Implementers.FirstOrDefault(x => x.Id == model.Id);
-            
+
             if (res != null)
             {
                 res.Update(model);
@@ -86,7 +87,7 @@ namespace FurnitureAssemblyFileImplement.Implements
         public ImplementerViewModel? Delete(ImplementerBindingModel model)
         {
             var res = _source.Implementers.FirstOrDefault(x => x.Id == model.Id);
-            
+
             if (res != null)
             {
                 _source.Implementers.Remove(res);

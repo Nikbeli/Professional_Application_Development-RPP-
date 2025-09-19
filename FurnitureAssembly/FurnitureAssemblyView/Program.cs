@@ -10,15 +10,12 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using FurnitureAssemblyBusinessLogic.MailWorker;
 using FurnitureAssemblyContracts.BindingModels;
+using FurnitureAssemblyContracts.DI;
 
 namespace FurnitureAssemblyView
 {
     internal static class Program
     {
-        private static ServiceProvider? _serviceProvider;
-
-        public static ServiceProvider? ServiceProvider => _serviceProvider;
-
         /// The main entry point for the application.
         [STAThread]
         static void Main()
@@ -27,12 +24,11 @@ namespace FurnitureAssemblyView
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             var services = new ServiceCollection();
-            ConfigureServices(services);
-            _serviceProvider = services.BuildServiceProvider();
+            InitDependency();
 
             try
             {
-                var mailSender = _serviceProvider.GetService<AbstractMailWorker>();
+                var mailSender = DependencyManager.Instance.Resolve<AbstractMailWorker>();
                 mailSender?.MailConfig(new MailConfigBindingModel
                 {
                     MailLogin = System.Configuration.ConfigurationManager.AppSettings["MailLogin"] ?? string.Empty,
@@ -48,69 +44,52 @@ namespace FurnitureAssemblyView
             }
             catch (Exception ex)
             {
-                var logger = _serviceProvider.GetService<ILogger>();
+                var logger = DependencyManager.Instance.Resolve<ILogger>();
 
-                logger?.LogError(ex, "");
+                logger?.LogError(ex, "Ошибка работы с почтой");
             }
 
-            Application.Run(_serviceProvider.GetRequiredService<FormMain>());
+            Application.Run(DependencyManager.Instance.Resolve<FormMain>());
         }
 
-        private static void ConfigureServices(ServiceCollection services)
+        private static void InitDependency()
         {
-            services.AddLogging(option =>
+            DependencyManager.InitDependency();
+
+            DependencyManager.Instance.AddLogging(option =>
             {
                 option.SetMinimumLevel(LogLevel.Information);
                 option.AddNLog("nlog.config");
             });
 
-            services.AddTransient<IWorkPieceStorage, WorkPieceStorage>();
-            services.AddTransient<IOrderStorage, OrderStorage>();
-            services.AddTransient<IFurnitureStorage, FurnitureStorage>();
-            services.AddTransient<IShopStorage, ShopStorage>();
-            services.AddTransient<IClientStorage, ClientStorage>();
-            services.AddTransient<IImplementerStorage, ImplementerStorage>();
-            services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
+            DependencyManager.Instance.RegisterType<FormMain>();
 
-            services.AddTransient<IWorkPieceLogic, WorkPieceLogic>();
-            services.AddTransient<IOrderLogic, OrderLogic>();
-            services.AddTransient<IFurnitureLogic, FurnitureLogic>();
-            services.AddTransient<IShopLogic, ShopLogic>();
-            services.AddTransient<IReportLogic, ReportLogic>();
-            services.AddTransient<IClientLogic, ClientLogic>();
-            services.AddTransient<IImplementerLogic, ImplementerLogic>();
-            services.AddTransient<IMessageInfoLogic, MessageInfoLogic>();
+            DependencyManager.Instance.RegisterType<FormWorkPiece>();
+            DependencyManager.Instance.RegisterType<FormWorkPieces>();
+            DependencyManager.Instance.RegisterType<FormCreateOrder>();
 
-            services.AddTransient<AbstractSaveToExcel, SaveToExcel>();
-            services.AddTransient<AbstractSaveToWord, SaveToWord>();
-            services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
+            DependencyManager.Instance.RegisterType<FormFurniture>();
+            DependencyManager.Instance.RegisterType<FormFurnitures>();
+            DependencyManager.Instance.RegisterType<FormFurnitureWorkPiece>();
 
-            services.AddTransient<IWorkProcess, WorkModeling>();
-            services.AddSingleton<AbstractMailWorker, MailKitWorker>();
+            DependencyManager.Instance.RegisterType<FormReportOrders>();
+            DependencyManager.Instance.RegisterType<FormReportFurnitureWorkPieces>();
+            DependencyManager.Instance.RegisterType<FormReportGroupedOrders>();
+            DependencyManager.Instance.RegisterType<FormReportShopFurnitures>();
 
-            services.AddTransient<FormMain>();
-            services.AddTransient<FormWorkPiece>();
-            services.AddTransient<FormWorkPieces>();
-            services.AddTransient<FormCreateOrder>();
-            services.AddTransient<FormFurniture>();
-            services.AddTransient<FormFurnitures>();
-            services.AddTransient<FormFurnitureWorkPiece>();
-            services.AddTransient<FormShop>();
-            services.AddTransient<FormShops>();
-            services.AddTransient<FormAddFurniture>();
-            services.AddTransient<FormSellFurniture>();
+            DependencyManager.Instance.RegisterType<FormShop>();
+            DependencyManager.Instance.RegisterType<FormShops>();
+            DependencyManager.Instance.RegisterType<FormSellFurniture>();
 
-            services.AddTransient<FormReportFurnitureWorkPieces>();
-            services.AddTransient<FormReportShopFurnitures>();
-            services.AddTransient<FormReportOrders>();
-            services.AddTransient<FormReportGroupedOrders>();
-            services.AddTransient<FormClients>();
-            services.AddTransient<FormImplementers>();
-            services.AddTransient<FormImplementer>();
-            services.AddTransient<FormMails>();
-            services.AddTransient<FormAnswerMail>();
+            DependencyManager.Instance.RegisterType<FormClients>();
+            DependencyManager.Instance.RegisterType<FormImplementer>();
+            DependencyManager.Instance.RegisterType<FormImplementers>();
+
+            DependencyManager.Instance.RegisterType<FormMails>();
+            DependencyManager.Instance.RegisterType<FormAnswerMail>();
+            DependencyManager.Instance.RegisterType<FormMails>();
         }
 
-        private static void MailCheck(object obj) => ServiceProvider?.GetService<AbstractMailWorker>()?.MailCheck();
+        private static void MailCheck(object obj) => DependencyManager.Instance.Resolve<AbstractMailWorker>()?.MailCheck();
     }
 }

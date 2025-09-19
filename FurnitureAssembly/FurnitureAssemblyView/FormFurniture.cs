@@ -1,5 +1,6 @@
 ﻿using FurnitureAssemblyContracts.BindingModels;
 using FurnitureAssemblyContracts.BusinessLogicsContracts;
+using FurnitureAssemblyContracts.DI;
 using FurnitureAssemblyContracts.SearchModels;
 using FurnitureAssemblyDataModels.Models;
 using Microsoft.Extensions.Logging;
@@ -35,7 +36,7 @@ namespace FurnitureAssemblyView
             _logic = logic;
             _furnitureWorkPieces = new Dictionary<int, (IWorkPieceModel, int)>();
         }
-       
+
         private void FormFurniture_Load(object sender, EventArgs e)
         {
             if (_id.HasValue)
@@ -89,30 +90,27 @@ namespace FurnitureAssemblyView
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            var service = Program.ServiceProvider?.GetService(typeof(FormFurnitureWorkPiece));
-           
-            if (service is FormFurnitureWorkPiece form)
+            var form = DependencyManager.Instance.Resolve<FormFurnitureWorkPiece>();
+
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.ShowDialog() == DialogResult.OK)
+                if (form.WorkPieceModel == null)
                 {
-                    if (form.WorkPieceModel == null)
-                    {
-                        return;
-                    }
-
-                    _logger.LogInformation("Добавление новой заготовки:{WorkPieceName} - {Count}", form.WorkPieceModel.WorkPieceName, form.Count);
-
-                    if (_furnitureWorkPieces.ContainsKey(form.Id))
-                    {
-                        _furnitureWorkPieces[form.Id] = (form.WorkPieceModel, form.Count);
-                    }
-                    else
-                    {
-                        _furnitureWorkPieces.Add(form.Id, (form.WorkPieceModel, form.Count));
-                    }
-
-                    LoadData();
+                    return;
                 }
+
+                _logger.LogInformation("Добавление новой заготовки:{WorkPieceName} - {Count}", form.WorkPieceModel.WorkPieceName, form.Count);
+
+                if (_furnitureWorkPieces.ContainsKey(form.Id))
+                {
+                    _furnitureWorkPieces[form.Id] = (form.WorkPieceModel, form.Count);
+                }
+                else
+                {
+                    _furnitureWorkPieces.Add(form.Id, (form.WorkPieceModel, form.Count));
+                }
+
+                LoadData();
             }
         }
 
@@ -120,26 +118,23 @@ namespace FurnitureAssemblyView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var service = Program.ServiceProvider?.GetService(typeof(FormFurnitureWorkPiece));
-                
-                if (service is FormFurnitureWorkPiece form)
+                var form = DependencyManager.Instance.Resolve<FormFurnitureWorkPiece>();
+
+                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
+                form.Id = id;
+                form.Count = _furnitureWorkPieces[id].Item2;
+
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                    form.Id = id;
-                    form.Count = _furnitureWorkPieces[id].Item2;
-
-                    if (form.ShowDialog() == DialogResult.OK)
+                    if (form.WorkPieceModel == null)
                     {
-                        if (form.WorkPieceModel == null)
-                        {
-                            return;
-                        }
-
-                        _logger.LogInformation("Изменение компонента:{WorkPieceName} - {Count}", form.WorkPieceModel.WorkPieceName, form.Count); 
-                        _furnitureWorkPieces[form.Id] = (form.WorkPieceModel, form.Count);
-
-                        LoadData();
+                        return;
                     }
+
+                    _logger.LogInformation("Изменение компонента:{WorkPieceName} - {Count}", form.WorkPieceModel.WorkPieceName, form.Count);
+                    _furnitureWorkPieces[form.Id] = (form.WorkPieceModel, form.Count);
+
+                    LoadData();
                 }
             }
         }

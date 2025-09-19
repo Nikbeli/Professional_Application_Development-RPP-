@@ -106,7 +106,7 @@ namespace FurnitureAssemblyListImplement.Implements
 
             return null;
         }
-        
+
         // Метод для записи названия изделия на форме с заказами и исполнителя
         private OrderViewModel GetViewModel(Order order)
         {

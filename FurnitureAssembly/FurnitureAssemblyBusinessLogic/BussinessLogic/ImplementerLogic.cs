@@ -19,12 +19,14 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
 
         private readonly IImplementerStorage _implementerStorage;
 
+        // Конструктор
         public ImplementerLogic(ILogger<ImplementerLogic> logger, IImplementerStorage implementerStorage)
         {
             _logger = logger;
             _implementerStorage = implementerStorage;
         }
 
+        // Вывод всего отфильтрованного списка
         public List<ImplementerViewModel>? ReadList(ImplementerSearchModel? model)
         {
             _logger.LogInformation("ReadList. ImplementerFIO:{ImplementerFIO}. Id:{Id}", model?.ImplementerFIO, model?.Id);
@@ -43,6 +45,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             return list;
         }
 
+        // Вывод конкретного элемента
         public ImplementerViewModel? ReadElement(ImplementerSearchModel model)
         {
             if (model == null)
@@ -65,6 +68,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             return element;
         }
 
+        // Создание работника
         public bool Create(ImplementerBindingModel model)
         {
             CheckModel(model);
@@ -78,6 +82,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             return true;
         }
 
+        // Обновление данных о работнике
         public bool Update(ImplementerBindingModel model)
         {
             CheckModel(model);
@@ -91,6 +96,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             return true;
         }
 
+        // Удаление работника
         public bool Delete(ImplementerBindingModel model)
         {
             CheckModel(model, false);
@@ -141,7 +147,7 @@ namespace FurnitureAssemblyBusinessLogic.BussinessLogic
             // Проверка на наличие квалификации
             if (model.WorkExperience < 0)
             {
-                throw new ArgumentNullException("Указан некоректный стаж работы", nameof(model.WorkExperience));
+                throw new ArgumentNullException("Указан некорректный стаж работы", nameof(model.WorkExperience));
             }
 
             _logger.LogInformation("Implementer. ImplementerFIO:{ImplementerFIO}. Password:{Password}. " +

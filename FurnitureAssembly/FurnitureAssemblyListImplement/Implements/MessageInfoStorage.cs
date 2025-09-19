@@ -48,8 +48,8 @@ namespace FurnitureAssemblyListImplement.Implements
             {
                 return result;
             }
-            
-            if (model.Page * model.PageSize >= result.Count)
+
+			if (model.Page * model.PageSize >= result.Count)
             {
                 return null;
             }
@@ -79,13 +79,14 @@ namespace FurnitureAssemblyListImplement.Implements
         public MessageInfoViewModel? Insert(MessageInfoBindingModel model)
         {
             var newMessage = MessageInfo.Create(model);
-            
-            if (newMessage == null)
+
+			if (newMessage == null)
             {
                 return null;
             }
 
             _source.MessageInfos.Add(newMessage);
+
             return newMessage.GetViewModel;
         }
 

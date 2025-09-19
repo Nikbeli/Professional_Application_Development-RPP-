@@ -5,31 +5,40 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FurnitureAssemblyDatabaseImplement.Models
 {
+    [DataContract]
     public class MessageInfo : IMessageInfoModel
     {
+        public int Id => throw new NotImplementedException();
+
         [Key]
+        [DataMember]
         public string MessageId { get; set; } = string.Empty;
 
+        [DataMember]
         public int? ClientId { get; set; }
 
         public bool IsRead { get; private set; } = false;
 
         [Required]
+        [DataMember]
         public string SenderName { get; set; } = string.Empty;
 
         [Required]
+        [DataMember]
         public DateTime DateDelivery { get; set; } = DateTime.Now;
 
         [Required]
+        [DataMember]
         public string Subject { get; set; } = string.Empty;
 
-        [Required]
+        [DataMember]
         public string Body { get; set; } = string.Empty;
 
         public string? Answer { get; private set; } = string.Empty;

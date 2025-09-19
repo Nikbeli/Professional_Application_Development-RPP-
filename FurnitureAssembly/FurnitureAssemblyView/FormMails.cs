@@ -1,4 +1,5 @@
 ﻿using FurnitureAssemblyContracts.BusinessLogicsContracts;
+using FurnitureAssemblyContracts.DI;
 using FurnitureAssemblyContracts.ViewModels;
 using Microsoft.Extensions.Logging;
 using System;
@@ -19,11 +20,11 @@ namespace FurnitureAssemblyView
 
         private readonly IMessageInfoLogic _messageLogic;
 
-		private int currentPage = 1;
+        private int currentPage = 1;
 
-		public int pageSize = 5;
+        public int pageSize = 5;
 
-		public FormMails(ILogger<FormMails> logger, IMessageInfoLogic messageLogic)
+        public FormMails(ILogger<FormMails> logger, IMessageInfoLogic messageLogic)
         {
             InitializeComponent();
 
@@ -42,89 +43,81 @@ namespace FurnitureAssemblyView
         {
             _logger.LogInformation("Загрузка писем");
 
-			try
-			{
-				var list = _messageLogic.ReadList(new()
-				{
-					Page = currentPage,
-					PageSize = pageSize,
-				});
+            try
+            {
+                dataGridView.FillandConfigGrid(_messageLogic.ReadList(new()
+                {
+                    Page = currentPage,
+                    PageSize = pageSize,
+                }));
 
-				if (list != null)
-				{
-					dataGridView.DataSource = list;
-					dataGridView.Columns["ClientId"].Visible = false;
-					dataGridView.Columns["MessageId"].Visible = false;
-					dataGridView.Columns["Body"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-				}
+                _logger.LogInformation("Загрузка списка писем");
 
-				_logger.LogInformation("Загрузка списка писем");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка загрузки писем");
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-				return true;
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "Ошибка загрузки писем");
-				MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-				return false;
-			}
-		}
+                return false;
+            }
+        }
 
         private void ButtonForward_Click(object sender, EventArgs e)
         {
-			currentPage++;
-			if (!LoadData() || ((List<MessageInfoViewModel>)dataGridView.DataSource).Count == 0)
-			{
-				_logger.LogWarning("Обращение к несуществующему письму");
+            currentPage++;
+            if (!LoadData() || ((List<MessageInfoViewModel>)dataGridView.DataSource).Count == 0)
+            {
+                _logger.LogWarning("Обращение к несуществующему письму");
 
-				currentPage--;
-				LoadData();
+                currentPage--;
 
-				buttonForward.Enabled = false;
-			}
-			else
-			{
-				buttonBack.Enabled = true;
-			}
-		}
+                LoadData();
+
+                buttonForward.Enabled = false;
+            }
+            else
+            {
+                buttonBack.Enabled = true;
+            }
+        }
 
         private void ButtonBack_Click(object sender, EventArgs e)
         {
-			if (currentPage == 1)
-			{
-				_logger.LogWarning("Некорректный номер страницы {page}", currentPage - 1);
-				return;
-			}
+            if (currentPage == 1)
+            {
+                _logger.LogWarning("Некорректный номер страницы {page}", currentPage - 1);
 
-			currentPage--;
+                return;
+            }
 
-			if (LoadData())
-			{
-				buttonForward.Enabled = true;
+            currentPage--;
 
-				if (currentPage == 1)
-				{
-					buttonBack.Enabled = false;
-				}
-			}
-		}
+            if (LoadData())
+            {
+                buttonForward.Enabled = true;
+
+                if (currentPage == 1)
+                {
+                    buttonBack.Enabled = false;
+                }
+            }
+        }
 
         private void ButtonAnswer_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var service = Program.ServiceProvider?.GetService(typeof(FormAnswerMail));
+                var form = DependencyManager.Instance.Resolve<FormAnswerMail>();
 
-                if (service is FormAnswerMail form)
+                form.MessageId = dataGridView.SelectedRows[0].Cells["MessageId"].Value.ToString();
+
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    form.MessageId = dataGridView.SelectedRows[0].Cells["MessageId"].Value.ToString();
-
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadData();
-                    }
+                    LoadData();
                 }
+
             }
         }
     }

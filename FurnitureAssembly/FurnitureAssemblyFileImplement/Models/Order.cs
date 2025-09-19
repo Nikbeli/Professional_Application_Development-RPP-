@@ -5,6 +5,7 @@ using FurnitureAssemblyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -12,24 +13,34 @@ using System.Xml.Linq;
 namespace FurnitureAssemblyFileImplement.Models
 {
     // Класс, реализующий интерфейс модели заказа
+    [DataContract]
     public class Order : IOrderModel
     {
+        [DataMember]
         public int Id { get; private set; }
 
+        [DataMember]
         public int FurnitureId { get; private set; }
 
+        [DataMember]
         public int ClientId { get; private set; }
 
+        [DataMember]
         public int? ImplementerId { get; private set; }
 
+        [DataMember]
         public int Count { get; private set; }
 
+        [DataMember]
         public double Sum { get; private set; }
 
+        [DataMember]
         public OrderStatus Status { get; private set; } = OrderStatus.Неизвестен;
 
+        [DataMember]
         public DateTime DateCreate { get; private set; } = DateTime.Now;
 
+        [DataMember]
         public DateTime? DateImplement { get; private set; }
 
         public static Order? Create(OrderBindingModel model)
