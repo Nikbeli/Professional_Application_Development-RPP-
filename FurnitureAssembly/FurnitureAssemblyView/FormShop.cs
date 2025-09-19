@@ -100,7 +100,7 @@ namespace FurnitureAssemblyView
                 return;
             }
 
-			_logger.LogInformation("Сохранение магазина");
+            _logger.LogInformation("Сохранение магазина");
             
             try
             {

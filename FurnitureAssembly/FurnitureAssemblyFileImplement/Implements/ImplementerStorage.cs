@@ -14,6 +14,7 @@ namespace FurnitureAssemblyFileImplement.Implements
     public class ImplementerStorage : IImplementerStorage
     {
         private readonly DataFileSingleton _source;
+
         public ImplementerStorage()
         {
             _source = DataFileSingleton.GetInstance();
