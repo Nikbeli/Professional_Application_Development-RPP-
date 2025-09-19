@@ -46,7 +46,7 @@ namespace FurnitureAssemblyListImplement.Implements
                 return result;
             }
 
-            foreach (var workPiece in _source.WorkPiece)
+            foreach(var workPiece in _source.WorkPiece)
             {
                 if (workPiece.WorkPieceName.Contains(model.WorkPieceName))
                 {
